@@ -1,4 +1,3 @@
-//console.log("Hello world");
 
 import express from 'express';
 import bodyParser from 'body-parser';
