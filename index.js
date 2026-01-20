@@ -9,12 +9,13 @@ dotenv.config();
 
 
 const app = express();
-const mongoUrl = process.env.MONGO_DB_URL
 
+const mongoUrl = process.env.MONGO_DB_URL
 
  mongoose.connect (mongoUrl,{})
 
  const connection=mongoose.connection;
+// ()=> Arrow function
 
 connection.once("open",()=>{
     console.log("Database Connected");
