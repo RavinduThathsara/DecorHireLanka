@@ -2,9 +2,16 @@
 import { useState } from "react";
 import { api } from "../services/api.js";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext.jsx";
+
 
 export default function Register() {
   const navigate = useNavigate();
+  
+  const { loginCustomer } = useAuth();
+  loginCustomer({ token: res.data.token, customer: res.data.customer });
+
+  
 
   const [form, setForm] = useState({
     email: "",

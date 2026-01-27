@@ -1,6 +1,6 @@
 // frontend/src/components/Navbar.jsx
 import { NavLink, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useAuth } from "../context/AuthContext.jsx";
 
 const linkStyle = ({ isActive }) => ({
   textDecoration: "none",
@@ -13,17 +13,10 @@ const linkStyle = ({ isActive }) => ({
 
 export default function Navbar() {
   const navigate = useNavigate();
-  const [customer, setCustomer] = useState(null);
+  const { customer, isCustomerLoggedIn, logoutCustomer } = useAuth();
 
-  useEffect(() => {
-    const c = localStorage.getItem("customer");
-    setCustomer(c ? JSON.parse(c) : null);
-  }, []);
-
-  const logoutCustomer = () => {
-    localStorage.removeItem("customerToken");
-    localStorage.removeItem("customer");
-    setCustomer(null);
+  const onLogout = () => {
+    logoutCustomer();
     navigate("/");
   };
 
@@ -75,12 +68,12 @@ export default function Navbar() {
 
         {/* Right side */}
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          {customer ? (
+          {isCustomerLoggedIn ? (
             <>
-              <span style={{ fontWeight: 800, color: "#111827" }}>
-                Hi, {customer.username}
+              <span style={{ fontWeight: 900, color: "#111827" }}>
+                Hi, {customer?.username}
               </span>
-              <button style={btnLight} onClick={logoutCustomer}>
+              <button style={btnLight} onClick={onLogout}>
                 Logout
               </button>
             </>
