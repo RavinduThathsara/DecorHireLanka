@@ -1,5 +1,5 @@
 // backend/src/controllers/adminAuthController.js
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import Admin from "../models/Admin.js";
 import { generateToken } from "../utils/token.js";
 

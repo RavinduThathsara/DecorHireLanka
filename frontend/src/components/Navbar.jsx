@@ -1,90 +1,47 @@
-// frontend/src/components/Navbar.jsx
-import { NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 
-const linkStyle = ({ isActive }) => ({
-  textDecoration: "none",
-  padding: "10px 12px",
-  borderRadius: "10px",
-  fontWeight: 600,
-  color: isActive ? "#ffffff" : "#222",
-  background: isActive ? "#111827" : "transparent",
-});
-
 export default function Navbar() {
-  const navigate = useNavigate();
-  const { customer, isCustomerLoggedIn, logoutCustomer } = useAuth();
-
-  const onLogout = () => {
-    logoutCustomer();
-    navigate("/");
-  };
+  const { customer, logoutCustomer } = useAuth();
 
   return (
-    <header
-      style={{
-        position: "sticky",
-        top: 0,
-        zIndex: 50,
-        background: "white",
-        borderBottom: "1px solid #eee",
-      }}
-    >
-      <div
-        style={{
-          maxWidth: 1100,
-          margin: "0 auto",
-          padding: "14px 16px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          gap: 12,
-        }}
-      >
-        {/* Brand */}
-        <NavLink to="/" style={{ textDecoration: "none", color: "#111" }}>
-          <div style={{ display: "flex", flexDirection: "column", lineHeight: 1.1 }}>
-            <span style={{ fontSize: 18, fontWeight: 800 }}>
-              Sri Lankan Wedding Decoration
-            </span>
-            <span style={{ fontSize: 12, color: "#6b7280" }}>
-              Elegant • Traditional • Modern
-            </span>
-          </div>
-        </NavLink>
+    <header style={wrap}>
+      <div style={inner}>
+        <Link to="/" style={brand}>
+          DecorHire Lanka
+        </Link>
 
-        {/* Nav links */}
-        <nav style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
-          <NavLink to="/popular" style={linkStyle}>
-            Popular Wedding Decoration
+        <nav style={nav}>
+          <NavLink to="/" style={navLink}>
+            Home
           </NavLink>
-          <NavLink to="/gallery" style={linkStyle}>
+          <NavLink to="/popular" style={navLink}>
+            Popular
+          </NavLink>
+          <NavLink to="/gallery" style={navLink}>
             Gallery
           </NavLink>
-          <NavLink to="/contact" style={linkStyle}>
-            Contact Us
+          <NavLink to="/contact" style={navLink}>
+            Contact
           </NavLink>
         </nav>
 
-        {/* Right side */}
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          {isCustomerLoggedIn ? (
+        <div style={right}>
+          {!customer ? (
             <>
-              <span style={{ fontWeight: 900, color: "#111827" }}>
-                Hi, {customer?.username}
-              </span>
-              <button style={btnLight} onClick={onLogout}>
-                Logout
-              </button>
+              <Link to="/login" style={btnLight}>
+                Login
+              </Link>
+              <Link to="/register" style={btnDark}>
+                Register
+              </Link>
             </>
           ) : (
             <>
-              <NavLink to="/register" style={btnLightLink}>
-                Register
-              </NavLink>
-              <NavLink to="/login" style={btnDarkLink}>
-                Login
-              </NavLink>
+              <span style={userText}>Hi, {customer?.username || "Customer"}</span>
+              <button style={btnLight} onClick={logoutCustomer}>
+                Logout
+              </button>
             </>
           )}
         </div>
@@ -93,29 +50,78 @@ export default function Navbar() {
   );
 }
 
-const btnLightLink = {
-  textDecoration: "none",
-  padding: "10px 12px",
-  borderRadius: 10,
-  background: "#f3f4f6",
-  color: "#111",
-  fontWeight: 700,
+const wrap = {
+  background: "white",
+  borderBottom: "1px solid #eee",
+  position: "sticky",
+  top: 0,
+  zIndex: 50,
 };
 
-const btnDarkLink = {
+const inner = {
+  maxWidth: 1100,
+  margin: "0 auto",
+  padding: "14px 16px",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
+  gap: 12,
+  flexWrap: "wrap",
+};
+
+const brand = {
+  textDecoration: "none",
+  fontWeight: 900,
+  color: "#111827",
+  fontSize: 18,
+};
+
+const nav = {
+  display: "flex",
+  gap: 10,
+  flexWrap: "wrap",
+  alignItems: "center",
+};
+
+const navLink = ({ isActive }) => ({
+  textDecoration: "none",
+  fontWeight: 800,
+  fontSize: 14,
+  color: isActive ? "#111827" : "#4b5563",
+  padding: "8px 10px",
+  borderRadius: 10,
+  background: isActive ? "#f3f4f6" : "transparent",
+});
+
+const right = {
+  display: "flex",
+  gap: 10,
+  alignItems: "center",
+  flexWrap: "wrap",
+};
+
+const btnDark = {
   textDecoration: "none",
   padding: "10px 12px",
   borderRadius: 10,
+  border: "none",
+  fontWeight: 900,
   background: "#111827",
   color: "white",
-  fontWeight: 700,
 };
 
 const btnLight = {
+  textDecoration: "none",
   padding: "10px 12px",
   borderRadius: 10,
-  background: "#f3f4f6",
-  border: "none",
-  fontWeight: 800,
+  border: "1px solid #e5e7eb",
+  fontWeight: 900,
+  background: "#f9fafb",
+  color: "#111827",
   cursor: "pointer",
+};
+
+const userText = {
+  fontWeight: 800,
+  color: "#111827",
 };

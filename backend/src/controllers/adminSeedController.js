@@ -1,5 +1,5 @@
 // backend/src/controllers/adminSeedController.js
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import Admin from "../models/Admin.js";
 
 export const seedAdmin = async (req, res) => {

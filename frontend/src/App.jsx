@@ -1,8 +1,8 @@
 // frontend/src/App.jsx
+import React from "react";
 import { Routes, Route } from "react-router-dom";
 
 import MainLayout from "./layouts/MainLayout.jsx";
-
 import Home from "./pages/Home.jsx";
 import PopularDecorations from "./pages/PopularDecorations.jsx";
 import Gallery from "./pages/Gallery.jsx";
@@ -16,7 +16,6 @@ import AdminGallery from "./pages/AdminGallery.jsx";
 import BookDecoration from "./pages/BookDecoration.jsx";
 import AdminBookings from "./pages/AdminBookings.jsx";
 import AdminProtected from "./components/AdminProtected.jsx";
-
 
 export default function App() {
   return (

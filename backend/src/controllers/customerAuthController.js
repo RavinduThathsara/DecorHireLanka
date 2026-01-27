@@ -1,5 +1,6 @@
 // backend/src/controllers/customerAuthController.js
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
+
 import Customer from "../models/Customer.js";
 import { generateToken } from "../utils/token.js";
 
