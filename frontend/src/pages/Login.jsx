@@ -1,15 +1,12 @@
 // frontend/src/pages/Login.jsx
-import { useState } from "react";
+import React, { useState } from "react";
 import { api } from "../services/api.js";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 
 export default function Login() {
   const navigate = useNavigate();
-
-const { loginCustomer } = useAuth();
-
-loginCustomer({ token: res.data.token, customer: res.data.customer });
+  const { loginCustomer } = useAuth();
 
   const [form, setForm] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
@@ -30,8 +27,8 @@ loginCustomer({ token: res.data.token, customer: res.data.customer });
 
       const res = await api.post("/api/customers/login", form);
 
-      localStorage.setItem("customerToken", res.data.token);
-      localStorage.setItem("customer", JSON.stringify(res.data.customer));
+      // ✅ set AuthContext + localStorage
+      loginCustomer({ token: res.data.token, customer: res.data.customer });
 
       setSuccess("Login successful! Redirecting to home...");
       setTimeout(() => navigate("/"), 900);
@@ -47,25 +44,8 @@ loginCustomer({ token: res.data.token, customer: res.data.customer });
       <h1 style={{ marginTop: 0 }}>Customer Login</h1>
 
       <form onSubmit={onSubmit} style={{ display: "grid", gap: 12 }}>
-        <input
-          style={input}
-          name="email"
-          type="email"
-          placeholder="Email"
-          value={form.email}
-          onChange={onChange}
-          required
-        />
-
-        <input
-          style={input}
-          name="password"
-          type="password"
-          placeholder="Password"
-          value={form.password}
-          onChange={onChange}
-          required
-        />
+        <input style={input} name="email" type="email" placeholder="Email" value={form.email} onChange={onChange} required />
+        <input style={input} name="password" type="password" placeholder="Password" value={form.password} onChange={onChange} required />
 
         <button style={btn} disabled={loading}>
           {loading ? "Logging in..." : "Login"}
@@ -78,45 +58,8 @@ loginCustomer({ token: res.data.token, customer: res.data.customer });
   );
 }
 
-const card = {
-  maxWidth: 420,
-  margin: "0 auto",
-  padding: 18,
-  border: "1px solid #eee",
-  borderRadius: 14,
-  background: "white",
-};
-
-const input = {
-  padding: "12px 12px",
-  borderRadius: 10,
-  border: "1px solid #ddd",
-  outline: "none",
-  fontSize: 14,
-};
-
-const btn = {
-  padding: "12px 12px",
-  borderRadius: 10,
-  border: "none",
-  fontWeight: 800,
-  background: "#111827",
-  color: "white",
-  cursor: "pointer",
-};
-
-const msgError = {
-  padding: 12,
-  borderRadius: 10,
-  background: "#fee2e2",
-  color: "#991b1b",
-  fontWeight: 700,
-};
-
-const msgOk = {
-  padding: 12,
-  borderRadius: 10,
-  background: "#dcfce7",
-  color: "#166534",
-  fontWeight: 700,
-};
+const card = { maxWidth: 420, margin: "0 auto", padding: 18, border: "1px solid #eee", borderRadius: 14, background: "white" };
+const input = { padding: "12px 12px", borderRadius: 10, border: "1px solid #ddd", outline: "none", fontSize: 14 };
+const btn = { padding: "12px 12px", borderRadius: 10, border: "none", fontWeight: 800, background: "#111827", color: "white", cursor: "pointer" };
+const msgError = { padding: 12, borderRadius: 10, background: "#fee2e2", color: "#991b1b", fontWeight: 700 };
+const msgOk = { padding: 12, borderRadius: 10, background: "#dcfce7", color: "#166534", fontWeight: 700 };

@@ -1,4 +1,5 @@
 // frontend/src/pages/ContactUs.jsx
+import React from "react";
 import { useState } from "react";
 import { api } from "../services/api.js";
 

@@ -1,5 +1,5 @@
 // frontend/src/pages/PopularDecorations.jsx
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../services/api.js";
 
@@ -35,13 +35,10 @@ export default function PopularDecorations() {
           </p>
         </div>
 
-        <Link
-            to={`/book?id=${encodeURIComponent(d._id)}&title=${encodeURIComponent(d.title)}`}
-            style={btnLight}
->
-             Book Now
-</Link>
-
+        {/* Top button must NOT use `d` because no item selected here */}
+        <Link to="/contact" style={btnLight}>
+          Contact to Book
+        </Link>
       </div>
 
       {loading && <p>Loading decorations...</p>}
@@ -59,7 +56,6 @@ export default function PopularDecorations() {
           <div key={d._id} style={card}>
             {d.tag ? <div style={tag}>{d.tag}</div> : null}
 
-            {/* Image placeholder (we'll add image upload later) */}
             <div style={imgBox}>
               <div style={{ fontWeight: 900 }}>Photo Placeholder</div>
               <div style={{ marginTop: 6, color: "#6b7280", fontSize: 13 }}>
@@ -72,7 +68,14 @@ export default function PopularDecorations() {
 
             <div style={bottomRow}>
               <span style={price}>{d.priceFrom}</span>
-              <Link to="/contact" style={btnLight}>
+
+              {/* Booking link MUST be inside map where `d` exists */}
+              <Link
+                to={`/book?id=${encodeURIComponent(d._id)}&title=${encodeURIComponent(
+                  d.title
+                )}`}
+                style={btnLight}
+              >
                 Book Now
               </Link>
             </div>
@@ -135,7 +138,6 @@ const imgBox = {
 };
 
 const title = { marginTop: 12, marginBottom: 0, fontSize: 16, fontWeight: 900, color: "#111827" };
-
 const desc = { marginTop: 8, color: "#4b5563", lineHeight: 1.6 };
 
 const bottomRow = {
@@ -148,15 +150,6 @@ const bottomRow = {
 };
 
 const price = { fontWeight: 900, color: "#111827" };
-
-const btnDark = {
-  textDecoration: "none",
-  padding: "12px 14px",
-  borderRadius: 12,
-  background: "#111827",
-  color: "white",
-  fontWeight: 900,
-};
 
 const btnLight = {
   textDecoration: "none",
