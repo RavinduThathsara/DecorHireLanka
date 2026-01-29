@@ -1,7 +1,4 @@
-// backend/src/controllers/adminAuthController.js
-import bcrypt from "bcryptjs";
-import Admin from "../models/Admin.js";
-import { generateToken } from "../utils/token.js";
+import jwt from "jsonwebtoken";
 
 export const loginAdmin = async (req, res) => {
   try {
@@ -11,22 +8,23 @@ export const loginAdmin = async (req, res) => {
       return res.status(400).json({ message: "Email and password are required." });
     }
 
-    const admin = await Admin.findOne({ email: email.toLowerCase() });
-    if (!admin) {
-      return res.status(401).json({ message: "Invalid email or password." });
+    if (
+      email !== process.env.ADMIN_EMAIL ||
+      password !== process.env.ADMIN_PASSWORD
+    ) {
+      return res.status(401).json({ message: "Invalid admin credentials" });
     }
 
-    const ok = await bcrypt.compare(password, admin.passwordHash);
-    if (!ok) {
-      return res.status(401).json({ message: "Invalid email or password." });
-    }
-
-    const token = generateToken({ id: admin._id, role: "admin" });
+    const token = jwt.sign(
+      { role: "admin" },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
 
     return res.json({
       message: "Admin login successful.",
       token,
-      admin: { id: admin._id, email: admin.email },
+      admin: { email },
     });
   } catch (error) {
     console.error("loginAdmin error:", error.message);
