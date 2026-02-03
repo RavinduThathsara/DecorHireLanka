@@ -50,6 +50,9 @@ export default function AdminBookings() {
     }
   };
 
+  // ✅ Helper: clean phone number for WhatsApp link (remove spaces, +, etc.)
+  const cleanPhone = (phone) => String(phone || "").replace(/\D/g, "");
+
   return (
     <div style={{ maxWidth: 1100, margin: "0 auto", padding: 20 }}>
       <div style={topRow}>
@@ -96,6 +99,30 @@ export default function AdminBookings() {
               </div>
             )}
 
+            {/* ✅ Reply buttons (ADD HERE) */}
+            <div style={{ marginTop: 12, display: "flex", gap: 8, flexWrap: "wrap" }}>
+              <a
+                href={`mailto:${b.email}?subject=DecorHire Lanka - Booking Reply&body=Hi ${encodeURIComponent(
+                  b.name || ""
+                )},%0D%0A%0D%0AThanks for your booking request.%0D%0A%0D%0A`}
+                style={btnLightLink}
+              >
+                Reply Email
+              </a>
+
+              <a
+                href={`https://wa.me/${cleanPhone(b.phone)}?text=${encodeURIComponent(
+                  `Hi ${b.name || ""}, this is DecorHire Lanka. Thanks for your booking request.`
+                )}`}
+                target="_blank"
+                rel="noreferrer"
+                style={btnLightLink}
+              >
+                Reply WhatsApp
+              </a>
+            </div>
+
+            {/* Status buttons */}
             <div style={{ marginTop: 12, display: "flex", gap: 8, flexWrap: "wrap" }}>
               <span style={{ fontWeight: 900 }}>Status:</span>
               {statuses.map((s) => (

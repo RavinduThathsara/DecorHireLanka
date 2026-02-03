@@ -14,6 +14,8 @@ import adminMessagesRoutes from "./routes/adminMessagesRoutes.js";
 import decorationRoutes from "./routes/decorationRoutes.js";
 import galleryRoutes from "./routes/galleryRoutes.js";
 import bookingRoutes from "./routes/bookingRoutes.js";
+import adminRoutes from "./routes/adminRoutes.js";
+
 
 import { requireAuth, requireAdmin } from "./middleware/auth.js";
 
@@ -37,6 +39,7 @@ app.use("/api/admin", adminMessagesRoutes);
 app.use("/api/decorations", decorationRoutes);
 app.use("/api/gallery", galleryRoutes);
 app.use("/api/bookings", bookingRoutes);
+app.use("/api/admin", adminRoutes);
 
 // Root test
 app.get("/", (req, res) => {

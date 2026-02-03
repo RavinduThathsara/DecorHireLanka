@@ -1,29 +1,14 @@
 // frontend/src/pages/Gallery.jsx
 import React from "react";
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { api } from "../services/api.js";
 
 export default function Gallery() {
-  const [images, setImages] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    const load = async () => {
-      try {
-        setLoading(true);
-        setError("");
-        const res = await api.get("/api/gallery");
-        setImages(res.data.images || []);
-      } catch (err) {
-        setError(err?.response?.data?.message || "Failed to load gallery.");
-      } finally {
-        setLoading(false);
-      }
-    };
-    load();
-  }, []);
+  // ✅ Images from public/gallery folder
+  const images = [
+    { id: 1, title: "Wedding Decoration 1", src: "/gallery/gallery1.png" },
+    { id: 2, title: "Wedding Decoration 2", src: "/gallery/gallery2.png" },
+    { id: 3, title: "Wedding Decoration 3", src: "/gallery/gallery3.png" },
+  ];
 
   return (
     <div style={{ maxWidth: 1100, margin: "0 auto" }}>
@@ -40,25 +25,16 @@ export default function Gallery() {
         </Link>
       </div>
 
-      {loading && <p>Loading gallery...</p>}
-      {error && <div style={msgError}>{error}</div>}
-
-      {!loading && !error && images.length === 0 && (
-        <div style={note}>
-          No gallery photos yet. (Admin: upload from <strong>/admin/gallery</strong>)
-        </div>
+      {images.length === 0 && (
+        <div style={note}>No gallery photos yet.</div>
       )}
 
       <div style={grid}>
         {images.map((img) => (
-          <div key={img._id} style={tile}>
-            <img
-              src={`http://localhost:5000${img.imageUrl}`}
-              alt={img.title || "Gallery"}
-              style={thumb}
-            />
+          <div key={img.id} style={tile}>
+            <img src={img.src} alt={img.title} style={thumb} />
             <div style={{ marginTop: 10, fontWeight: 900, color: "#111827" }}>
-              {img.title || "Sri Lankan Wedding Decoration"}
+              {img.title}
             </div>
           </div>
         ))}
@@ -114,12 +90,4 @@ const note = {
   border: "1px solid #eee",
   color: "#374151",
   lineHeight: 1.6,
-};
-
-const msgError = {
-  padding: 12,
-  borderRadius: 10,
-  background: "#fee2e2",
-  color: "#991b1b",
-  fontWeight: 700,
 };

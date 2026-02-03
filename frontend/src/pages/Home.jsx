@@ -1,7 +1,9 @@
 // frontend/src/pages/Home.jsx
 import React from "react";
-
 import { Link } from "react-router-dom";
+
+// ✅ import hero image (make sure file exists here)
+import heroImg from "../assets/images/hero.png";
 
 export default function Home() {
   return (
@@ -40,16 +42,13 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Hero image placeholder */}
+        {/* ✅ Hero image */}
         <div style={heroImageBox}>
-          <div style={{ fontWeight: 900, fontSize: 18, marginBottom: 8 }}>
-            Your Dream Wedding Setup
-          </div>
-          <div style={{ color: "#6b7280", lineHeight: 1.6 }}>
-            Add your best wedding photo here later.
-            <br />
-            (We’ll create a real gallery & upload system soon.)
-          </div>
+          <img
+            src={heroImg}
+            alt="Sri Lankan Wedding Decoration"
+            style={heroImgStyle}
+          />
         </div>
       </section>
 
@@ -145,15 +144,21 @@ const heroWrap = {
 const heroTitle = { margin: 0, fontSize: 34, fontWeight: 900, color: "#111827" };
 const heroText = { marginTop: 10, color: "#4b5563", lineHeight: 1.7 };
 
+// ✅ Updated hero image container
 const heroImageBox = {
   borderRadius: 18,
-  background: "linear-gradient(135deg, #f8fafc, #eef2ff)",
-  border: "1px dashed #c7d2fe",
-  padding: 18,
-  minHeight: 220,
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "center",
+  overflow: "hidden",
+  minHeight: 280,
+  border: "1px solid #eee",
+  background: "#f8fafc",
+};
+
+// ✅ Image styling
+const heroImgStyle = {
+  width: "100%",
+  height: "100%",
+  objectFit: "cover",
+  display: "block",
 };
 
 const statsRow = {
