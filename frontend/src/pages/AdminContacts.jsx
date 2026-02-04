@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+// frontend/src/pages/AdminContacts.jsx
+import React, { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { api } from "../services/api.js";
-import React from "react";
 
 export default function AdminContacts() {
   const navigate = useNavigate();
@@ -37,7 +37,11 @@ export default function AdminContacts() {
   const markReplied = async (id) => {
     setError("");
     try {
-      await api.put(`/api/contact/admin/${id}/status`, { status: "REPLIED" }, { headers: authHeader });
+      await api.put(
+        `/api/contact/admin/${id}/status`,
+        { status: "REPLIED" },
+        { headers: authHeader }
+      );
       fetchAll();
     } catch (err) {
       setError(err?.response?.data?.message || "Update failed.");
@@ -46,6 +50,7 @@ export default function AdminContacts() {
 
   return (
     <div style={{ maxWidth: 1100, margin: "0 auto", padding: 20 }}>
+      {/* Top Bar */}
       <div style={topRow}>
         <div>
           <h1 style={{ margin: 0 }}>Contact Messages</h1>
@@ -55,15 +60,28 @@ export default function AdminContacts() {
         </div>
 
         <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-          <Link to="/admin/dashboard" style={btnLightLink}>Dashboard</Link>
-          <Link to="/admin/bookings" style={btnLightLink}>Bookings</Link>
+          <button
+            type="button"
+            style={btnLightLink}
+            onClick={() => navigate("/admin/dashboard")}
+          >
+            Dashboard
+          </button>
+
+          <button
+            type="button"
+            style={btnLightLink}
+            onClick={() => navigate("/admin/bookings")}
+          >
+            Bookings
+          </button>
         </div>
       </div>
 
       {loading && <p>Loading...</p>}
       {error && <div style={msgError}>{error}</div>}
 
-      {!loading && msgs.length === 0 && (
+      {!loading && !error && msgs.length === 0 && (
         <p style={{ color: "#6b7280" }}>No messages yet.</p>
       )}
 
@@ -77,8 +95,17 @@ export default function AdminContacts() {
               </div>
             </div>
 
-            <div style={row}><span style={label}>Email:</span> {m.email}</div>
-            <div style={row}><span style={label}>Phone:</span> {m.phone}</div>
+            <div style={row}>
+              <span style={label}>Email:</span> {m.email}
+            </div>
+            <div style={row}>
+              <span style={label}>Phone:</span> {m.phone}
+            </div>
+            {m.location && (
+              <div style={row}>
+                <span style={label}>Location:</span> {m.location}
+              </div>
+            )}
 
             <div style={{ marginTop: 10, color: "#374151", lineHeight: 1.6 }}>
               {m.message}
@@ -105,13 +132,16 @@ export default function AdminContacts() {
                 Reply WhatsApp
               </a>
 
-              <button style={btnDark} onClick={() => markReplied(m._id)}>
+              <button type="button" style={btnDark} onClick={() => markReplied(m._id)}>
                 Mark REPLIED
               </button>
             </div>
 
             <div style={{ marginTop: 10, fontWeight: 900, color: "#111827" }}>
-              Status: <span style={{ color: m.status === "REPLIED" ? "#166534" : "#991b1b" }}>{m.status}</span>
+              Status:{" "}
+              <span style={{ color: (m.status || "NEW") === "REPLIED" ? "#166534" : "#991b1b" }}>
+                {m.status || "NEW"}
+              </span>
             </div>
           </div>
         ))}
@@ -120,6 +150,7 @@ export default function AdminContacts() {
   );
 }
 
+/* Styles */
 const topRow = {
   display: "flex",
   justifyContent: "space-between",
@@ -165,6 +196,8 @@ const btnLightLink = {
   fontWeight: 900,
   background: "#f9fafb",
   color: "#111827",
+  cursor: "pointer",
+  display: "inline-block",
 };
 
 const msgError = {

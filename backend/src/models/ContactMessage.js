@@ -8,6 +8,9 @@ const contactMessageSchema = new mongoose.Schema(
     phone: { type: String, required: false, trim: true, maxlength: 30 },
     location: { type: String, required: false, trim: true, maxlength: 120 },
     message: { type: String, required: true, trim: true, maxlength: 2000 },
+
+    // ✅ ADD THIS
+    status: { type: String, default: "NEW", enum: ["NEW", "REPLIED"] },
   },
   { timestamps: true }
 );
