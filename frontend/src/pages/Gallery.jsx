@@ -8,6 +8,13 @@ export default function Gallery() {
     { id: 1, title: "Wedding Decoration 1", src: "/gallery/gallery1.png" },
     { id: 2, title: "Wedding Decoration 2", src: "/gallery/gallery2.png" },
     { id: 3, title: "Wedding Decoration 3", src: "/gallery/gallery3.png" },
+    { id: 4, title: "Wedding Decoration 4", src: "/gallery/gallery4.png" },
+    { id: 5, title: "Wedding Decoration 5", src: "/gallery/gallery5.png" },
+    { id: 6, title: "Wedding Decoration 6", src: "/gallery/gallery6.png" },
+    { id: 7, title: "Wedding Decoration 7", src: "/gallery/gallery7.png" },
+    { id: 8, title: "Birthday Decoration 8", src: "/gallery/gallery8.png" },
+
+
   ];
 
   return (
