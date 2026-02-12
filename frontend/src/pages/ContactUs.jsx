@@ -117,16 +117,16 @@ export default function ContactUs() {
               <strong>Business Name:</strong> Sri Lankan Wedding Decoration
             </div>
             <div>
-              <strong>Phone:</strong> +94 XX XXX XXXX
+              <strong>Phone:</strong> +94 3187790
             </div>
             <div>
-              <strong>WhatsApp:</strong> +94 XX XXX XXXX
+              <strong>WhatsApp:</strong> +94 3187790
             </div>
             <div>
-              <strong>Email:</strong> yourbusiness@gmail.com
+              <strong>Email:</strong> ravinduthathsara38@gmail.com
             </div>
             <div>
-              <strong>Location:</strong> Sri Lanka
+              <strong>Location:</strong> Badulla
             </div>
           </div>
 

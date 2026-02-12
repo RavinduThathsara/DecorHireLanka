@@ -23,8 +23,8 @@ export default function Footer() {
               setups for Poruwa, reception halls, homecomings, and outdoor events.
             </p>
             <p style={{ marginTop: 12, color: "#cbd5e1" }}>
-              <strong style={{ color: "white" }}>Service Areas:</strong> Colombo, Gampaha,
-              Kalutara & islandwide (on request).
+              <strong style={{ color: "white" }}>Service Areas:</strong> badulla, passara,
+              monaragala & bibila (on request).
             </p>
           </div>
 
@@ -52,13 +52,13 @@ export default function Footer() {
             <h3 style={{ margin: 0, fontSize: 16, color: "white" }}>Contact</h3>
             <div style={{ marginTop: 12, display: "grid", gap: 10, color: "#cbd5e1" }}>
               <div>
-                <strong style={{ color: "white" }}>Phone:</strong> +94 XX XXX XXXX
+                <strong style={{ color: "white" }}>Phone:</strong> +94 759070250
               </div>
               <div>
-                <strong style={{ color: "white" }}>WhatsApp:</strong> +94 XX XXX XXXX
+                <strong style={{ color: "white" }}>WhatsApp:</strong> +94 713187790
               </div>
               <div>
-                <strong style={{ color: "white" }}>Email:</strong> yourbusiness@gmail.com
+                <strong style={{ color: "white" }}>Email:</strong> ravinduthathsara38@gmail.com
               </div>
               <div>
                 <strong style={{ color: "white" }}>Location:</strong> Sri Lanka
