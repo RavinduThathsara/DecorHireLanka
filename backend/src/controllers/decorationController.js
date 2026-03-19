@@ -26,7 +26,7 @@ export const adminGetAllDecorations = async (req, res) => {
 // ADMIN: create
 export const adminCreateDecoration = async (req, res) => {
   try {
-    const { title, description, priceFrom, tag, isActive } = req.body;
+    const { title, description, priceFrom, tag, imageUrl, isActive } = req.body;
 
     if (!title || !description || !priceFrom) {
       return res.status(400).json({ message: "title, description, priceFrom are required." });
@@ -37,6 +37,7 @@ export const adminCreateDecoration = async (req, res) => {
       description,
       priceFrom,
       tag: tag || "",
+      imageUrl: imageUrl || "",
       isActive: typeof isActive === "boolean" ? isActive : true,
     });
 
@@ -51,7 +52,7 @@ export const adminCreateDecoration = async (req, res) => {
 export const adminUpdateDecoration = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, description, priceFrom, tag, isActive } = req.body;
+    const { title, description, priceFrom, tag, imageUrl, isActive } = req.body;
 
     const dec = await Decoration.findById(id);
     if (!dec) return res.status(404).json({ message: "Decoration not found." });
@@ -60,6 +61,7 @@ export const adminUpdateDecoration = async (req, res) => {
     if (description !== undefined) dec.description = description;
     if (priceFrom !== undefined) dec.priceFrom = priceFrom;
     if (tag !== undefined) dec.tag = tag;
+    if (imageUrl !== undefined) dec.imageUrl = imageUrl;
     if (isActive !== undefined) dec.isActive = isActive;
 
     await dec.save();

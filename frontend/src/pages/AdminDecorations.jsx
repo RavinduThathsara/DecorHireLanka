@@ -1,4 +1,3 @@
-// frontend/src/pages/AdminDecorations.jsx
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { api } from "../services/api.js";
@@ -16,6 +15,7 @@ export default function AdminDecorations() {
     description: "",
     priceFrom: "",
     tag: "",
+    imageUrl: "",
     isActive: true,
   });
 
@@ -52,7 +52,14 @@ export default function AdminDecorations() {
 
   const resetForm = () => {
     setEditingId(null);
-    setForm({ title: "", description: "", priceFrom: "", tag: "", isActive: true });
+    setForm({
+      title: "",
+      description: "",
+      priceFrom: "",
+      tag: "",
+      imageUrl: "",
+      isActive: true,
+    });
   };
 
   const startEdit = (d) => {
@@ -62,6 +69,7 @@ export default function AdminDecorations() {
       description: d.description || "",
       priceFrom: d.priceFrom || "",
       tag: d.tag || "",
+      imageUrl: d.imageUrl || "",
       isActive: !!d.isActive,
     });
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -106,17 +114,20 @@ export default function AdminDecorations() {
         <div>
           <h1 style={{ margin: 0 }}>Manage Popular Decorations</h1>
           <p style={{ marginTop: 6, color: "#4b5563" }}>
-            Add, edit, delete decorations shown in “Popular Wedding Decorations”.
+            Add, edit, delete decorations shown on the customer popular page.
           </p>
         </div>
 
         <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-          <Link to="/admin/dashboard" style={btnLightLink}>Dashboard</Link>
-          <Link to="/popular" style={btnLightLink}>View Popular Page</Link>
+          <Link to="/admin/dashboard" style={btnLightLink}>
+            Dashboard
+          </Link>
+          <Link to="/popular" style={btnLightLink}>
+            View Popular Page
+          </Link>
         </div>
       </div>
 
-      {/* Form */}
       <div style={card}>
         <h3 style={{ marginTop: 0 }}>{editingId ? "Edit Decoration" : "Add New Decoration"}</h3>
 
@@ -124,7 +135,7 @@ export default function AdminDecorations() {
           <input
             style={input}
             name="title"
-            placeholder="Title (ex: White & Gold Luxury Theme)"
+            placeholder="Title (ex: White and Gold Luxury Theme)"
             value={form.title}
             onChange={onChange}
           />
@@ -154,6 +165,14 @@ export default function AdminDecorations() {
             onChange={onChange}
           />
 
+          <input
+            style={input}
+            name="imageUrl"
+            placeholder='Image URL or public path (ex: "/gallery/gallery1.png")'
+            value={form.imageUrl}
+            onChange={onChange}
+          />
+
           <label style={{ display: "flex", alignItems: "center", gap: 10, fontWeight: 800 }}>
             <input
               type="checkbox"
@@ -177,7 +196,6 @@ export default function AdminDecorations() {
         </form>
       </div>
 
-      {/* List */}
       <div style={{ marginTop: 14 }}>
         <h3 style={{ margin: "10px 0" }}>All Decorations</h3>
 
@@ -190,23 +208,31 @@ export default function AdminDecorations() {
         <div style={{ display: "grid", gap: 12 }}>
           {items.map((d) => (
             <div key={d._id} style={listCard}>
+              {d.imageUrl ? <img src={d.imageUrl} alt={d.title} style={listImage} /> : null}
+
               <div style={listTop}>
                 <div>
                   <div style={{ fontWeight: 900, color: "#111827" }}>{d.title}</div>
                   <div style={{ marginTop: 4, color: "#6b7280", fontSize: 13 }}>
-                    {d.tag ? `Tag: ${d.tag} • ` : ""}{d.isActive ? "Active" : "Hidden"} • {d.priceFrom}
+                    {d.tag ? `Tag: ${d.tag} | ` : ""}
+                    {d.isActive ? "Active" : "Hidden"} | {d.priceFrom}
                   </div>
                 </div>
 
                 <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-                  <button style={btnLight} onClick={() => startEdit(d)}>Edit</button>
-                  <button style={btnDanger} onClick={() => removeItem(d._id)}>Delete</button>
+                  <button style={btnLight} onClick={() => startEdit(d)}>
+                    Edit
+                  </button>
+                  <button style={btnDanger} onClick={() => removeItem(d._id)}>
+                    Delete
+                  </button>
                 </div>
               </div>
 
-              <div style={{ marginTop: 10, color: "#374151", lineHeight: 1.6 }}>
-                {d.description}
-              </div>
+              <div style={{ marginTop: 10, color: "#374151", lineHeight: 1.6 }}>{d.description}</div>
+              {d.imageUrl ? (
+                <div style={{ marginTop: 8, color: "#6b7280", fontSize: 13 }}>Image: {d.imageUrl}</div>
+              ) : null}
             </div>
           ))}
         </div>
@@ -236,6 +262,15 @@ const listCard = {
   borderRadius: 16,
   padding: 16,
   background: "white",
+};
+
+const listImage = {
+  width: "100%",
+  height: 180,
+  objectFit: "cover",
+  borderRadius: 12,
+  border: "1px solid #eee",
+  marginBottom: 12,
 };
 
 const listTop = {

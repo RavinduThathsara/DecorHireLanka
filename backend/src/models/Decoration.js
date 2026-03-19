@@ -7,6 +7,7 @@ const decorationSchema = new mongoose.Schema(
     description: { type: String, required: true, trim: true, maxlength: 2000 },
     priceFrom: { type: String, required: true, trim: true, maxlength: 60 }, // e.g. "From LKR 150,000"
     tag: { type: String, default: "", trim: true, maxlength: 40 }, // e.g. "Best Seller"
+    imageUrl: { type: String, default: "", trim: true, maxlength: 500 },
     isActive: { type: Boolean, default: true },
   },
   { timestamps: true }
