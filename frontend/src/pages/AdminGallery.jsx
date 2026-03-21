@@ -1,4 +1,5 @@
 // frontend/src/pages/AdminGallery.jsx
+import React from "react";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { api } from "../services/api.js";
@@ -12,9 +13,14 @@ export default function AdminGallery() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const [title, setTitle] = useState("");
-  const [isActive, setIsActive] = useState(true);
+  // Upload form state
+  const [uploadCategory, setUploadCategory] = useState("wedding");
+  const [uploadIsActive, setUploadIsActive] = useState(true);
   const [imageFile, setImageFile] = useState(null);
+
+  // Filter state (client-side)
+  const [filterCategory, setFilterCategory] = useState("ALL"); // ALL | wedding | birthday | other
+  const [filterStatus, setFilterStatus] = useState("ALL"); // ALL | ACTIVE | HIDDEN
 
   useEffect(() => {
     if (!token) {
@@ -50,15 +56,15 @@ export default function AdminGallery() {
     try {
       const fd = new FormData();
       fd.append("image", imageFile);
-      fd.append("title", title);
-      fd.append("isActive", String(isActive));
+      fd.append("category", uploadCategory);
+      fd.append("isActive", String(uploadIsActive));
 
       await api.post("/api/gallery/admin/upload", fd, {
         headers: { ...authHeader, "Content-Type": "multipart/form-data" },
       });
 
-      setTitle("");
-      setIsActive(true);
+      setUploadCategory("wedding");
+      setUploadIsActive(true);
       setImageFile(null);
       fetchAll();
     } catch (err) {
@@ -90,6 +96,35 @@ export default function AdminGallery() {
     }
   };
 
+  const updateCategory = async (img, nextCategory) => {
+    setError("");
+    try {
+      await api.put(
+        `/api/gallery/admin/${img._id}`,
+        { category: nextCategory },
+        { headers: authHeader }
+      );
+      fetchAll();
+    } catch (err) {
+      setError(err?.response?.data?.message || "Update failed.");
+    }
+  };
+
+  const filteredItems = useMemo(() => {
+    let list = items;
+    if (filterCategory !== "ALL") {
+      list = list.filter((img) => (img.category || "other") === filterCategory);
+    }
+
+    if (filterStatus === "ACTIVE") {
+      list = list.filter((img) => img.isActive === true);
+    } else if (filterStatus === "HIDDEN") {
+      list = list.filter((img) => img.isActive === false);
+    }
+
+    return list;
+  }, [items, filterCategory, filterStatus]);
+
   return (
     <div style={{ maxWidth: 1100, margin: "0 auto", padding: 20 }}>
       <div style={topRow}>
@@ -110,12 +145,15 @@ export default function AdminGallery() {
         <h3 style={{ marginTop: 0 }}>Upload New Photo</h3>
 
         <form onSubmit={upload} style={{ display: "grid", gap: 12 }}>
-          <input
+          <select
             style={input}
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="Title (optional)"
-          />
+            value={uploadCategory}
+            onChange={(e) => setUploadCategory(e.target.value)}
+          >
+            <option value="wedding">Wedding Decoration</option>
+            <option value="birthday">Birthday Decoration</option>
+            <option value="other">Other Event Decoration</option>
+          </select>
 
           <input
             style={input}
@@ -127,8 +165,8 @@ export default function AdminGallery() {
           <label style={{ display: "flex", alignItems: "center", gap: 10, fontWeight: 800 }}>
             <input
               type="checkbox"
-              checked={isActive}
-              onChange={(e) => setIsActive(e.target.checked)}
+              checked={uploadIsActive}
+              onChange={(e) => setUploadIsActive(e.target.checked)}
             />
             Active (visible to customers)
           </label>
@@ -140,29 +178,98 @@ export default function AdminGallery() {
       </div>
 
       <div style={{ marginTop: 14 }}>
-        <h3 style={{ margin: "10px 0" }}>All Gallery Images</h3>
+        <h3 style={{ margin: "10px 0" }}>Gallery Images</h3>
+
+        <div style={filterBar}>
+          <select
+            style={filterSelect}
+            value={filterCategory}
+            onChange={(e) => setFilterCategory(e.target.value)}
+          >
+            <option value="ALL">All Categories</option>
+            <option value="wedding">Wedding Decoration</option>
+            <option value="birthday">Birthday Decoration</option>
+            <option value="other">Other Event Decoration</option>
+          </select>
+
+          <select
+            style={filterSelect}
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value)}
+          >
+            <option value="ALL">All</option>
+            <option value="ACTIVE">Active</option>
+            <option value="HIDDEN">Hidden</option>
+          </select>
+
+          <button
+            type="button"
+            style={btnLight}
+            onClick={() => {
+              setFilterCategory("ALL");
+              setFilterStatus("ALL");
+            }}
+          >
+            Clear
+          </button>
+        </div>
+
+        <div style={{ color: "#6b7280", fontWeight: 800, marginTop: 10, fontSize: 13 }}>
+          Showing {filteredItems.length} of {items.length} images
+        </div>
 
         {loading && <p>Loading...</p>}
         {!loading && items.length === 0 && (
           <p style={{ color: "#6b7280" }}>No images yet. Upload your first photo above.</p>
         )}
 
+        {!loading && items.length > 0 && filteredItems.length === 0 && (
+          <p style={{ color: "#6b7280" }}>No images match your filters.</p>
+        )}
+
         <div style={grid}>
-          {items.map((img) => (
+          {filteredItems.map((img) => (
             <div key={img._id} style={tile}>
               <img
                 src={`http://localhost:5000${img.imageUrl}`}
-                alt={img.title || "Gallery"}
+                alt={
+                  img.title ||
+                  ((img.category || "other") === "wedding"
+                    ? "Wedding Decoration"
+                    : (img.category || "other") === "birthday"
+                      ? "Birthday Decoration"
+                      : "Other Event Decoration")
+                }
                 style={thumb}
               />
               <div style={{ marginTop: 10, fontWeight: 900, color: "#111827" }}>
-                {img.title || "Untitled"}
+                {img.title ||
+                  ((img.category || "other") === "wedding"
+                    ? "Wedding Decoration"
+                    : (img.category || "other") === "birthday"
+                      ? "Birthday Decoration"
+                      : "Other Event Decoration")}
               </div>
               <div style={{ marginTop: 4, color: "#6b7280", fontSize: 13 }}>
-                {img.isActive ? "Active" : "Hidden"}
+                Category: {(img.category || "other") === "wedding"
+                  ? "Wedding"
+                  : (img.category || "other") === "birthday"
+                    ? "Birthday"
+                    : "Other"}{" "}
+                • {img.isActive ? "Active" : "Hidden"}
               </div>
 
               <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 10 }}>
+                <select
+                  style={filterSelect}
+                  value={img.category || "other"}
+                  onChange={(e) => updateCategory(img, e.target.value)}
+                  aria-label="Select image category"
+                >
+                  <option value="wedding">Wedding</option>
+                  <option value="birthday">Birthday</option>
+                  <option value="other">Other</option>
+                </select>
                 <button style={btnLight} onClick={() => toggleActive(img)}>
                   {img.isActive ? "Hide" : "Show"}
                 </button>
@@ -198,6 +305,32 @@ const grid = {
   display: "grid",
   gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
   gap: 12,
+};
+
+const filterBar = {
+  display: "flex",
+  gap: 10,
+  flexWrap: "wrap",
+  alignItems: "center",
+  marginTop: 10,
+};
+
+const filterInput = {
+  padding: "10px 12px",
+  borderRadius: 10,
+  border: "1px solid #e5e7eb",
+  outline: "none",
+  fontSize: 14,
+  flex: "1 1 240px",
+};
+
+const filterSelect = {
+  padding: "10px 12px",
+  borderRadius: 10,
+  border: "1px solid #e5e7eb",
+  outline: "none",
+  fontSize: 14,
+  fontWeight: 800,
 };
 
 const tile = {

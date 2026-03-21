@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { api } from "../services/api.js";
 
 export default function AdminDashboard() {
@@ -48,112 +48,137 @@ export default function AdminDashboard() {
   const newMessages = messages.filter((m) => (m.status || "NEW") === "NEW").length;
 
   return (
-    <div style={{ maxWidth: 1100, margin: "0 auto", padding: 20 }}>
-      <div style={topRow}>
-        <div>
-          <h1 style={{ margin: 0 }}>Admin Dashboard</h1>
-          <p style={{ marginTop: 6, color: "#4b5563" }}>
-            Manage bookings, contacts, gallery, and decorations.
-          </p>
-        </div>
+    <div className="admin-page">
+      <header className="admin-page-header">
+        <h1 className="admin-page-title">Dashboard</h1>
+        <p className="admin-page-lead">
+          Overview of bookings and contact messages. Use the sidebar or the shortcuts below to
+          manage content.
+        </p>
+      </header>
 
-        <button
-          type="button"
-          style={btnLight}
-          onClick={() => {
-            localStorage.removeItem("adminToken");
-            navigate("/admin/login");
-          }}
-        >
-          Logout
-        </button>
-      </div>
-
-      {loading && <p>Loading dashboard...</p>}
-      {error && <div style={msgError}>{error}</div>}
+      {loading && <p className="admin-muted">Loading dashboard…</p>}
+      {error && <div className="admin-alert admin-alert-error">{error}</div>}
 
       {!loading && !error && (
         <>
-          {/* Stats */}
-          <div style={grid4}>
-            <div style={statCard}>
-              <div style={statNum}>{totalBookings}</div>
-              <div style={statLabel}>Total Bookings</div>
+          <section className="admin-stat-grid" aria-label="Summary statistics">
+            <div className="admin-stat-card">
+              <div className="admin-stat-value">{totalBookings}</div>
+              <div className="admin-stat-label">Total bookings</div>
             </div>
-
-            <div style={statCard}>
-              <div style={statNum}>{newBookings}</div>
-              <div style={statLabel}>New Bookings</div>
+            <div className="admin-stat-card">
+              <div className="admin-stat-value">{newBookings}</div>
+              <div className="admin-stat-label">New bookings</div>
             </div>
-
-            <div style={statCard}>
-              <div style={statNum}>{totalMessages}</div>
-              <div style={statLabel}>Total Messages</div>
+            <div className="admin-stat-card">
+              <div className="admin-stat-value">{totalMessages}</div>
+              <div className="admin-stat-label">Total messages</div>
             </div>
-
-            <div style={statCard}>
-              <div style={statNum}>{newMessages}</div>
-              <div style={statLabel}>New Messages</div>
+            <div className="admin-stat-card">
+              <div className="admin-stat-value">{newMessages}</div>
+              <div className="admin-stat-label">New messages</div>
             </div>
-          </div>
+          </section>
 
-          {/* Quick Actions */}
-          <div style={{ marginTop: 18, display: "flex", gap: 10, flexWrap: "wrap" }}>
-            <button type="button" style={btnDark} onClick={() => navigate("/admin/bookings")}>
-              View Bookings
-            </button>
-            <button type="button" style={btnDark} onClick={() => navigate("/admin/contacts")}>
-              View Messages
-            </button>
-            <button type="button" style={btnLight} onClick={() => navigate("/admin/gallery")}>
-              Manage Gallery
-            </button>
-            <button type="button" style={btnLight} onClick={() => navigate("/admin/decorations")}>
-              Manage Decorations
-            </button>
-          </div>
+          <section className="admin-shortcuts" aria-label="Quick navigation">
+            <h2 className="admin-section-title">Go to</h2>
+            <div className="admin-quick-grid">
+              <NavLink
+                to="/admin/bookings"
+                className={({ isActive }) =>
+                  "admin-quick-card" + (isActive ? " admin-quick-card-active" : "")
+                }
+              >
+                <span className="admin-quick-title">Bookings</span>
+                <span className="admin-quick-desc">View and update booking status</span>
+                <span className="admin-quick-arrow" aria-hidden="true">
+                  →
+                </span>
+              </NavLink>
+              <NavLink
+                to="/admin/contacts"
+                className={({ isActive }) =>
+                  "admin-quick-card" + (isActive ? " admin-quick-card-active" : "")
+                }
+              >
+                <span className="admin-quick-title">Messages</span>
+                <span className="admin-quick-desc">Contact form submissions</span>
+                <span className="admin-quick-arrow" aria-hidden="true">
+                  →
+                </span>
+              </NavLink>
+              <NavLink
+                to="/admin/gallery"
+                className={({ isActive }) =>
+                  "admin-quick-card" + (isActive ? " admin-quick-card-active" : "")
+                }
+              >
+                <span className="admin-quick-title">Gallery</span>
+                <span className="admin-quick-desc">Upload and manage gallery images</span>
+                <span className="admin-quick-arrow" aria-hidden="true">
+                  →
+                </span>
+              </NavLink>
+              <NavLink
+                to="/admin/decorations"
+                className={({ isActive }) =>
+                  "admin-quick-card" + (isActive ? " admin-quick-card-active" : "")
+                }
+              >
+                <span className="admin-quick-title">Decorations</span>
+                <span className="admin-quick-desc">Edit decoration listings</span>
+                <span className="admin-quick-arrow" aria-hidden="true">
+                  →
+                </span>
+              </NavLink>
+            </div>
+          </section>
 
-          {/* Recent Items */}
-          <div style={{ marginTop: 24, display: "grid", gap: 12 }}>
-            <div style={panel}>
-              <div style={panelHeader}>
-                <div style={panelTitle}>Recent Bookings</div>
-                <button type="button" style={btnLightSmall} onClick={() => navigate("/admin/bookings")}>
-                  Open
-                </button>
+          <div className="admin-panels">
+            <section className="admin-panel">
+              <div className="admin-panel-head">
+                <h2 className="admin-panel-title">Recent bookings</h2>
+                <Link to="/admin/bookings" className="admin-panel-link">
+                  View all
+                </Link>
               </div>
 
               {bookings.slice(0, 3).map((b) => (
-                <div key={b._id} style={miniRow}>
-                  <div style={{ fontWeight: 900 }}>{b.decorationTitle}</div>
-                  <div style={miniMeta}>
-                    {b.name} • {b.phone} • {(b.status || "NEW")}
+                <div key={b._id} className="admin-panel-row">
+                  <div className="admin-panel-row-title">{b.decorationTitle}</div>
+                  <div className="admin-panel-row-meta">
+                    {b.name} · {b.phone} · {b.status || "NEW"}
                   </div>
                 </div>
               ))}
 
-              {bookings.length === 0 && <div style={{ color: "#6b7280" }}>No bookings yet.</div>}
-            </div>
+              {bookings.length === 0 && (
+                <p className="admin-muted admin-panel-empty">No bookings yet.</p>
+              )}
+            </section>
 
-            <div style={panel}>
-              <div style={panelHeader}>
-                <div style={panelTitle}>Recent Messages</div>
-                <button type="button" style={btnLightSmall} onClick={() => navigate("/admin/contacts")}>
-                  Open
-                </button>
+            <section className="admin-panel">
+              <div className="admin-panel-head">
+                <h2 className="admin-panel-title">Recent messages</h2>
+                <Link to="/admin/contacts" className="admin-panel-link">
+                  View all
+                </Link>
               </div>
 
               {messages.slice(0, 3).map((m) => (
-                <div key={m._id} style={miniRow}>
-                  <div style={{ fontWeight: 900 }}>{m.name}</div>
-                  <div style={miniMeta}>
-                    {m.email} • {(m.status || "NEW")}
+                <div key={m._id} className="admin-panel-row">
+                  <div className="admin-panel-row-title">{m.name}</div>
+                  <div className="admin-panel-row-meta">
+                    {m.email} · {m.status || "NEW"}
                   </div>
                 </div>
               ))}
 
-              {messages.length === 0 && <div style={{ color: "#6b7280" }}>No messages yet.</div>}
-            </div>
+              {messages.length === 0 && (
+                <p className="admin-muted admin-panel-empty">No messages yet.</p>
+              )}
+            </section>
           </div>
         </>
       )}
@@ -161,90 +186,3 @@ export default function AdminDashboard() {
   );
 }
 
-/* Styles */
-const topRow = {
-  display: "flex",
-  justifyContent: "space-between",
-  gap: 12,
-  flexWrap: "wrap",
-  alignItems: "flex-end",
-  marginBottom: 14,
-};
-
-const grid4 = {
-  marginTop: 14,
-  display: "grid",
-  gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-  gap: 12,
-};
-
-const statCard = {
-  border: "1px solid #eee",
-  borderRadius: 16,
-  padding: 16,
-  background: "white",
-};
-
-const statNum = { fontSize: 26, fontWeight: 900, color: "#111827" };
-const statLabel = { marginTop: 6, color: "#6b7280", fontWeight: 800 };
-
-const panel = {
-  border: "1px solid #eee",
-  borderRadius: 16,
-  padding: 16,
-  background: "white",
-};
-
-const panelHeader = {
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  marginBottom: 10,
-};
-
-const panelTitle = { fontWeight: 900, color: "#111827" };
-
-const miniRow = {
-  padding: "10px 0",
-  borderTop: "1px solid #f1f5f9",
-};
-
-const miniMeta = { marginTop: 4, color: "#6b7280", fontSize: 13 };
-
-const btnDark = {
-  padding: "10px 12px",
-  borderRadius: 10,
-  border: "none",
-  fontWeight: 900,
-  background: "#111827",
-  color: "white",
-  cursor: "pointer",
-};
-
-const btnLight = {
-  padding: "10px 12px",
-  borderRadius: 10,
-  border: "1px solid #e5e7eb",
-  fontWeight: 900,
-  background: "#f9fafb",
-  color: "#111827",
-  cursor: "pointer",
-};
-
-const btnLightSmall = {
-  padding: "8px 10px",
-  borderRadius: 10,
-  border: "1px solid #e5e7eb",
-  fontWeight: 900,
-  background: "#f9fafb",
-  color: "#111827",
-  cursor: "pointer",
-};
-
-const msgError = {
-  padding: 12,
-  borderRadius: 10,
-  background: "#fee2e2",
-  color: "#991b1b",
-  fontWeight: 700,
-};

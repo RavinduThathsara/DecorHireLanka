@@ -26,7 +26,7 @@ export const adminGetAllGallery = async (req, res) => {
 // ADMIN: upload new image
 export const adminUploadGalleryImage = async (req, res) => {
   try {
-    const { title, isActive } = req.body;
+    const { title, category, isActive } = req.body;
 
     if (!req.file) {
       return res.status(400).json({ message: "Image file is required." });
@@ -34,10 +34,27 @@ export const adminUploadGalleryImage = async (req, res) => {
 
     const imageUrl = `/uploads/${req.file.filename}`;
 
+    // When using multipart/form-data, boolean values arrive as strings ("true"/"false").
+    // This parsing ensures the "Active" checkbox actually works.
+    let parsedIsActive = true;
+    if (typeof isActive === "boolean") {
+      parsedIsActive = isActive;
+    } else if (typeof isActive === "string") {
+      const s = isActive.toLowerCase().trim();
+      if (["false", "0", "no"].includes(s)) parsedIsActive = false;
+      if (["true", "1", "yes"].includes(s)) parsedIsActive = true;
+    }
+
+    const normalizedCategoryRaw = (category ?? "").toString().trim().toLowerCase();
+    const normalizedCategory = ["wedding", "birthday", "other"].includes(normalizedCategoryRaw)
+      ? normalizedCategoryRaw
+      : "other";
+
     const created = await GalleryImage.create({
-      title: title || "",
+      title: (title || "").trim(),
       imageUrl,
-      isActive: typeof isActive === "boolean" ? isActive : true,
+      isActive: parsedIsActive,
+      category: normalizedCategory,
     });
 
     return res.status(201).json({ message: "Gallery image uploaded ✅", image: created });
@@ -51,13 +68,19 @@ export const adminUploadGalleryImage = async (req, res) => {
 export const adminUpdateGalleryImage = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, isActive } = req.body;
+    const { title, category, isActive } = req.body;
 
     const img = await GalleryImage.findById(id);
     if (!img) return res.status(404).json({ message: "Image not found." });
 
     if (title !== undefined) img.title = title;
     if (isActive !== undefined) img.isActive = isActive;
+    if (category !== undefined) {
+      const normalizedCategoryRaw = (category ?? "").toString().trim().toLowerCase();
+      img.category = ["wedding", "birthday", "other"].includes(normalizedCategoryRaw)
+        ? normalizedCategoryRaw
+        : "other";
+    }
 
     await img.save();
     return res.json({ message: "Gallery image updated ✅", image: img });

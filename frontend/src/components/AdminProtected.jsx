@@ -1,9 +1,9 @@
 // frontend/src/components/AdminProtected.jsx
 import React from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 
-export default function AdminProtected({ children }) {
+export default function AdminProtected() {
   const token = localStorage.getItem("adminToken");
   if (!token) return <Navigate to="/admin/login" replace />;
-  return children;
+  return <Outlet />;
 }

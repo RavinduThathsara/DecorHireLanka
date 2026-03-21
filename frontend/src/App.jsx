@@ -1,8 +1,9 @@
 // frontend/src/App.jsx
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 
 import MainLayout from "./layouts/MainLayout.jsx";
+import AdminLayout from "./layouts/AdminLayout.jsx";
 import Home from "./pages/Home.jsx";
 import PopularDecorations from "./pages/PopularDecorations.jsx";
 import Gallery from "./pages/Gallery.jsx";
@@ -34,53 +35,22 @@ export default function App() {
         <Route path="/book" element={<BookDecoration />} />
       </Route>
 
-      {/* Admin pages */}
       <Route path="/admin/login" element={<AdminLogin />} />
 
-      <Route
-        path="/admin/dashboard"
-        element={
-          <AdminProtected>
-            <AdminDashboard />
-          </AdminProtected>
-        }
-      />
-
-      <Route
-        path="/admin/decorations"
-        element={
-          <AdminProtected>
-            <AdminDecorations />
-          </AdminProtected>
-        }
-      />
-
-      <Route
-        path="/admin/gallery"
-        element={
-          <AdminProtected>
-            <AdminGallery />
-          </AdminProtected>
-        }
-      />
-
-      <Route
-        path="/admin/bookings"
-        element={
-          <AdminProtected>
-            <AdminBookings />
-          </AdminProtected>
-        }
-      />
-
-      <Route
-        path="/admin/contacts"
-        element={
-          <AdminProtected>
-            <AdminContacts />
-          </AdminProtected>
-        }
-      />
+      <Route path="/admin" element={<AdminProtected />}>
+        <Route element={<AdminLayout />}>
+          <Route index element={<Navigate to="dashboard" replace />} />
+          <Route path="dashboard" element={<AdminDashboard />} />
+          <Route path="bookings" element={<AdminBookings />} />
+          <Route path="contacts" element={<AdminContacts />} />
+          <Route path="gallery" element={<AdminGallery />} />
+          <Route path="view-gallery" element={<AdminGallery />} />
+          <Route path="manage-gallery" element={<AdminGallery />} />
+          <Route path="decorations" element={<AdminDecorations />} />
+          <Route path="decoration" element={<AdminDecorations />} />
+          <Route path="manage-decorations" element={<AdminDecorations />} />
+        </Route>
+      </Route>
     </Routes>
   );
 }

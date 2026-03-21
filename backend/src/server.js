@@ -7,7 +7,6 @@ import path from "path";
 import { connectDB } from "./config/db.js";
 
 import customerAuthRoutes from "./routes/customerAuthRoutes.js";
-import adminAuthRoutes from "./routes/adminAuthRoutes.js";
 import adminSeedRoutes from "./routes/adminSeedRoutes.js";
 import contactRoutes from "./routes/contactRoutes.js";
 import adminMessagesRoutes from "./routes/adminMessagesRoutes.js";
@@ -32,7 +31,6 @@ app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
 // Routes
 app.use("/api/customers", customerAuthRoutes);
-app.use("/api/admin", adminAuthRoutes);
 app.use("/api/admin", adminSeedRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/admin", adminMessagesRoutes);

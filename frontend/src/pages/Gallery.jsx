@@ -1,12 +1,16 @@
 // frontend/src/pages/Gallery.jsx
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import { api } from "../services/api.js";
 
 export default function Gallery() {
   const [activeFilter, setActiveFilter] = useState("all"); // all | wedding | birthday | other
 
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
   // ✅ Images from public/gallery folder (add category)
-  const images = [
+  const [images, setImages] = useState([
     { id: 1, title: "Wedding Decoration 1", src: "/gallery/gallery1.png", category: "wedding" },
     { id: 2, title: "Wedding Decoration 2", src: "/gallery/gallery2.png", category: "wedding" },
     { id: 3, title: "Wedding Decoration 3", src: "/gallery/gallery3.png", category: "wedding" },
@@ -29,12 +33,37 @@ export default function Gallery() {
 
     // ✅ Add your "other event" photos like this:
     // { id: 10, title: "Other Event Decoration 10", src: "/gallery/gallery10.png", category: "other" },
-  ];
+  ]);
+
+  useEffect(() => {
+    const fetchActiveGallery = async () => {
+      try {
+        setLoading(true);
+        setError("");
+        const res = await api.get("/api/gallery");
+        setImages(res.data.images || []);
+      } catch (err) {
+        setError(err?.response?.data?.message || "Failed to load gallery.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchActiveGallery();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const filteredImages = useMemo(() => {
     if (activeFilter === "all") return images;
-    return images.filter((img) => img.category === activeFilter);
+    return images.filter((img) => (img.category || "other") === activeFilter);
   }, [activeFilter, images]);
+
+  const categoryLabel = (category) => {
+    const c = (category || "other").toLowerCase();
+    if (c === "wedding") return "Wedding Decoration";
+    if (c === "birthday") return "Birthday Decoration";
+    return "Other Event Decoration";
+  };
 
   return (
     <div style={{ maxWidth: 1100, margin: "0 auto" }}>
@@ -83,16 +112,22 @@ export default function Gallery() {
       </div>
 
       {/* ✅ Empty message based on filtered results */}
-      {filteredImages.length === 0 && (
+      {loading && <div style={note}>Loading gallery...</div>}
+      {!loading && error && <div style={note}>{error}</div>}
+      {!loading && !error && filteredImages.length === 0 && (
         <div style={note}>No gallery photos for this category yet.</div>
       )}
 
       <div style={grid}>
         {filteredImages.map((img) => (
-          <div key={img.id} style={tile}>
-            <img src={img.src} alt={img.title} style={thumb} />
+          <div key={img._id || img.id} style={tile}>
+            <img
+              src={img.imageUrl ? `http://localhost:5000${img.imageUrl}` : img.src}
+              alt={img.title || categoryLabel(img.category)}
+              style={thumb}
+            />
             <div style={{ marginTop: 10, fontWeight: 900, color: "#111827" }}>
-              {img.title}
+              {img.title || categoryLabel(img.category)}
             </div>
           </div>
         ))}
