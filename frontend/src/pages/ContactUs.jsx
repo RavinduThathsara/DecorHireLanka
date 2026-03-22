@@ -4,6 +4,12 @@ import { useState } from "react";
 import { api } from "../services/api.js";
 
 export default function ContactUs() {
+  const shopAddress = "149, Kowil Kade, Passara, Sri Lanka";
+  const mapSrc =
+    "https://www.google.com/maps?q=149%2C%20Kowil%20Kade%2C%20Passara%2C%20Sri%20Lanka&z=17&output=embed";
+  const mapLink =
+    "https://www.google.com/maps/search/?api=1&query=149%2C%20Kowil%20Kade%2C%20Passara%2C%20Sri%20Lanka";
+
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -126,15 +132,21 @@ export default function ContactUs() {
               <strong>Email:</strong> ravinduthathsara38@gmail.com
             </div>
             <div>
-              <strong>Location:</strong> Badulla
+              <strong>Location:</strong> {shopAddress}
             </div>
           </div>
 
           <div style={mapBox}>
-            <div style={{ fontWeight: 900 }}>Map Placeholder</div>
-            <div style={{ marginTop: 6, color: "#6b7280", fontSize: 13 }}>
-              Later we can add Google Map embed here.
-            </div>
+            <iframe
+              title="DecorHire Lanka shop location"
+              src={mapSrc}
+              style={mapFrame}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+            <a href={mapLink} target="_blank" rel="noreferrer" style={mapLinkStyle}>
+              Open in Google Maps
+            </a>
           </div>
         </div>
       </div>
@@ -205,11 +217,25 @@ const msgOk = {
 const mapBox = {
   marginTop: 14,
   borderRadius: 14,
-  border: "1px dashed #d1d5db",
-  background: "linear-gradient(135deg, #f8fafc, #eef2ff)",
-  padding: 14,
-  minHeight: 160,
+  overflow: "hidden",
+  border: "1px solid #d1d5db",
+  background: "#f8fafc",
+  minHeight: 260,
   display: "flex",
   flexDirection: "column",
-  justifyContent: "center",
+};
+
+const mapFrame = {
+  width: "100%",
+  height: 220,
+  border: "none",
+};
+
+const mapLinkStyle = {
+  textDecoration: "none",
+  padding: "12px 14px",
+  fontWeight: 800,
+  color: "#111827",
+  borderTop: "1px solid #e5e7eb",
+  background: "white",
 };
