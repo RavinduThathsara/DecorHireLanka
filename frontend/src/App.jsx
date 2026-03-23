@@ -20,6 +20,7 @@ import AdminContacts from "./pages/AdminContacts.jsx";
 
 import BookDecoration from "./pages/BookDecoration.jsx";
 import AdminProtected from "./components/AdminProtected.jsx";
+import Services from "./pages/Services.jsx";
 
 export default function App() {
   return (
@@ -27,6 +28,7 @@ export default function App() {
       {/* Customer pages use MainLayout (Navbar + Footer) */}
       <Route element={<MainLayout />}>
         <Route path="/" element={<Home />} />
+        <Route path="/services" element={<Services />} />
         <Route path="/popular" element={<PopularDecorations />} />
         <Route path="/gallery" element={<Gallery />} />
         <Route path="/contact" element={<ContactUs />} />
