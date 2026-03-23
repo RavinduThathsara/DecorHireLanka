@@ -15,12 +15,17 @@ export default function ContactUs() {
     email: "",
     phone: "",
     location: "",
+    eventType: "",
+    eventDate: "",
     message: "",
   });
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+
+  // Get today's date in YYYY-MM-DD format for min date
+  const today = new Date().toISOString().split('T')[0];
 
   const onChange = (e) => {
     setForm((p) => ({ ...p, [e.target.name]: e.target.value }));
@@ -35,7 +40,15 @@ export default function ContactUs() {
       setLoading(true);
       const res = await api.post("/api/contact", form);
       setSuccess(res.data?.message || "Message sent successfully ✅");
-      setForm({ name: "", email: "", phone: "", location: "", message: "" });
+      setForm({
+        name: "",
+        email: "",
+        phone: "",
+        location: "",
+        eventType: "",
+        eventDate: "",
+        message: ""
+      });
     } catch (err) {
       setError(err?.response?.data?.message || "Failed to send message.");
     } finally {
@@ -49,7 +62,7 @@ export default function ContactUs() {
         <div>
           <h1 style={{ margin: 0 }}>Contact Us</h1>
           <p style={{ marginTop: 8, color: "#4b5563", lineHeight: 1.6 }}>
-            Send your wedding date, location, and theme idea. We’ll contact you soon.
+            Send your event details, date, location, and theme idea. We'll contact you soon.
           </p>
         </div>
       </div>
@@ -87,10 +100,34 @@ export default function ContactUs() {
               onChange={onChange}
             />
 
+            <select
+              style={input}
+              name="eventType"
+              value={form.eventType}
+              onChange={onChange}
+            >
+              <option value="">Select Event Type (optional)</option>
+              <option value="Wedding Decoration">Wedding Decoration</option>
+              <option value="Birthday Decoration">Birthday Decoration</option>
+              <option value="Other Event Decoration">Other Event Decoration</option>
+            </select>
+
+            <div style={{ display: "grid", gap: 4 }}>
+              <label style={label}>Event Date (optional)</label>
+              <input
+                style={input}
+                name="eventDate"
+                type="date"
+                min={today}
+                value={form.eventDate}
+                onChange={onChange}
+              />
+            </div>
+
             <input
               style={input}
               name="location"
-              placeholder="Wedding Location (optional)"
+              placeholder="Event Location (optional)"
               value={form.location}
               onChange={onChange}
             />
@@ -98,7 +135,7 @@ export default function ContactUs() {
             <textarea
               style={textarea}
               name="message"
-              placeholder="Message (ex: Wedding date, hall name, theme colors...)"
+              placeholder="Message (ex: Hall name, theme colors, special requirements...)"
               value={form.message}
               onChange={onChange}
               required
@@ -172,20 +209,37 @@ const card = {
 };
 
 const input = {
-  padding: "12px 12px",
-  borderRadius: 10,
-  border: "1px solid #ddd",
+  padding: "14px 16px",
+  borderRadius: 12,
+  border: "1px solid #d1d5db",
   outline: "none",
+  fontSize: 15,
+  fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif",
+  fontWeight: 400,
+  color: "#111827",
+  backgroundColor: "white",
+  transition: "border-color 0.2s, box-shadow 0.2s",
+};
+
+const label = {
   fontSize: 14,
+  fontWeight: 600,
+  color: "#374151",
+  fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif",
 };
 
 const textarea = {
-  padding: "12px 12px",
-  borderRadius: 10,
-  border: "1px solid #ddd",
+  padding: "14px 16px",
+  borderRadius: 12,
+  border: "1px solid #d1d5db",
   outline: "none",
-  fontSize: 14,
+  fontSize: 15,
+  fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif",
+  fontWeight: 400,
+  color: "#111827",
+  backgroundColor: "white",
   resize: "vertical",
+  transition: "border-color 0.2s, box-shadow 0.2s",
 };
 
 const btnDark = {

@@ -8,8 +8,14 @@ const contactMessageSchema = new mongoose.Schema(
     phone: { type: String, required: false, trim: true, maxlength: 30 },
     location: { type: String, required: false, trim: true, maxlength: 120 },
     message: { type: String, required: true, trim: true, maxlength: 2000 },
+    eventType: {
+      type: String,
+      required: false,
+      enum: ["Wedding Decoration", "Birthday Decoration", "Other Event Decoration", ""],
+      default: ""
+    },
+    eventDate: { type: Date, required: false },
 
-    // ✅ ADD THIS
     status: { type: String, default: "NEW", enum: ["NEW", "REPLIED"] },
   },
   { timestamps: true }

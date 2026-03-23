@@ -101,6 +101,16 @@ export default function AdminContacts() {
             <div style={row}>
               <span style={label}>Phone:</span> {m.phone}
             </div>
+            {m.eventType && (
+              <div style={row}>
+                <span style={label}>Event Type:</span> {m.eventType}
+              </div>
+            )}
+            {m.eventDate && (
+              <div style={row}>
+                <span style={label}>Event Date:</span> {new Date(m.eventDate).toLocaleDateString()}
+              </div>
+            )}
             {m.location && (
               <div style={row}>
                 <span style={label}>Location:</span> {m.location}

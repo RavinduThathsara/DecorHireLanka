@@ -4,7 +4,7 @@ import ContactMessage from "../models/ContactMessage.js";
 // CUSTOMER: submit contact form
 export const createContactMessage = async (req, res) => {
   try {
-    const { name, email, phone, location, message } = req.body;
+    const { name, email, phone, location, message, eventType, eventDate } = req.body;
 
     if (!name || !email || !message) {
       return res.status(400).json({ message: "Name, email, and message are required." });
@@ -16,6 +16,8 @@ export const createContactMessage = async (req, res) => {
       phone: phone || "",
       location: location || "",
       message,
+      eventType: eventType || "",
+      eventDate: eventDate || null,
       status: "NEW",
     });
 

@@ -21,7 +21,9 @@ html {
 
 body {
   margin: 0;
-  font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   background:
     radial-gradient(circle at top left, rgba(242, 214, 180, 0.75), transparent 28%),
     radial-gradient(circle at top right, rgba(220, 198, 179, 0.65), transparent 24%),
@@ -250,7 +252,7 @@ img {
   max-width: 14ch;
 }
 
-.home-section-heading > p {
+.home-section-heading>p {
   max-width: 52ch;
 }
 
@@ -446,6 +448,7 @@ img {
 }
 
 @media (max-width: 980px) {
+
   .home-hero,
   .home-plan-grid,
   .home-highlight-grid,
@@ -476,6 +479,7 @@ img {
 }
 
 @media (max-width: 640px) {
+
   .home-hero,
   .home-plan-panel,
   .home-quote-panel,
@@ -635,6 +639,7 @@ img {
 }
 
 @media (max-width: 980px) {
+
   .popular-hero,
   .popular-reasons {
     grid-template-columns: 1fr;
