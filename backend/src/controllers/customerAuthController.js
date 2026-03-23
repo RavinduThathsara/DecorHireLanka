@@ -6,9 +6,9 @@ import { generateToken } from "../utils/token.js";
 
 export const registerCustomer = async (req, res) => {
   try {
-    const { email, username, location, password } = req.body;
+    const { email, username, phone, location, password } = req.body;
 
-    if (!email || !username || !location || !password) {
+    if (!email || !username || !phone || !location || !password) {
       return res.status(400).json({ message: "All fields are required." });
     }
 
@@ -22,6 +22,7 @@ export const registerCustomer = async (req, res) => {
     const customer = await Customer.create({
       email: email.toLowerCase(),
       username,
+      phone,
       location,
       passwordHash,
     });
@@ -35,6 +36,7 @@ export const registerCustomer = async (req, res) => {
         id: customer._id,
         email: customer.email,
         username: customer.username,
+        phone: customer.phone,
         location: customer.location,
       },
     });
@@ -71,6 +73,7 @@ export const loginCustomer = async (req, res) => {
         id: customer._id,
         email: customer.email,
         username: customer.username,
+        phone: customer.phone,
         location: customer.location,
       },
     });
