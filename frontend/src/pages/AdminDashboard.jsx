@@ -48,136 +48,197 @@ export default function AdminDashboard() {
   const newMessages = messages.filter((m) => (m.status || "NEW") === "NEW").length;
 
   return (
-    <div className="admin-page">
-      <header className="admin-page-header">
-        <h1 className="admin-page-title">Dashboard</h1>
-        <p className="admin-page-lead">
-          Overview of bookings and contact messages. Use the sidebar or the shortcuts below to
-          manage content.
-        </p>
+    <div style={pageContainer}>
+      <header style={pageHeader}>
+        <div>
+          <h1 style={pageTitle}>Dashboard</h1>
+          <p style={pageLead}>
+            Overview of bookings and contact messages. Use the sidebar or the shortcuts below to
+            manage content.
+          </p>
+        </div>
       </header>
 
-      {loading && <p className="admin-muted">Loading dashboard…</p>}
-      {error && <div className="admin-alert admin-alert-error">{error}</div>}
+      {loading && <p style={mutedText}>Loading dashboard…</p>}
+      {error && <div style={alertError}>{error}</div>}
 
       {!loading && !error && (
         <>
-          <section className="admin-stat-grid" aria-label="Summary statistics">
-            <div className="admin-stat-card">
-              <div className="admin-stat-value">{totalBookings}</div>
-              <div className="admin-stat-label">Total bookings</div>
+          {/* Stats Grid */}
+          <section style={statsGrid}>
+            <div style={statCard}>
+              <div style={statIcon}>📦</div>
+              <div style={statContent}>
+                <div style={statValue}>{totalBookings}</div>
+                <div style={statLabel}>Total Bookings</div>
+              </div>
             </div>
-            <div className="admin-stat-card">
-              <div className="admin-stat-value">{newBookings}</div>
-              <div className="admin-stat-label">New bookings</div>
+
+            <div style={{ ...statCard, ...statCardNew }}>
+              <div style={statIcon}>🆕</div>
+              <div style={statContent}>
+                <div style={statValue}>{newBookings}</div>
+                <div style={statLabel}>New Bookings</div>
+              </div>
             </div>
-            <div className="admin-stat-card">
-              <div className="admin-stat-value">{totalMessages}</div>
-              <div className="admin-stat-label">Total messages</div>
+
+            <div style={statCard}>
+              <div style={statIcon}>💬</div>
+              <div style={statContent}>
+                <div style={statValue}>{totalMessages}</div>
+                <div style={statLabel}>Total Messages</div>
+              </div>
             </div>
-            <div className="admin-stat-card">
-              <div className="admin-stat-value">{newMessages}</div>
-              <div className="admin-stat-label">New messages</div>
+
+            <div style={{ ...statCard, ...statCardNew }}>
+              <div style={statIcon}>✉️</div>
+              <div style={statContent}>
+                <div style={statValue}>{newMessages}</div>
+                <div style={statLabel}>New Messages</div>
+              </div>
             </div>
           </section>
 
-          <section className="admin-shortcuts" aria-label="Quick navigation">
-            <h2 className="admin-section-title">Go to</h2>
-            <div className="admin-quick-grid">
+          {/* Quick Actions */}
+          <section style={quickSection}>
+            <h2 style={sectionTitle}>Quick Actions</h2>
+            <div style={quickGrid}>
               <NavLink
                 to="/admin/bookings"
-                className={({ isActive }) =>
-                  "admin-quick-card" + (isActive ? " admin-quick-card-active" : "")
-                }
+                style={({ isActive }) => ({
+                  ...quickCard,
+                  ...(isActive ? quickCardActive : {}),
+                })}
               >
-                <span className="admin-quick-title">Bookings</span>
-                <span className="admin-quick-desc">View and update booking status</span>
-                <span className="admin-quick-arrow" aria-hidden="true">
-                  →
-                </span>
+                <div style={quickIcon}>📋</div>
+                <div style={quickContent}>
+                  <span style={quickTitle}>Bookings</span>
+                  <span style={quickDesc}>View and update booking status</span>
+                </div>
+                <span style={quickArrow}>→</span>
               </NavLink>
+
               <NavLink
                 to="/admin/contacts"
-                className={({ isActive }) =>
-                  "admin-quick-card" + (isActive ? " admin-quick-card-active" : "")
-                }
+                style={({ isActive }) => ({
+                  ...quickCard,
+                  ...(isActive ? quickCardActive : {}),
+                })}
               >
-                <span className="admin-quick-title">Messages</span>
-                <span className="admin-quick-desc">Contact form submissions</span>
-                <span className="admin-quick-arrow" aria-hidden="true">
-                  →
-                </span>
+                <div style={quickIcon}>📨</div>
+                <div style={quickContent}>
+                  <span style={quickTitle}>Messages</span>
+                  <span style={quickDesc}>Contact form submissions</span>
+                </div>
+                <span style={quickArrow}>→</span>
               </NavLink>
+
               <NavLink
                 to="/admin/gallery"
-                className={({ isActive }) =>
-                  "admin-quick-card" + (isActive ? " admin-quick-card-active" : "")
-                }
+                style={({ isActive }) => ({
+                  ...quickCard,
+                  ...(isActive ? quickCardActive : {}),
+                })}
               >
-                <span className="admin-quick-title">Gallery</span>
-                <span className="admin-quick-desc">Upload and manage gallery images</span>
-                <span className="admin-quick-arrow" aria-hidden="true">
-                  →
-                </span>
+                <div style={quickIcon}>🖼️</div>
+                <div style={quickContent}>
+                  <span style={quickTitle}>Gallery</span>
+                  <span style={quickDesc}>Upload and manage gallery images</span>
+                </div>
+                <span style={quickArrow}>→</span>
               </NavLink>
+
               <NavLink
                 to="/admin/decorations"
-                className={({ isActive }) =>
-                  "admin-quick-card" + (isActive ? " admin-quick-card-active" : "")
-                }
+                style={({ isActive }) => ({
+                  ...quickCard,
+                  ...(isActive ? quickCardActive : {}),
+                })}
               >
-                <span className="admin-quick-title">Decorations</span>
-                <span className="admin-quick-desc">Edit decoration listings</span>
-                <span className="admin-quick-arrow" aria-hidden="true">
-                  →
-                </span>
+                <div style={quickIcon}>🎨</div>
+                <div style={quickContent}>
+                  <span style={quickTitle}>Decorations</span>
+                  <span style={quickDesc}>Edit decoration listings</span>
+                </div>
+                <span style={quickArrow}>→</span>
               </NavLink>
             </div>
           </section>
 
-          <div className="admin-panels">
-            <section className="admin-panel">
-              <div className="admin-panel-head">
-                <h2 className="admin-panel-title">Recent bookings</h2>
-                <Link to="/admin/bookings" className="admin-panel-link">
-                  View all
+          {/* Recent Activity Panels */}
+          <div style={panelsGrid}>
+            <section style={panel}>
+              <div style={panelHeader}>
+                <h2 style={panelTitle}>Recent Bookings</h2>
+                <Link to="/admin/bookings" style={panelLink}>
+                  View all →
                 </Link>
               </div>
 
-              {bookings.slice(0, 3).map((b) => (
-                <div key={b._id} className="admin-panel-row">
-                  <div className="admin-panel-row-title">{b.decorationTitle}</div>
-                  <div className="admin-panel-row-meta">
-                    {b.name} · {b.phone} · {b.status || "NEW"}
+              <div style={panelContent}>
+                {bookings.slice(0, 5).map((b) => (
+                  <div key={b._id} style={panelRow}>
+                    <div style={panelRowMain}>
+                      <div style={panelRowTitle}>{b.decorationTitle}</div>
+                      <div style={panelRowMeta}>
+                        <span>{b.name}</span>
+                        <span style={metaDot}>•</span>
+                        <span>{b.phone}</span>
+                      </div>
+                    </div>
+                    <div style={
+                      (b.status || "NEW") === "NEW"
+                        ? statusBadgeNew
+                        : statusBadgeConfirmed
+                    }>
+                      {b.status || "NEW"}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
 
-              {bookings.length === 0 && (
-                <p className="admin-muted admin-panel-empty">No bookings yet.</p>
-              )}
+                {bookings.length === 0 && (
+                  <p style={emptyState}>No bookings yet.</p>
+                )}
+              </div>
             </section>
 
-            <section className="admin-panel">
-              <div className="admin-panel-head">
-                <h2 className="admin-panel-title">Recent messages</h2>
-                <Link to="/admin/contacts" className="admin-panel-link">
-                  View all
+            <section style={panel}>
+              <div style={panelHeader}>
+                <h2 style={panelTitle}>Recent Messages</h2>
+                <Link to="/admin/contacts" style={panelLink}>
+                  View all →
                 </Link>
               </div>
 
-              {messages.slice(0, 3).map((m) => (
-                <div key={m._id} className="admin-panel-row">
-                  <div className="admin-panel-row-title">{m.name}</div>
-                  <div className="admin-panel-row-meta">
-                    {m.email} · {m.status || "NEW"}
+              <div style={panelContent}>
+                {messages.slice(0, 5).map((m) => (
+                  <div key={m._id} style={panelRow}>
+                    <div style={panelRowMain}>
+                      <div style={panelRowTitle}>{m.name}</div>
+                      <div style={panelRowMeta}>
+                        <span>{m.email}</span>
+                        {m.eventType && (
+                          <>
+                            <span style={metaDot}>•</span>
+                            <span>{m.eventType}</span>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                    <div style={
+                      (m.status || "NEW") === "NEW"
+                        ? statusBadgeNew
+                        : statusBadgeReplied
+                    }>
+                      {m.status || "NEW"}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
 
-              {messages.length === 0 && (
-                <p className="admin-muted admin-panel-empty">No messages yet.</p>
-              )}
+                {messages.length === 0 && (
+                  <p style={emptyState}>No messages yet.</p>
+                )}
+              </div>
             </section>
           </div>
         </>
@@ -186,3 +247,281 @@ export default function AdminDashboard() {
   );
 }
 
+/* Modern Industry-Level Styles */
+const pageContainer = {
+  fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif",
+  maxWidth: 1200,
+  margin: "0 auto",
+  padding: "24px",
+};
+
+const pageHeader = {
+  marginBottom: 32,
+};
+
+const pageTitle = {
+  fontSize: 32,
+  fontWeight: 700,
+  color: "#111827",
+  margin: 0,
+  letterSpacing: "-0.02em",
+};
+
+const pageLead = {
+  fontSize: 16,
+  color: "#6b7280",
+  margin: "8px 0 0",
+  lineHeight: 1.6,
+  maxWidth: 600,
+};
+
+const mutedText = {
+  color: "#9ca3af",
+  fontSize: 15,
+};
+
+const alertError = {
+  padding: "12px 16px",
+  borderRadius: 8,
+  background: "#fef2f2",
+  color: "#991b1b",
+  border: "1px solid #fecaca",
+  fontSize: 14,
+  fontWeight: 500,
+};
+
+const statsGrid = {
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+  gap: 20,
+  marginBottom: 32,
+};
+
+const statCard = {
+  background: "white",
+  border: "1px solid #e5e7eb",
+  borderRadius: 12,
+  padding: "20px",
+  display: "flex",
+  alignItems: "center",
+  gap: 16,
+  transition: "transform 0.2s, box-shadow 0.2s",
+  cursor: "default",
+};
+
+const statCardNew = {
+  background: "linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%)",
+  borderColor: "#bae6fd",
+};
+
+const statIcon = {
+  fontSize: 32,
+  lineHeight: 1,
+};
+
+const statContent = {
+  flex: 1,
+};
+
+const statValue = {
+  fontSize: 36,
+  fontWeight: 700,
+  color: "#111827",
+  lineHeight: 1,
+  marginBottom: 4,
+};
+
+const statLabel = {
+  fontSize: 13,
+  fontWeight: 600,
+  color: "#6b7280",
+  textTransform: "uppercase",
+  letterSpacing: "0.05em",
+};
+
+const quickSection = {
+  marginBottom: 32,
+};
+
+const sectionTitle = {
+  fontSize: 18,
+  fontWeight: 700,
+  color: "#111827",
+  margin: "0 0 16px",
+};
+
+const quickGrid = {
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+  gap: 16,
+};
+
+const quickCard = {
+  textDecoration: "none",
+  background: "white",
+  border: "1px solid #e5e7eb",
+  borderRadius: 12,
+  padding: "20px",
+  display: "flex",
+  alignItems: "center",
+  gap: 16,
+  transition: "all 0.2s",
+  position: "relative",
+};
+
+const quickCardActive = {
+  borderColor: "#3b82f6",
+  boxShadow: "0 0 0 3px rgba(59, 130, 246, 0.1)",
+};
+
+const quickIcon = {
+  fontSize: 28,
+  lineHeight: 1,
+};
+
+const quickContent = {
+  flex: 1,
+  display: "flex",
+  flexDirection: "column",
+  gap: 4,
+};
+
+const quickTitle = {
+  fontSize: 16,
+  fontWeight: 600,
+  color: "#111827",
+};
+
+const quickDesc = {
+  fontSize: 13,
+  color: "#6b7280",
+  lineHeight: 1.4,
+};
+
+const quickArrow = {
+  fontSize: 20,
+  color: "#9ca3af",
+  fontWeight: 600,
+};
+
+const panelsGrid = {
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fit, minmax(400px, 1fr))",
+  gap: 20,
+};
+
+const panel = {
+  background: "white",
+  border: "1px solid #e5e7eb",
+  borderRadius: 12,
+  overflow: "hidden",
+};
+
+const panelHeader = {
+  padding: "20px",
+  borderBottom: "1px solid #e5e7eb",
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+};
+
+const panelTitle = {
+  fontSize: 16,
+  fontWeight: 700,
+  color: "#111827",
+  margin: 0,
+};
+
+const panelLink = {
+  fontSize: 14,
+  fontWeight: 600,
+  color: "#3b82f6",
+  textDecoration: "none",
+  transition: "color 0.2s",
+};
+
+const panelContent = {
+  padding: "0",
+};
+
+const panelRow = {
+  padding: "16px 20px",
+  borderBottom: "1px solid #f3f4f6",
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  gap: 16,
+  transition: "background 0.2s",
+};
+
+const panelRowMain = {
+  flex: 1,
+  minWidth: 0,
+};
+
+const panelRowTitle = {
+  fontSize: 14,
+  fontWeight: 600,
+  color: "#111827",
+  marginBottom: 4,
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+  whiteSpace: "nowrap",
+};
+
+const panelRowMeta = {
+  fontSize: 13,
+  color: "#6b7280",
+  display: "flex",
+  alignItems: "center",
+  gap: 6,
+  flexWrap: "wrap",
+};
+
+const metaDot = {
+  color: "#d1d5db",
+};
+
+const statusBadgeNew = {
+  padding: "4px 12px",
+  borderRadius: 6,
+  fontSize: 12,
+  fontWeight: 600,
+  background: "#fef3c7",
+  color: "#92400e",
+  textTransform: "uppercase",
+  letterSpacing: "0.05em",
+  whiteSpace: "nowrap",
+};
+
+const statusBadgeConfirmed = {
+  padding: "4px 12px",
+  borderRadius: 6,
+  fontSize: 12,
+  fontWeight: 600,
+  background: "#d1fae5",
+  color: "#065f46",
+  textTransform: "uppercase",
+  letterSpacing: "0.05em",
+  whiteSpace: "nowrap",
+};
+
+const statusBadgeReplied = {
+  padding: "4px 12px",
+  borderRadius: 6,
+  fontSize: 12,
+  fontWeight: 600,
+  background: "#dbeafe",
+  color: "#1e40af",
+  textTransform: "uppercase",
+  letterSpacing: "0.05em",
+  whiteSpace: "nowrap",
+};
+
+const emptyState = {
+  padding: "32px 20px",
+  textAlign: "center",
+  color: "#9ca3af",
+  fontSize: 14,
+  margin: 0,
+};
