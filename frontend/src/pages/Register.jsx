@@ -19,9 +19,102 @@ export default function Register() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [errors, setErrors] = useState({});
+  const [touched, setTouched] = useState({});
+
+  const validateField = (name, value) => {
+    const trimmed = value.trim();
+
+    switch (name) {
+      case "email": {
+        if (!trimmed) return "Email is required.";
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) return "Enter a valid email address.";
+        return "";
+      }
+      case "username": {
+        if (!trimmed) return "Full name is required.";
+        if (trimmed.length < 3) return "Full name must be at least 3 characters.";
+        if (!/^[A-Za-z]+(?: [A-Za-z]+)*$/.test(trimmed)) return "Full name can contain alphabets only.";
+        return "";
+      }
+      case "phone": {
+        if (!trimmed) return "Phone number is required.";
+        if (!/^\+?[\d\s()-]+$/.test(trimmed)) {
+          return "Phone number can contain digits, spaces, and + - ( ) only.";
+        }
+        const plusCount = (trimmed.match(/\+/g) || []).length;
+        if (plusCount > 1 || (plusCount === 1 && !trimmed.startsWith("+"))) {
+          return "Enter a valid phone number.";
+        }
+        const digits = trimmed.replace(/\D/g, "");
+        const localDigits = digits.startsWith("94") && digits.length === 11 ? `0${digits.slice(2)}` : digits;
+        const validPrefixes = ["070", "071", "072", "074", "075", "076", "077", "078"];
+
+        if (localDigits.length !== 10) {
+          return "Phone number must be exactly 10 digits.";
+        }
+
+        if (!validPrefixes.some((prefix) => localDigits.startsWith(prefix))) {
+          return "Phone number start digits are invalid.";
+        }
+
+        return "";
+      }
+      case "location": {
+        if (!trimmed) return "Location is required.";
+        if (trimmed.length < 2) return "Location must be at least 2 characters.";
+        return "";
+      }
+      case "password": {
+        if (!value) return "Password is required.";
+        if (value.length < 6) return "Password must be at least 6 characters.";
+        if (!/[A-Za-z]/.test(value) || !/\d/.test(value)) return "Password must include letters and numbers.";
+        return "";
+      }
+      default:
+        return "";
+    }
+  };
+
+  const validateForm = (values) => {
+    const nextErrors = {};
+
+    Object.keys(values).forEach((field) => {
+      const fieldError = validateField(field, values[field]);
+      if (fieldError) nextErrors[field] = fieldError;
+    });
+
+    return nextErrors;
+  };
 
   const onChange = (e) => {
-    setForm((p) => ({ ...p, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    setForm((p) => ({ ...p, [name]: value }));
+
+    if (touched[name]) {
+      const fieldError = validateField(name, value);
+      setErrors((p) => ({ ...p, [name]: fieldError }));
+    }
+  };
+
+  const onBlur = (e) => {
+    const { name, value } = e.target;
+    setTouched((p) => ({ ...p, [name]: true }));
+    const fieldError = validateField(name, value);
+    setErrors((p) => ({ ...p, [name]: fieldError }));
+  };
+
+  const sanitizeForm = (values) => ({
+    ...values,
+    email: values.email.trim().toLowerCase(),
+    username: values.username.trim(),
+    phone: values.phone.trim(),
+    location: values.location.trim(),
+  });
+
+  const getInputStyle = (name) => {
+    if (!touched[name]) return input;
+    return errors[name] ? { ...input, ...inputError } : { ...input, ...inputValid };
   };
 
   const onSubmit = async (e) => {
@@ -29,10 +122,25 @@ export default function Register() {
     setError("");
     setSuccess("");
 
+    const allTouched = Object.keys(form).reduce((acc, key) => {
+      acc[key] = true;
+      return acc;
+    }, {});
+    setTouched(allTouched);
+
+    const nextErrors = validateForm(form);
+    setErrors(nextErrors);
+    if (Object.keys(nextErrors).length > 0) {
+      setError("Please fix the highlighted fields and try again.");
+      return;
+    }
+
+    const cleanedForm = sanitizeForm(form);
+
     try {
       setLoading(true);
 
-      const res = await api.post("/api/customers/register", form);
+      const res = await api.post("/api/customers/register", cleanedForm);
 
       // ✅ set AuthContext + localStorage
       loginCustomer({ token: res.data.token, customer: res.data.customer });
@@ -58,67 +166,81 @@ export default function Register() {
           <div style={inputGroup}>
             <label style={label}>Email Address</label>
             <input
-              style={input}
+              style={getInputStyle("email")}
               name="email"
               type="email"
               placeholder="your.email@example.com"
               value={form.email}
               onChange={onChange}
+              onBlur={onBlur}
               required
             />
+            {touched.email && errors.email && <span style={fieldError}>{errors.email}</span>}
           </div>
 
           <div style={inputGroup}>
             <label style={label}>Full Name</label>
             <input
-              style={input}
+              style={getInputStyle("username")}
               name="username"
               type="text"
               placeholder="John Doe"
               value={form.username}
               onChange={onChange}
+              onBlur={onBlur}
+              pattern="[A-Za-z]+( [A-Za-z]+)*"
+              title="Full name can contain alphabets only"
               required
             />
+            {touched.username && errors.username && <span style={fieldError}>{errors.username}</span>}
           </div>
 
           <div style={inputGroup}>
             <label style={label}>Phone Number</label>
             <input
-              style={input}
+              style={getInputStyle("phone")}
               name="phone"
               type="tel"
               placeholder="+94 71 234 5678"
               value={form.phone}
               onChange={onChange}
+              onBlur={onBlur}
+              pattern="\+?[0-9()\-\s]{10,20}"
+              title="Use a valid Sri Lankan mobile number with 10 digits starting 070, 071, 072, 074, 075, 076, 077, or 078"
               required
             />
+            {touched.phone && errors.phone && <span style={fieldError}>{errors.phone}</span>}
           </div>
 
           <div style={inputGroup}>
             <label style={label}>Location</label>
             <input
-              style={input}
+              style={getInputStyle("location")}
               name="location"
               type="text"
               placeholder="Colombo, Sri Lanka"
               value={form.location}
               onChange={onChange}
+              onBlur={onBlur}
               required
             />
+            {touched.location && errors.location && <span style={fieldError}>{errors.location}</span>}
           </div>
 
           <div style={inputGroup}>
             <label style={label}>Password</label>
             <input
-              style={input}
+              style={getInputStyle("password")}
               name="password"
               type="password"
               placeholder="Minimum 6 characters"
               value={form.password}
               onChange={onChange}
+              onBlur={onBlur}
               required
               minLength={6}
             />
+            {touched.password && errors.password && <span style={fieldError}>{errors.password}</span>}
           </div>
 
           <button style={btn} disabled={loading}>
@@ -214,6 +336,23 @@ const input = {
   color: "#111827",
   backgroundColor: "white",
   transition: "border-color 0.2s, box-shadow 0.2s",
+};
+
+const inputError = {
+  border: "1px solid #dc2626",
+  boxShadow: "0 0 0 3px rgba(220, 38, 38, 0.12)",
+};
+
+const inputValid = {
+  border: "1px solid #16a34a",
+  boxShadow: "0 0 0 3px rgba(22, 163, 74, 0.1)",
+};
+
+const fieldError = {
+  marginTop: 2,
+  fontSize: 13,
+  color: "#b91c1c",
+  fontWeight: 500,
 };
 
 const btn = {
