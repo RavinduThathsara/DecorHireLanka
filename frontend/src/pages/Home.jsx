@@ -94,7 +94,14 @@ export default function Home() {
 
         <div className="home-hero-media">
           <div className="home-hero-image-wrap">
-            <img src={heroImg} alt="DecorHire Lanka wedding decoration setup" className="home-hero-image" />
+            {albumPhotos.slice(0, 4).map((photo, index) => (
+              <img
+                key={index}
+                src={photo.src}
+                alt={photo.title}
+                className="home-hero-image"
+              />
+            ))}
           </div>
           <div className="home-floating-note">
             <span>Featured style</span>

@@ -36,6 +36,28 @@ export default function ContactUs() {
     setError("");
     setSuccess("");
 
+    // --- Validation Logic ---
+    const nameRegex = /^[a-zA-Z\s]{2,50}$/;
+    if (!nameRegex.test(form.name.trim())) {
+      setError("Please enter a valid name (letters only, minimum 2 characters).");
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(form.email.trim())) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
+    if (form.phone.trim() !== "") {
+      const phoneRegex = /^(?:\+94|0)[0-9]{9}$/; // e.g., 0771234567 or +94771234567
+      if (!phoneRegex.test(form.phone.trim())) {
+        setError("Please enter a valid Sri Lankan phone number (e.g., 0771234567 or +94771234567).");
+        return;
+      }
+    }
+    // ------------------------
+
     try {
       setLoading(true);
       const res = await api.post("/api/contact", form);
