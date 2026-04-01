@@ -103,11 +103,35 @@ export default function Home() {
               />
             ))}
           </div>
-          <div className="home-floating-note">
-            <span>Featured style</span>
-            <strong>Elegant homecoming entrance with floral lighting</strong>
-          </div>
         </div>
+      </section>
+
+      <section className="home-editorial home-surface">
+        <div className="home-editorial-media">
+          <img src={heroImg} alt="Wedding decoration concept preview" className="home-editorial-image" />
+        </div>
+        <article className="home-editorial-copy">
+          <p className="home-section-kicker">Article</p>
+          <h2>How the right decoration plan makes your event feel premium from the first minute</h2>
+          <p>
+            Guests decide the quality of an event in seconds. We plan lighting, floral zones,
+            stage balance, and photo backgrounds as one complete design so your wedding or
+            homecoming looks organized, elegant, and memorable.
+          </p>
+          <p>
+            This section helps visitors quickly understand your style before they open the full
+            gallery. It improves trust, keeps users on the page longer, and makes your contact
+            button more likely to get clicks.
+          </p>
+          <div className="home-actions">
+            <Link to="/gallery" className="home-btn home-btn-primary">
+              See Design Ideas
+            </Link>
+            <Link to="/contact" className="home-btn home-btn-secondary">
+              Plan My Event
+            </Link>
+          </div>
+        </article>
       </section>
 
       <section className="home-section">
