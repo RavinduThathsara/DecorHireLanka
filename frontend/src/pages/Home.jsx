@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import heroImg from "../assets/images/hero.png";
+import hero1Img from "../assets/images/hero1.png";
 
 const highlights = [
   {
@@ -60,14 +61,14 @@ export default function Home() {
       <section className="home-hero home-surface">
         <div className="home-hero-copy">
           <p className="home-eyebrow">DecorHire Lanka</p>
-          <h1>Customer-attracting wedding and homecoming decorations that feel premium.</h1>
-          <p className="home-lead">
-            We create wedding, reception, and homecoming spaces that look elegant in person and
-            in photos. The goal is simple: make your event feel memorable from the first step
-            inside.
+          <h1 style={{ marginBottom: "20px", fontWeight: "normal" }}>
+            Customer-attracting wedding and homecoming decorations <i style={{ color: "var(--accent-deep)", fontStyle: "italic", fontWeight: "normal" }}>that feel premium.</i>
+          </h1>
+          <p className="home-lead" style={{ marginBottom: "40px" }}>
+            We curate ethereal atmospheres for Sri Lanka's most prestigious celebrations, blending traditional heritage with modern editorial aesthetics.
           </p>
 
-          <div className="home-actions">
+          <div className="home-actions" style={{ marginBottom: "50px" }}>
             <Link to="/gallery" className="home-btn home-btn-primary">
               View Album
             </Link>
@@ -82,27 +83,35 @@ export default function Home() {
               <span>Events styled with care</span>
             </div>
             <div className="home-stat-card">
-              <strong>Wedding + Homecoming</strong>
+              <strong style={{ color: "var(--accent-deep)" }}>
+                Wedding + Homecoming
+              </strong>
               <span>Traditional and modern concepts</span>
             </div>
             <div className="home-stat-card">
-              <strong>Album-ready</strong>
+              <strong style={{ color: "var(--accent-deep)" }}>
+                Album-ready
+              </strong>
               <span>Decor planned to look strong in photos</span>
             </div>
           </div>
         </div>
 
-        <div className="home-hero-media">
-          <div className="home-hero-image-wrap">
-            {albumPhotos.slice(0, 4).map((photo, index) => (
-              <img
-                key={index}
-                src={photo.src}
-                alt={photo.title}
-                className="home-hero-image"
-              />
-            ))}
-          </div>
+        <div
+          className="home-hero-media"
+          style={{
+            position: "relative",
+            height: "100%",
+            minHeight: "700px",
+            width: "100%",
+            borderRadius: "24px",
+            overflow: "hidden",
+            backgroundImage: `url(${hero1Img})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            boxShadow: "0 18px 40px rgba(0, 0, 0, 0.15)"
+          }}
+        >
         </div>
       </section>
 
