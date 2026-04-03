@@ -55,77 +55,91 @@ export default function Navbar() {
 }
 
 const wrap = {
-  background: "white",
-  borderBottom: "1px solid #eee",
+  background: "#3e0202",
+  borderBottom: "3px solid #f97316",
   position: "sticky",
   top: 0,
   zIndex: 50,
+  boxShadow: "0 4px 6px rgba(0, 0, 0, 0.3)",
 };
 
 const inner = {
-  maxWidth: 1100,
+  maxWidth: 1200,
   margin: "0 auto",
-  padding: "14px 16px",
+  padding: "16px 24px",
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",
-  gap: 12,
+  gap: 16,
   flexWrap: "wrap",
 };
 
 const brand = {
   textDecoration: "none",
   fontWeight: 900,
-  color: "#111827",
-  fontSize: 18,
+  color: "#f97316",
+  fontSize: 22,
+  letterSpacing: "1px",
+  textTransform: "uppercase",
 };
 
 const nav = {
   display: "flex",
-  gap: 10,
+  gap: 15,
   flexWrap: "wrap",
   alignItems: "center",
 };
 
 const navLink = ({ isActive }) => ({
   textDecoration: "none",
-  fontWeight: 800,
-  fontSize: 14,
-  color: isActive ? "#111827" : "#4b5563",
-  padding: "8px 10px",
-  borderRadius: 10,
-  background: isActive ? "#f3f4f6" : "transparent",
+  fontWeight: 700,
+  fontSize: 15,
+  color: isActive ? "#ffffff" : "#9ca3af",
+  padding: "8px 16px",
+  borderRadius: 4,
+  background: isActive ? "#374151" : "transparent",
+  textTransform: "uppercase",
+  letterSpacing: "0.5px",
+  border: isActive ? "1px solid #4b5563" : "1px solid transparent",
+  transition: "all 0.2s ease-in-out",
 });
 
 const right = {
   display: "flex",
-  gap: 10,
+  gap: 12,
   alignItems: "center",
   flexWrap: "wrap",
 };
 
 const btnDark = {
   textDecoration: "none",
-  padding: "10px 12px",
-  borderRadius: 10,
+  padding: "10px 20px",
+  borderRadius: 4,
   border: "none",
-  fontWeight: 900,
-  background: "#111827",
-  color: "white",
+  fontWeight: 800,
+  background: "#f97316",
+  color: "#111827",
+  textTransform: "uppercase",
+  letterSpacing: "1px",
+  boxShadow: "0 2px 4px rgba(249, 115, 22, 0.4)",
+  transition: "all 0.2s ease",
 };
 
 const btnLight = {
   textDecoration: "none",
-  padding: "10px 12px",
-  borderRadius: 10,
-  border: "1px solid #e5e7eb",
-  fontWeight: 900,
-  background: "#f9fafb",
-  color: "#111827",
+  padding: "10px 20px",
+  borderRadius: 4,
+  border: "2px solid #4b5563",
+  fontWeight: 800,
+  background: "transparent",
+  color: "#e5e7eb",
   cursor: "pointer",
+  textTransform: "uppercase",
+  letterSpacing: "1px",
+  transition: "all 0.2s ease",
 };
 
 const userText = {
   fontWeight: 800,
-  color: "#111827",
+  color: "#f97316",
 };
