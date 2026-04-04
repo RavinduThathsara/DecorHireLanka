@@ -88,133 +88,246 @@ export default function PopularDecorations() {
 
   const displayDecorations = decorations.length
     ? decorations.map((item, index) => {
-        const fallback = fallbackDecorations[index % fallbackDecorations.length];
-        return {
-          ...fallback,
-          ...item,
-          imageUrl: item.imageUrl || fallback.imageUrl,
-        };
-      })
+      const fallback = fallbackDecorations[index % fallbackDecorations.length];
+      return {
+        ...fallback,
+        ...item,
+        imageUrl: item.imageUrl || fallback.imageUrl,
+      };
+    })
     : fallbackDecorations;
 
   return (
-    <div className="popular-page">
-      <section className="popular-hero">
+    <div className="popular-page" style={{ maxWidth: "100%", margin: 0, padding: 0, width: "100%" }}>
+      {/* FULL SCREEN HERO SECTION */}
+      <section style={{
+        background: "#fdf8f0",
+        width: "100%",
+        padding: "clamp(40px, 5vw, 80px) clamp(20px, 8vw, 80px)",
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+        gap: "clamp(40px, 6vw, 80px)",
+        alignItems: "center",
+        marginBottom: "40px",
+        boxSizing: "border-box",
+        borderBottom: "1px solid rgba(0,0,0,0.05)"
+      }}>
+        {/* LEFT COLUMN */}
         <div>
-          <p className="popular-kicker">Customer Favorite Packages</p>
-          <h1>Popular wedding decorations with images, details, and stronger customer appeal</h1>
-          <p className="popular-hero-text">
-            This page now shows attractive decoration packages with real visuals, package direction,
-            and customer-friendly details so visitors stay interested instead of seeing an empty
-            screen.
+          <p style={{
+            color: "#9b5b34",
+            textTransform: "uppercase",
+            letterSpacing: "2.5px",
+            fontSize: "0.85rem",
+            fontWeight: "800",
+            marginBottom: "20px"
+          }}>
+            Customer Favorite Packages
+          </p>
+          <h1 style={{
+            fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+            fontSize: "clamp(2.5rem, 5vw, 4rem)",
+            fontWeight: "900",
+            color: "#1a1a1a",
+            lineHeight: "1.1",
+            letterSpacing: "-0.5px",
+            marginTop: "0",
+            marginBottom: "24px"
+          }}>
+            Popular Decoration Packages
+          </h1>
+          <p style={{
+            fontSize: "1.1rem",
+            color: "#666",
+            lineHeight: "1.6",
+            marginBottom: "40px",
+            maxWidth: "600px"
+          }}>
+            This page now shows attractive decoration packages with real visuals,
+            package direction, and customer-friendly details so visitors stay interested
+            instead of seeing an empty screen.
           </p>
 
-          <div className="popular-hero-actions">
-            <Link to="/contact" className="popular-btn popular-btn-primary">
+          <div style={{ display: "flex", gap: "16px", flexWrap: "wrap", marginBottom: "40px" }}>
+            <Link to="/contact" style={{
+              background: "#824b2b",
+              color: "#fff",
+              padding: "16px 32px",
+              borderRadius: "30px",
+              textDecoration: "none",
+              fontWeight: "700",
+              fontSize: "1rem",
+              transition: "opacity 0.2s"
+            }}>
               Contact to Book
             </Link>
-            <Link to="/gallery" className="popular-btn popular-btn-secondary">
+            <Link to="/gallery" style={{
+              background: "#fff",
+              color: "#1a1a1a",
+              padding: "16px 32px",
+              borderRadius: "30px",
+              textDecoration: "none",
+              fontWeight: "700",
+              fontSize: "1rem",
+              boxShadow: "0 2px 10px rgba(0,0,0,0.05)",
+              transition: "box-shadow 0.2s"
+            }}>
               View More Images
             </Link>
           </div>
 
-          <div className="popular-badges">
-            <span>Wedding</span>
-            <span>Reception</span>
-            <span>Homecoming</span>
-            <span>Outdoor Events</span>
+          <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+            {["Wedding", "Reception", "Homecoming", "Outdoor Events"].map((label) => (
+              <span key={label} style={{
+                background: "#fff",
+                color: "#444",
+                padding: "8px 20px",
+                borderRadius: "20px",
+                fontSize: "0.9rem",
+                fontWeight: "600",
+                boxShadow: "0 2px 8px rgba(0,0,0,0.03)"
+              }}>
+                {label}
+              </span>
+            ))}
           </div>
         </div>
 
-        <div className="popular-side-card">
-          <h2>What customers want to see</h2>
-          <p>
+        {/* RIGHT COLUMN */}
+        <div style={{
+          background: "#362c28",
+          borderRadius: "24px",
+          padding: "clamp(30px, 4vw, 50px)",
+          color: "#fff",
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          maxWidth: "500px",
+          margin: "0 auto"
+        }}>
+          <h2 style={{
+            fontSize: "1.8rem",
+            fontWeight: "700",
+            marginBottom: "20px",
+            color: "#fff",
+            lineHeight: "1.3"
+          }}>
+            What customers want to see
+          </h2>
+          <p style={{
+            color: "#d4cdc8",
+            lineHeight: "1.7",
+            fontSize: "1.05rem",
+            marginBottom: "32px"
+          }}>
             Strong images, clear package information, and easy next steps. This layout is built to
             make the page feel active and trustworthy.
           </p>
-          <ul className="popular-side-list">
-            <li>Detailed decoration previews</li>
-            <li>Simple package pricing direction</li>
-            <li>Direct link for inquiry and booking</li>
+          <ul style={{
+            listStyleType: "disc",
+            paddingLeft: "20px",
+            margin: "0",
+            color: "#fff",
+            display: "flex",
+            flexDirection: "column",
+            gap: "16px"
+          }}>
+            <li style={{ paddingLeft: "8px" }}>Detailed decoration previews</li>
+            <li style={{ paddingLeft: "8px" }}>Simple package pricing direction</li>
+            <li style={{ paddingLeft: "8px" }}>Direct link for inquiry and booking</li>
           </ul>
         </div>
       </section>
 
-      <section className="popular-reasons">
-        {customerReasons.map((reason) => (
-          <article key={reason.title} className="popular-reason-card">
-            <h3>{reason.title}</h3>
-            <p>{reason.text}</p>
-          </article>
-        ))}
-      </section>
+      {/* REST OF PAGE CONTENT CENTERED AS NORMAL */}
+      <div style={{ maxWidth: "1180px", margin: "0 auto", padding: "0 20px" }}>
+        <section className="popular-reasons" style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+          gap: "24px",
+          marginBottom: "80px"
+        }}>
+          {customerReasons.map((reason) => (
+            <article key={reason.title} style={{
+              background: "#f8f9fa",
+              padding: "32px",
+              borderRadius: "20px",
+              boxShadow: "0 4px 15px rgba(0,0,0,0.03)"
+            }}>
+              <h3 style={{ fontSize: "1.25rem", fontWeight: "700", color: "#1a1a1a", marginBottom: "16px" }}>{reason.title}</h3>
+              <p style={{ color: "#666", lineHeight: "1.6", margin: "0" }}>{reason.text}</p>
+            </article>
+          ))}
+        </section>
 
-      <div style={topBar}>
-        <div>
-          <h2 style={{ margin: 0, fontSize: 34 }}>Popular Decoration Packages</h2>
-          <p style={{ marginTop: 8, color: "#6f645a", lineHeight: 1.7 }}>
-            Choose a package, or contact us to customize your own wedding theme.
-          </p>
+        <div style={topBar}>
+          <div>
+            <h2 style={{ margin: 0, fontSize: 34 }}>Popular Decoration Packages</h2>
+            <p style={{ marginTop: 8, color: "#6f645a", lineHeight: 1.7 }}>
+              Choose a package, or contact us to customize your own wedding theme.
+            </p>
+          </div>
+
+          <Link to="/contact" style={btnLight}>
+            Contact to Book
+          </Link>
         </div>
 
-        <Link to="/contact" style={btnLight}>
-          Contact to Book
-        </Link>
-      </div>
+        {loading && <div style={msgInfo}>Loading packages...</div>}
+        {error && <div style={msgError}>{error}</div>}
 
-      {loading && <div style={msgInfo}>Loading packages...</div>}
-      {error && <div style={msgError}>{error}</div>}
+        {!loading && decorations.length === 0 && (
+          <div style={msgInfo}>
+            No admin decorations added yet. Showing attractive sample packages for customers now.
+          </div>
+        )}
 
-      {!loading && decorations.length === 0 && (
-        <div style={msgInfo}>
-          No admin decorations added yet. Showing attractive sample packages for customers now.
-        </div>
-      )}
+        <div style={grid}>
+          {displayDecorations.map((d) => (
+            <div key={d._id} style={card}>
+              {d.tag ? <div style={tag}>{d.tag}</div> : null}
 
-      <div style={grid}>
-        {displayDecorations.map((d) => (
-          <div key={d._id} style={card}>
-            {d.tag ? <div style={tag}>{d.tag}</div> : null}
+              <img src={d.imageUrl} alt={d.title} style={cardImage} />
 
-            <img src={d.imageUrl} alt={d.title} style={cardImage} />
+              <h3 style={title}>{d.title}</h3>
+              <p style={desc}>{d.description}</p>
 
-            <h3 style={title}>{d.title}</h3>
-            <p style={desc}>{d.description}</p>
+              <div style={detailBox}>
+                <div style={detailLabel}>Ideal For</div>
+                <div style={detailText}>
+                  {d.idealFor || "Custom wedding venues and decorated event spaces"}
+                </div>
+              </div>
 
-            <div style={detailBox}>
-              <div style={detailLabel}>Ideal For</div>
-              <div style={detailText}>
-                {d.idealFor || "Custom wedding venues and decorated event spaces"}
+              <div style={includesWrap}>
+                {(d.includes || []).map((item) => (
+                  <span key={item} style={includeChip}>
+                    {item}
+                  </span>
+                ))}
+              </div>
+
+              <div style={bottomRow}>
+                <span style={price}>{d.priceFrom}</span>
+                <Link
+                  to={`/book?id=${encodeURIComponent(d._id)}&title=${encodeURIComponent(
+                    d.title
+                  )}`}
+                  style={btnLight}
+                >
+                  Book Now
+                </Link>
               </div>
             </div>
+          ))}
+        </div>
 
-            <div style={includesWrap}>
-              {(d.includes || []).map((item) => (
-                <span key={item} style={includeChip}>
-                  {item}
-                </span>
-              ))}
-            </div>
-
-            <div style={bottomRow}>
-              <span style={price}>{d.priceFrom}</span>
-              <Link
-                to={`/book?id=${encodeURIComponent(d._id)}&title=${encodeURIComponent(
-                  d.title
-                )}`}
-                style={btnLight}
-              >
-                Book Now
-              </Link>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      <div style={note}>
-        <strong>Note:</strong> Prices depend on location, hall size, flower type, lighting, and
-        customization. Add your own live packages from <strong>/admin/decorations</strong> and use
-        image paths like <strong>/gallery/gallery1.png</strong> to show your real work here.
+        <div style={note}>
+          <strong>Note:</strong> Prices depend on location, hall size, flower type, lighting, and
+          customization. Add your own live packages from <strong>/admin/decorations</strong> and use
+          image paths like <strong>/gallery/gallery1.png</strong> to show your real work here.
+        </div>
       </div>
     </div>
   );
