@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import hero3Img from "../assets/images/hero3.png";
 
 const services = [
     {
@@ -126,6 +127,9 @@ export default function Services() {
                         </Link>
                     </div>
                 </div>
+                <div style={heroImageContainer}>
+                    <img src={hero3Img} alt="Decoration Services" style={heroImageStyle} />
+                </div>
             </section>
 
             {/* Services Grid */}
@@ -210,12 +214,15 @@ const hero = {
     maxWidth: 1100,
     margin: "0 auto",
     padding: "60px 20px",
-    textAlign: "center",
+    display: "flex",
+    flexWrap: "wrap",
+    alignItems: "center",
+    gap: "40px",
 };
 
 const heroContent = {
-    maxWidth: 700,
-    margin: "0 auto",
+    flex: "1 1 400px",
+    maxWidth: 600,
 };
 
 const eyebrow = {
@@ -245,8 +252,22 @@ const heroText = {
 const heroActions = {
     display: "flex",
     gap: 12,
-    justifyContent: "center",
     flexWrap: "wrap",
+};
+
+const heroImageContainer = {
+    flex: "1 1 400px",
+    borderRadius: "24px",
+    overflow: "hidden",
+    boxShadow: "0 20px 40px rgba(0,0,0,0.1)",
+    display: "flex",
+};
+
+const heroImageStyle = {
+    width: "100%",
+    height: "100%",
+    maxHeight: "450px",
+    objectFit: "cover",
 };
 
 const section = {
