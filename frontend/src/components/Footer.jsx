@@ -1,6 +1,10 @@
 // frontend/src/components/Footer.jsx
 import { Link } from "react-router-dom";
 import React from "react";
+import facebookIcon from "../assets/images/facebook.png";
+import instagramIcon from "../assets/images/instragram.png";
+import tiktokIcon from "../assets/images/tiktok.png";
+import youtubeIcon from "../assets/images/youtube.png";
 
 export default function Footer() {
   return (
@@ -71,29 +75,19 @@ export default function Footer() {
             <h3 style={{ margin: 0, fontSize: 16, color: "white", fontWeight: 700 }}>Follow Us</h3>
             <div style={{ marginTop: 16, display: "grid", gap: 12, fontSize: 15 }}>
               <a href="#" style={{ ...footerLink, display: "flex", alignItems: "center", gap: "10px" }}>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" />
-                </svg>
+                <img src={facebookIcon} alt="Facebook" style={{ width: 20, height: 20 }} />
                 Facebook
               </a>
               <a href="#" style={{ ...footerLink, display: "flex", alignItems: "center", gap: "10px" }}>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                </svg>
+                <img src={instagramIcon} alt="Instagram" style={{ width: 20, height: 20 }} />
                 Instagram
               </a>
               <a href="#" style={{ ...footerLink, display: "flex", alignItems: "center", gap: "10px" }}>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path>
-                </svg>
+                <img src={tiktokIcon} alt="TikTok" style={{ width: 20, height: 20 }} />
                 TikTok
               </a>
               <a href="#" style={{ ...footerLink, display: "flex", alignItems: "center", gap: "10px" }}>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M21.543 6.498C22 8.28 22 12 22 12s0 3.72-.457 5.502c-.254.985-.997 1.76-1.938 2.022C17.896 20 12 20 12 20s-5.896 0-7.605-.476c-.94-.266-1.684-1.04-1.938-2.022C2 15.72 2 12 2 12s0-3.72.457-5.502c.254-.985.997-1.76 1.938-2.022C6.104 4 12 4 12 4s5.896 0 7.605.476c.94.266 1.684 1.04 1.938 2.022zM10 15.5l6-3.5-6-3.5v7z" />
-                </svg>
+                <img src={youtubeIcon} alt="YouTube" style={{ width: 20, height: 20 }} />
                 YouTube
               </a>
             </div>
