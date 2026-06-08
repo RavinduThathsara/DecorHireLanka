@@ -2,7 +2,7 @@
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL: "https://decorhirelanka-backend.onrender.com",
 });
 
 // Helpers for token
