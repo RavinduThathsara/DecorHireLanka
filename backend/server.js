@@ -4,19 +4,19 @@ import cors from "cors";
 import dotenv from "dotenv";
 import path from "path";
 
-import { connectDB } from "./config/db.js";
+import { connectDB } from "./src/config/db.js";
 
-import customerAuthRoutes from "./routes/customerAuthRoutes.js";
-import adminSeedRoutes from "./routes/adminSeedRoutes.js";
-import contactRoutes from "./routes/contactRoutes.js";
-import adminMessagesRoutes from "./routes/adminMessagesRoutes.js";
-import decorationRoutes from "./routes/decorationRoutes.js";
-import galleryRoutes from "./routes/galleryRoutes.js";
-import bookingRoutes from "./routes/bookingRoutes.js";
-import adminRoutes from "./routes/adminRoutes.js";
+import customerAuthRoutes from "./src/routes/customerAuthRoutes.js";
+import adminSeedRoutes from "./src/routes/adminSeedRoutes.js";
+import contactRoutes from "./src/routes/contactRoutes.js";
+import adminMessagesRoutes from "./src/routes/adminMessagesRoutes.js";
+import decorationRoutes from "./src/routes/decorationRoutes.js";
+import galleryRoutes from "./src/routes/galleryRoutes.js";
+import bookingRoutes from "./src/routes/bookingRoutes.js";
+import adminRoutes from "./src/routes/adminRoutes.js";
 
 
-import { requireAuth, requireAdmin } from "./middleware/auth.js";
+import { requireAuth, requireAdmin } from "./src/middleware/auth.js";
 
 dotenv.config();
 
