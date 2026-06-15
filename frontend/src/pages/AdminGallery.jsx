@@ -231,7 +231,7 @@ export default function AdminGallery() {
           {filteredItems.map((img) => (
             <div key={img._id} style={tile}>
               <img
-                src={`http://localhost:5000${img.imageUrl}`}
+                src={`${import.meta.env.VITE_API_URL}${img.imageUrl}`}
                 alt={
                   img.title ||
                   ((img.category || "other") === "wedding"
