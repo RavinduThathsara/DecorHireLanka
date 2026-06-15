@@ -19,19 +19,31 @@ const customerSchema = new mongoose.Schema(
     },
     phone: {
       type: String,
-      required: true,
       trim: true,
       maxlength: 30,
+      default: "",
     },
     location: {
       type: String,
-      required: true,
       trim: true,
       maxlength: 120,
+      default: "",
     },
     passwordHash: {
       type: String,
-      required: true,
+      default: "",
+    },
+    googleId: {
+      type: String,
+      default: "",
+      trim: true,
+      unique: true,
+      sparse: true,
+    },
+    authProvider: {
+      type: String,
+      default: "local",
+      enum: ["local", "google"],
     },
   },
   { timestamps: true }

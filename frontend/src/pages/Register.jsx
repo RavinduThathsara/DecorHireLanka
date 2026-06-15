@@ -1,12 +1,39 @@
-// frontend/src/pages/Register.jsx
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { api } from "../services/api.js";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || "";
+
+function loadGoogleScript() {
+  return new Promise((resolve, reject) => {
+    if (window.google?.accounts?.id) {
+      resolve();
+      return;
+    }
+
+    const existing = document.querySelector('script[data-google-identity="true"]');
+    if (existing) {
+      existing.addEventListener("load", resolve, { once: true });
+      existing.addEventListener("error", reject, { once: true });
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.src = "https://accounts.google.com/gsi/client";
+    script.async = true;
+    script.defer = true;
+    script.dataset.googleIdentity = "true";
+    script.onload = resolve;
+    script.onerror = () => reject(new Error("Failed to load Google sign-in."));
+    document.body.appendChild(script);
+  });
+}
+
 export default function Register() {
   const navigate = useNavigate();
   const { loginCustomer } = useAuth();
+  const googleBtnRef = useRef(null);
 
   const [form, setForm] = useState({
     email: "",
@@ -21,6 +48,63 @@ export default function Register() {
   const [success, setSuccess] = useState("");
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
+  const [googleReady, setGoogleReady] = useState(false);
+
+  useEffect(() => {
+    let mounted = true;
+
+    const setupGoogle = async () => {
+      if (!GOOGLE_CLIENT_ID || !googleBtnRef.current) return;
+
+      try {
+        await loadGoogleScript();
+        if (!mounted || !window.google?.accounts?.id || !googleBtnRef.current) return;
+
+        window.google.accounts.id.initialize({
+          client_id: GOOGLE_CLIENT_ID,
+          callback: async (response) => {
+            try {
+              setLoading(true);
+              setError("");
+              setSuccess("");
+
+              const res = await api.post("/api/customers/google", {
+                credential: response.credential,
+              });
+
+              loginCustomer({ token: res.data.token, customer: res.data.customer });
+              setSuccess("Google sign-up successful! Redirecting to home...");
+              setTimeout(() => navigate("/"), 900);
+            } catch (err) {
+              setError(err?.response?.data?.message || "Google sign-up failed.");
+            } finally {
+              setLoading(false);
+            }
+          },
+        });
+
+        googleBtnRef.current.innerHTML = "";
+        window.google.accounts.id.renderButton(googleBtnRef.current, {
+          theme: "outline",
+          size: "large",
+          shape: "rectangular",
+          text: "signup_with",
+          width: 416,
+        });
+        setGoogleReady(true);
+      } catch (err) {
+        if (mounted) {
+          setError("Google sign-up is unavailable right now.");
+        }
+      }
+    };
+
+    setupGoogle();
+
+    return () => {
+      mounted = false;
+    };
+  }, [loginCustomer, navigate]);
 
   const validateField = (name, value) => {
     const trimmed = value.trim();
@@ -142,7 +226,6 @@ export default function Register() {
 
       const res = await api.post("/api/customers/register", cleanedForm);
 
-      // ✅ set AuthContext + localStorage
       loginCustomer({ token: res.data.token, customer: res.data.customer });
 
       setSuccess("Registration successful! Redirecting to home...");
@@ -247,6 +330,22 @@ export default function Register() {
             {loading ? "Creating Account..." : "Register"}
           </button>
 
+          <div style={dividerWrap}>
+            <span style={dividerLine} />
+            <span style={dividerText}>or</span>
+            <span style={dividerLine} />
+          </div>
+
+          <div style={googleSection}>
+            <div ref={googleBtnRef} style={googleButtonMount} />
+            {!GOOGLE_CLIENT_ID && (
+              <div style={googleInfo}>Set `VITE_GOOGLE_CLIENT_ID` to enable Google sign-up.</div>
+            )}
+            {GOOGLE_CLIENT_ID && !googleReady && !loading && (
+              <div style={googleInfo}>Loading Google sign-up...</div>
+            )}
+          </div>
+
           {error && <div style={msgError}>{error}</div>}
           {success && <div style={msgOk}>{success}</div>}
         </form>
@@ -264,7 +363,6 @@ export default function Register() {
   );
 }
 
-/* Modern Industry-Level Styles */
 const container = {
   minHeight: "calc(100vh - 200px)",
   display: "flex",
@@ -294,7 +392,8 @@ const title = {
   fontSize: 28,
   fontWeight: 700,
   color: "#111827",
-  fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif",
+  fontFamily:
+    "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif",
   letterSpacing: "-0.02em",
 };
 
@@ -322,7 +421,8 @@ const label = {
   fontSize: 14,
   fontWeight: 600,
   color: "#374151",
-  fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif",
+  fontFamily:
+    "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif",
 };
 
 const input = {
@@ -331,7 +431,8 @@ const input = {
   border: "1px solid #d1d5db",
   outline: "none",
   fontSize: 15,
-  fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif",
+  fontFamily:
+    "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif",
   fontWeight: 400,
   color: "#111827",
   backgroundColor: "white",
@@ -365,8 +466,45 @@ const btn = {
   color: "white",
   cursor: "pointer",
   transition: "background 0.2s, transform 0.1s",
-  fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif",
+  fontFamily:
+    "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif",
   marginTop: 8,
+};
+
+const dividerWrap = {
+  display: "flex",
+  alignItems: "center",
+  gap: 12,
+  marginTop: -4,
+};
+
+const dividerLine = {
+  flex: 1,
+  height: 1,
+  background: "#e5e7eb",
+};
+
+const dividerText = {
+  color: "#9ca3af",
+  fontSize: 13,
+  fontWeight: 600,
+};
+
+const googleSection = {
+  display: "grid",
+  gap: 8,
+};
+
+const googleButtonMount = {
+  display: "flex",
+  justifyContent: "center",
+  minHeight: 44,
+};
+
+const googleInfo = {
+  textAlign: "center",
+  color: "#6b7280",
+  fontSize: 13,
 };
 
 const msgError = {

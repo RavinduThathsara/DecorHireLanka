@@ -1,17 +1,101 @@
-// frontend/src/pages/Login.jsx
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { api } from "../services/api.js";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
+
+const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || "";
+
+function loadGoogleScript() {
+  return new Promise((resolve, reject) => {
+    if (window.google?.accounts?.id) {
+      resolve();
+      return;
+    }
+
+    const existing = document.querySelector('script[data-google-identity="true"]');
+    if (existing) {
+      existing.addEventListener("load", resolve, { once: true });
+      existing.addEventListener("error", reject, { once: true });
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.src = "https://accounts.google.com/gsi/client";
+    script.async = true;
+    script.defer = true;
+    script.dataset.googleIdentity = "true";
+    script.onload = resolve;
+    script.onerror = () => reject(new Error("Failed to load Google sign-in."));
+    document.body.appendChild(script);
+  });
+}
 
 export default function Login() {
   const navigate = useNavigate();
   const { loginCustomer } = useAuth();
+  const googleBtnRef = useRef(null);
 
   const [form, setForm] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [googleReady, setGoogleReady] = useState(false);
+
+  useEffect(() => {
+    let mounted = true;
+
+    const setupGoogle = async () => {
+      if (!GOOGLE_CLIENT_ID || !googleBtnRef.current) return;
+
+      try {
+        await loadGoogleScript();
+        if (!mounted || !window.google?.accounts?.id || !googleBtnRef.current) return;
+
+        window.google.accounts.id.initialize({
+          client_id: GOOGLE_CLIENT_ID,
+          callback: async (response) => {
+            try {
+              setLoading(true);
+              setError("");
+              setSuccess("");
+
+              const res = await api.post("/api/customers/google", {
+                credential: response.credential,
+              });
+
+              loginCustomer({ token: res.data.token, customer: res.data.customer });
+              setSuccess("Google login successful! Redirecting to home...");
+              setTimeout(() => navigate("/"), 900);
+            } catch (err) {
+              setError(err?.response?.data?.message || "Google login failed.");
+            } finally {
+              setLoading(false);
+            }
+          },
+        });
+
+        googleBtnRef.current.innerHTML = "";
+        window.google.accounts.id.renderButton(googleBtnRef.current, {
+          theme: "outline",
+          size: "large",
+          shape: "rectangular",
+          text: "signin_with",
+          width: 420,
+        });
+        setGoogleReady(true);
+      } catch (err) {
+        if (mounted) {
+          setError("Google login is unavailable right now.");
+        }
+      }
+    };
+
+    setupGoogle();
+
+    return () => {
+      mounted = false;
+    };
+  }, [loginCustomer, navigate]);
 
   const onChange = (e) => {
     setForm((p) => ({ ...p, [e.target.name]: e.target.value }));
@@ -27,7 +111,6 @@ export default function Login() {
 
       const res = await api.post("/api/customers/login", form);
 
-      // ✅ set AuthContext + localStorage
       loginCustomer({ token: res.data.token, customer: res.data.customer });
 
       setSuccess("Login successful! Redirecting to home...");
@@ -40,26 +123,174 @@ export default function Login() {
   };
 
   return (
-    <div style={card}>
-      <h1 style={{ marginTop: 0 }}>Customer Login</h1>
+    <div style={pageWrap}>
+      <div style={card}>
+        <h1 style={title}>Customer Login</h1>
 
-      <form onSubmit={onSubmit} style={{ display: "grid", gap: 12 }}>
-        <input style={input} name="email" type="email" placeholder="Email" value={form.email} onChange={onChange} required />
-        <input style={input} name="password" type="password" placeholder="Password" value={form.password} onChange={onChange} required />
+        <form onSubmit={onSubmit} style={formStyle}>
+          <input
+            style={input}
+            name="email"
+            type="email"
+            placeholder="Email"
+            value={form.email}
+            onChange={onChange}
+            required
+          />
+          <input
+            style={input}
+            name="password"
+            type="password"
+            placeholder="Password"
+            value={form.password}
+            onChange={onChange}
+            required
+          />
 
-        <button style={btn} disabled={loading}>
-          {loading ? "Logging in..." : "Login"}
-        </button>
+          <button style={btn} disabled={loading}>
+            {loading ? "Logging in..." : "Login"}
+          </button>
 
-        {error && <div style={msgError}>{error}</div>}
-        {success && <div style={msgOk}>{success}</div>}
-      </form>
+          <div style={dividerWrap}>
+            <span style={dividerLine} />
+            <span style={dividerText}>or</span>
+            <span style={dividerLine} />
+          </div>
+
+          <div style={googleSection}>
+            <div ref={googleBtnRef} style={googleButtonMount} />
+            {!GOOGLE_CLIENT_ID && (
+              <div style={googleInfo}>Set `VITE_GOOGLE_CLIENT_ID` to enable Google login.</div>
+            )}
+            {GOOGLE_CLIENT_ID && !googleReady && !loading && (
+              <div style={googleInfo}>Loading Google login...</div>
+            )}
+          </div>
+
+          {error && <div style={msgError}>{error}</div>}
+          {success && <div style={msgOk}>{success}</div>}
+        </form>
+
+        <p style={footerText}>
+          Don&apos;t have an account?{" "}
+          <Link to="/register" style={link}>
+            Register
+          </Link>
+        </p>
+      </div>
     </div>
   );
 }
 
-const card = { maxWidth: 420, margin: "0 auto", padding: 18, border: "1px solid #eee", borderRadius: 14, background: "white" };
-const input = { padding: "12px 12px", borderRadius: 10, border: "1px solid #ddd", outline: "none", fontSize: 14 };
-const btn = { padding: "12px 12px", borderRadius: 10, border: "none", fontWeight: 800, background: "#111827", color: "white", cursor: "pointer" };
-const msgError = { padding: 12, borderRadius: 10, background: "#fee2e2", color: "#991b1b", fontWeight: 700 };
-const msgOk = { padding: 12, borderRadius: 10, background: "#dcfce7", color: "#166534", fontWeight: 700 };
+const pageWrap = {
+  minHeight: "calc(100vh - 200px)",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  padding: "40px 20px",
+};
+
+const card = {
+  maxWidth: 520,
+  width: "100%",
+  margin: "0 auto",
+  padding: 22,
+  border: "1px solid #eee",
+  borderRadius: 20,
+  background: "white",
+};
+
+const title = {
+  marginTop: 0,
+  marginBottom: 18,
+  fontSize: 28,
+  fontWeight: 800,
+  color: "#111827",
+};
+
+const formStyle = {
+  display: "grid",
+  gap: 14,
+};
+
+const input = {
+  padding: "14px 14px",
+  borderRadius: 12,
+  border: "1px solid #ddd",
+  outline: "none",
+  fontSize: 14,
+};
+
+const btn = {
+  padding: "14px 14px",
+  borderRadius: 14,
+  border: "none",
+  fontWeight: 800,
+  background: "#111827",
+  color: "white",
+  cursor: "pointer",
+};
+
+const dividerWrap = {
+  display: "flex",
+  alignItems: "center",
+  gap: 12,
+  marginTop: 4,
+};
+
+const dividerLine = {
+  flex: 1,
+  height: 1,
+  background: "#e5e7eb",
+};
+
+const dividerText = {
+  color: "#9ca3af",
+  fontSize: 13,
+  fontWeight: 600,
+};
+
+const googleSection = {
+  display: "grid",
+  gap: 8,
+};
+
+const googleButtonMount = {
+  display: "flex",
+  justifyContent: "center",
+  minHeight: 44,
+};
+
+const googleInfo = {
+  textAlign: "center",
+  color: "#6b7280",
+  fontSize: 13,
+};
+
+const msgError = {
+  padding: 12,
+  borderRadius: 10,
+  background: "#fee2e2",
+  color: "#991b1b",
+  fontWeight: 700,
+};
+
+const msgOk = {
+  padding: 12,
+  borderRadius: 10,
+  background: "#dcfce7",
+  color: "#166534",
+  fontWeight: 700,
+};
+
+const footerText = {
+  margin: "18px 0 0",
+  textAlign: "center",
+  color: "#6b7280",
+};
+
+const link = {
+  color: "#2563eb",
+  textDecoration: "none",
+  fontWeight: 700,
+};
