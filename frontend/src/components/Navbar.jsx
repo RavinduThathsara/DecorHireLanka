@@ -34,6 +34,9 @@ export default function Navbar() {
           <NavLink to="/gallery" className={navLinkClass}>
             Gallery
           </NavLink>
+          <NavLink to="/book" className={navLinkClass}>
+            Booking
+          </NavLink>
           <NavLink to="/contact" className={navLinkClass}>
             Contact
           </NavLink>

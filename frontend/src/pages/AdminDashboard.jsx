@@ -2,6 +2,8 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { api } from "../services/api.js";
 
+const MONTH_LABELS = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN"];
+
 export default function AdminDashboard() {
   const navigate = useNavigate();
   const token = useMemo(() => localStorage.getItem("adminToken"), []);
@@ -9,7 +11,7 @@ export default function AdminDashboard() {
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-
+  const [searchTerm, setSearchTerm] = useState("");
   const [bookings, setBookings] = useState([]);
   const [messages, setMessages] = useState([]);
 
@@ -43,39 +45,185 @@ export default function AdminDashboard() {
 
   const totalBookings = bookings.length;
   const newBookings = bookings.filter((b) => (b.status || "NEW") === "NEW").length;
-
   const totalMessages = messages.length;
   const newMessages = messages.filter((m) => (m.status || "NEW") === "NEW").length;
+  const normalizedSearch = searchTerm.trim().toLowerCase();
+
+  const monthBars = useMemo(() => {
+    const currentYear = new Date().getFullYear();
+    const counts = new Array(MONTH_LABELS.length).fill(0);
+
+    bookings.forEach((booking) => {
+      const sourceDate = booking.createdAt || booking.eventDate;
+      const parsed = new Date(sourceDate);
+      if (Number.isNaN(parsed.getTime())) return;
+      if (parsed.getFullYear() !== currentYear) return;
+      const monthIndex = parsed.getMonth();
+      if (monthIndex >= 0 && monthIndex < MONTH_LABELS.length) {
+        counts[monthIndex] += 1;
+      }
+    });
+
+    const highest = Math.max(...counts, 1);
+
+    return MONTH_LABELS.map((label, index) => ({
+      label,
+      value: counts[index],
+      height: 38 + (counts[index] / highest) * 70,
+      active: counts[index] === highest && counts[index] > 0,
+    }));
+  }, [bookings]);
+
+  const quickActions = [
+    {
+      to: "/admin/bookings",
+      title: "New Booking",
+      icon: "+",
+      primary: true,
+    },
+    {
+      to: "/admin/contacts",
+      title: "Broadcast Message",
+      icon: "~",
+    },
+    {
+      to: "/admin/decorations",
+      title: "Add Decoration",
+      icon: "[]",
+    },
+    {
+      to: "/admin/gallery",
+      title: "Update Gallery",
+      icon: "R",
+    },
+  ];
+
+  const filteredQuickActions = quickActions.filter((item) =>
+    normalizedSearch
+      ? item.title.toLowerCase().includes(normalizedSearch)
+      : true
+  );
+
+  const filteredBookings = bookings.filter((booking) =>
+    normalizedSearch
+      ? [booking.decorationTitle, booking.name, booking.phone, booking.status]
+          .filter(Boolean)
+          .some((value) => String(value).toLowerCase().includes(normalizedSearch))
+      : true
+  );
+
+  const filteredMessages = messages.filter((message) =>
+    normalizedSearch
+      ? [message.name, message.email, message.eventType, message.status]
+          .filter(Boolean)
+          .some((value) => String(value).toLowerCase().includes(normalizedSearch))
+      : true
+  );
+
+  const formatShortDate = (value) => {
+    if (!value) return "";
+    const parsed = new Date(value);
+    if (Number.isNaN(parsed.getTime())) return "";
+    return parsed.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+    });
+  };
+
+  const getInitials = (value) =>
+    String(value || "")
+      .trim()
+      .split(/\s+/)
+      .slice(0, 2)
+      .map((part) => part[0]?.toUpperCase() || "")
+      .join("");
 
   return (
     <div style={pageContainer}>
       <header style={pageHeader}>
-        <div>
-          <h1 style={pageTitle}>Dashboard</h1>
-          <p style={pageLead}>
-            Overview of bookings and contact messages. Use the sidebar or the shortcuts below to
-            manage content.
-          </p>
-        </div>
+        <h1 style={pageTitle}>Dashboard Overview</h1>
+        <p style={pageLead}>Manage bookings, messages, gallery updates, and monthly activity.</p>
+        <label style={searchWrap}>
+          <span style={searchIcon}>Q</span>
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder="Search actions, bookings, or messages..."
+            style={searchInput}
+          />
+        </label>
       </header>
 
-      {loading && <p style={mutedText}>Loading dashboard…</p>}
+      {loading && <p style={mutedText}>Loading dashboard...</p>}
       {error && <div style={alertError}>{error}</div>}
 
       {!loading && !error && (
         <>
-          {/* Stats Grid */}
+          <section style={overviewGrid}>
+            <div style={actionsCard}>
+              <h2 style={actionsTitle}>Quick Actions</h2>
+              <div style={actionsList}>
+                {filteredQuickActions.map((item) => (
+                  <NavLink
+                    key={item.to}
+                    to={item.to}
+                    style={({ isActive }) => ({
+                      ...actionButton,
+                      ...(item.primary ? actionButtonPrimary : {}),
+                      ...(isActive ? actionButtonActive : {}),
+                    })}
+                  >
+                    <span style={item.primary ? actionIconPrimary : actionIcon}>{item.icon}</span>
+                    <span style={item.primary ? actionTextPrimary : actionText}>{item.title}</span>
+                  </NavLink>
+                ))}
+                {filteredQuickActions.length === 0 && (
+                  <p style={emptySearchState}>No matching actions.</p>
+                )}
+              </div>
+            </div>
+
+            <div style={chartCard}>
+              <div style={chartHead}>
+                <div>
+                  <h2 style={chartTitle}>Bookings by Month</h2>
+                  <p style={chartSubhead}>YEAR-TO-DATE COMPARISON</p>
+                </div>
+                <span style={chartYearBadge}>{new Date().getFullYear()}</span>
+              </div>
+
+              <div style={chartBars}>
+                {monthBars.map((bar) => (
+                  <div key={bar.label} style={chartBarItem}>
+                    <div
+                      style={{
+                        ...chartBar,
+                        height: `${bar.height}px`,
+                        ...(bar.active ? chartBarActive : {}),
+                      }}
+                      title={`${bar.label}: ${bar.value}`}
+                    />
+                    <span style={{ ...chartLabel, ...(bar.active ? chartLabelActive : {}) }}>
+                      {bar.label}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+
           <section style={statsGrid}>
             <div style={statCard}>
-              <div style={statIcon}>📦</div>
+              <div style={statIcon}>BK</div>
               <div style={statContent}>
                 <div style={statValue}>{totalBookings}</div>
                 <div style={statLabel}>Total Bookings</div>
               </div>
             </div>
 
-            <div style={{ ...statCard, ...statCardNew }}>
-              <div style={statIcon}>🆕</div>
+            <div style={{ ...statCard, ...statCardSoft }}>
+              <div style={statIcon}>NW</div>
               <div style={statContent}>
                 <div style={statValue}>{newBookings}</div>
                 <div style={statLabel}>New Bookings</div>
@@ -83,15 +231,15 @@ export default function AdminDashboard() {
             </div>
 
             <div style={statCard}>
-              <div style={statIcon}>💬</div>
+              <div style={statIcon}>MS</div>
               <div style={statContent}>
                 <div style={statValue}>{totalMessages}</div>
                 <div style={statLabel}>Total Messages</div>
               </div>
             </div>
 
-            <div style={{ ...statCard, ...statCardNew }}>
-              <div style={statIcon}>✉️</div>
+            <div style={{ ...statCard, ...statCardSoft }}>
+              <div style={statIcon}>NM</div>
               <div style={statContent}>
                 <div style={statValue}>{newMessages}</div>
                 <div style={statLabel}>New Messages</div>
@@ -99,105 +247,59 @@ export default function AdminDashboard() {
             </div>
           </section>
 
-          {/* Quick Actions */}
-          <section style={quickSection}>
-            <h2 style={sectionTitle}>Quick Actions</h2>
-            <div style={quickGrid}>
-              <NavLink
-                to="/admin/bookings"
-                style={({ isActive }) => ({
-                  ...quickCard,
-                  ...(isActive ? quickCardActive : {}),
-                })}
-              >
-                <div style={quickIcon}>📋</div>
-                <div style={quickContent}>
-                  <span style={quickTitle}>Bookings</span>
-                  <span style={quickDesc}>View and update booking status</span>
-                </div>
-                <span style={quickArrow}>→</span>
-              </NavLink>
-
-              <NavLink
-                to="/admin/contacts"
-                style={({ isActive }) => ({
-                  ...quickCard,
-                  ...(isActive ? quickCardActive : {}),
-                })}
-              >
-                <div style={quickIcon}>📨</div>
-                <div style={quickContent}>
-                  <span style={quickTitle}>Messages</span>
-                  <span style={quickDesc}>Contact form submissions</span>
-                </div>
-                <span style={quickArrow}>→</span>
-              </NavLink>
-
-              <NavLink
-                to="/admin/gallery"
-                style={({ isActive }) => ({
-                  ...quickCard,
-                  ...(isActive ? quickCardActive : {}),
-                })}
-              >
-                <div style={quickIcon}>🖼️</div>
-                <div style={quickContent}>
-                  <span style={quickTitle}>Gallery</span>
-                  <span style={quickDesc}>Upload and manage gallery images</span>
-                </div>
-                <span style={quickArrow}>→</span>
-              </NavLink>
-
-              <NavLink
-                to="/admin/decorations"
-                style={({ isActive }) => ({
-                  ...quickCard,
-                  ...(isActive ? quickCardActive : {}),
-                })}
-              >
-                <div style={quickIcon}>🎨</div>
-                <div style={quickContent}>
-                  <span style={quickTitle}>Decorations</span>
-                  <span style={quickDesc}>Edit decoration listings</span>
-                </div>
-                <span style={quickArrow}>→</span>
-              </NavLink>
-            </div>
-          </section>
-
-          {/* Recent Activity Panels */}
           <div style={panelsGrid}>
             <section style={panel}>
               <div style={panelHeader}>
                 <h2 style={panelTitle}>Recent Bookings</h2>
                 <Link to="/admin/bookings" style={panelLink}>
-                  View all →
+                  View all &gt;
                 </Link>
               </div>
 
               <div style={panelContent}>
-                {bookings.slice(0, 5).map((b) => (
+                {filteredBookings.slice(0, 5).map((b) => (
                   <div key={b._id} style={panelRow}>
-                    <div style={panelRowMain}>
-                      <div style={panelRowTitle}>{b.decorationTitle}</div>
-                      <div style={panelRowMeta}>
-                        <span>{b.name}</span>
-                        <span style={metaDot}>•</span>
-                        <span>{b.phone}</span>
+                    <div style={panelRowIdentity}>
+                      <div style={panelAvatar}>{getInitials(b.name || b.decorationTitle)}</div>
+                      <div style={panelRowMain}>
+                        <div style={panelRowTop}>
+                          <div style={panelRowTitle}>{b.decorationTitle}</div>
+                          <div style={panelRowDate}>{formatShortDate(b.createdAt)}</div>
+                        </div>
+                        <div style={panelRowMeta}>
+                          <span>{b.name}</span>
+                          <span style={metaDot}>/</span>
+                          <span>{b.phone}</span>
+                        </div>
+                        <div style={panelRowSubmeta}>
+                          <span>Event date</span>
+                          <span style={metaDot}>/</span>
+                          <span>{b.eventDate}</span>
+                        </div>
                       </div>
                     </div>
-                    <div style={
-                      (b.status || "NEW") === "NEW"
-                        ? statusBadgeNew
-                        : statusBadgeConfirmed
-                    }>
+                    <div
+                      style={
+                        (b.status || "NEW") === "NEW" ? statusBadgeNew : statusBadgeConfirmed
+                      }
+                    >
                       {b.status || "NEW"}
                     </div>
                   </div>
                 ))}
 
-                {bookings.length === 0 && (
-                  <p style={emptyState}>No bookings yet.</p>
+                {filteredBookings.length === 0 && (
+                  <div style={emptyStateCard}>
+                    <div style={emptyStateIcon}>BK</div>
+                    <p style={emptyStateTitle}>
+                      {normalizedSearch ? "No matching bookings found" : "No bookings yet"}
+                    </p>
+                    <p style={emptyStateText}>
+                      {normalizedSearch
+                        ? "Try a different search term to find booking records."
+                        : "New booking requests will appear here for quick review."}
+                    </p>
+                  </div>
                 )}
               </div>
             </section>
@@ -206,37 +308,58 @@ export default function AdminDashboard() {
               <div style={panelHeader}>
                 <h2 style={panelTitle}>Recent Messages</h2>
                 <Link to="/admin/contacts" style={panelLink}>
-                  View all →
+                  View all &gt;
                 </Link>
               </div>
 
               <div style={panelContent}>
-                {messages.slice(0, 5).map((m) => (
+                {filteredMessages.slice(0, 5).map((m) => (
                   <div key={m._id} style={panelRow}>
-                    <div style={panelRowMain}>
-                      <div style={panelRowTitle}>{m.name}</div>
-                      <div style={panelRowMeta}>
-                        <span>{m.email}</span>
-                        {m.eventType && (
-                          <>
-                            <span style={metaDot}>•</span>
-                            <span>{m.eventType}</span>
-                          </>
-                        )}
+                    <div style={panelRowIdentity}>
+                      <div style={panelAvatar}>{getInitials(m.name)}</div>
+                      <div style={panelRowMain}>
+                        <div style={panelRowTop}>
+                          <div style={panelRowTitle}>{m.name}</div>
+                          <div style={panelRowDate}>{formatShortDate(m.createdAt)}</div>
+                        </div>
+                        <div style={panelRowMeta}>
+                          <span>{m.email}</span>
+                          {m.eventType && (
+                            <>
+                              <span style={metaDot}>/</span>
+                              <span>{m.eventType}</span>
+                            </>
+                          )}
+                        </div>
+                        <div style={panelRowSubmeta}>
+                          <span>Contact message</span>
+                          <span style={metaDot}>/</span>
+                          <span>{m.status || "NEW"}</span>
+                        </div>
                       </div>
                     </div>
-                    <div style={
-                      (m.status || "NEW") === "NEW"
-                        ? statusBadgeNew
-                        : statusBadgeReplied
-                    }>
+                    <div
+                      style={
+                        (m.status || "NEW") === "NEW" ? statusBadgeNew : statusBadgeReplied
+                      }
+                    >
                       {m.status || "NEW"}
                     </div>
                   </div>
                 ))}
 
-                {messages.length === 0 && (
-                  <p style={emptyState}>No messages yet.</p>
+                {filteredMessages.length === 0 && (
+                  <div style={emptyStateCard}>
+                    <div style={emptyStateIcon}>MS</div>
+                    <p style={emptyStateTitle}>
+                      {normalizedSearch ? "No matching messages found" : "No messages yet"}
+                    </p>
+                    <p style={emptyStateText}>
+                      {normalizedSearch
+                        ? "Try a broader keyword to surface customer conversations."
+                        : "Incoming customer messages will be listed here."}
+                    </p>
+                  </div>
                 )}
               </div>
             </section>
@@ -247,32 +370,68 @@ export default function AdminDashboard() {
   );
 }
 
-/* Modern Industry-Level Styles */
 const pageContainer = {
-  fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif",
+  fontFamily:
+    "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif",
   maxWidth: 1200,
   margin: "0 auto",
   padding: "24px",
 };
 
 const pageHeader = {
-  marginBottom: 32,
+  marginBottom: 20,
+  display: "grid",
+  gap: 14,
 };
 
 const pageTitle = {
-  fontSize: 32,
-  fontWeight: 700,
-  color: "#111827",
   margin: 0,
-  letterSpacing: "-0.02em",
+  fontSize: 30,
+  fontWeight: 800,
+  letterSpacing: "-0.03em",
+  color: "#1d2430",
 };
 
 const pageLead = {
-  fontSize: 16,
-  color: "#6b7280",
   margin: "8px 0 0",
+  color: "#776b60",
+  fontSize: 14,
   lineHeight: 1.6,
-  maxWidth: 600,
+};
+
+const searchWrap = {
+  display: "flex",
+  alignItems: "center",
+  gap: 10,
+  maxWidth: 420,
+  padding: "12px 14px",
+  borderRadius: 10,
+  background: "#ffffff",
+  border: "1px solid #ddd4c8",
+  boxShadow: "0 2px 6px rgba(90, 68, 39, 0.05)",
+};
+
+const searchIcon = {
+  width: 20,
+  height: 20,
+  borderRadius: 999,
+  display: "inline-flex",
+  alignItems: "center",
+  justifyContent: "center",
+  flexShrink: 0,
+  background: "#f2e1cf",
+  color: "#9b6a3a",
+  fontSize: 11,
+  fontWeight: 900,
+};
+
+const searchInput = {
+  width: "100%",
+  border: "none",
+  outline: "none",
+  background: "transparent",
+  color: "#1f2937",
+  fontSize: 14,
 };
 
 const mutedText = {
@@ -290,33 +449,191 @@ const alertError = {
   fontWeight: 500,
 };
 
+const overviewGrid = {
+  display: "grid",
+  gridTemplateColumns: "320px minmax(0, 1fr)",
+  gap: 18,
+  alignItems: "stretch",
+  marginBottom: 24,
+};
+
+const actionsCard = {
+  padding: "10px 0 0",
+};
+
+const actionsTitle = {
+  margin: "0 0 12px",
+  fontSize: 22,
+  fontWeight: 800,
+  color: "#1f2937",
+};
+
+const actionsList = {
+  display: "grid",
+  gap: 10,
+};
+
+const actionButton = {
+  display: "flex",
+  alignItems: "center",
+  gap: 12,
+  minHeight: 46,
+  padding: "0 14px",
+  borderRadius: 8,
+  border: "1px solid #d6cfc4",
+  background: "#ffffff",
+  textDecoration: "none",
+  boxShadow: "0 1px 2px rgba(17, 24, 39, 0.04)",
+};
+
+const actionButtonPrimary = {
+  background: "#b0814d",
+  borderColor: "#b0814d",
+};
+
+const actionButtonActive = {
+  boxShadow: "0 0 0 2px rgba(176, 129, 77, 0.14)",
+};
+
+const actionIcon = {
+  width: 18,
+  color: "#b0814d",
+  fontSize: 12,
+  fontWeight: 900,
+  textAlign: "center",
+  flexShrink: 0,
+};
+
+const actionIconPrimary = {
+  ...actionIcon,
+  color: "#fff7ed",
+};
+
+const actionText = {
+  fontSize: 13,
+  fontWeight: 700,
+  color: "#9c6c40",
+};
+
+const actionTextPrimary = {
+  ...actionText,
+  color: "#ffffff",
+};
+
+const chartCard = {
+  padding: "18px 18px 14px",
+  borderRadius: 10,
+  background: "#ffffff",
+  border: "1px solid #e7dfd2",
+  boxShadow: "0 2px 6px rgba(90, 68, 39, 0.05)",
+};
+
+const chartHead = {
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "flex-start",
+  gap: 12,
+};
+
+const chartTitle = {
+  margin: 0,
+  fontSize: 24,
+  fontWeight: 800,
+  color: "#3a332d",
+};
+
+const chartSubhead = {
+  margin: "4px 0 0",
+  fontSize: 11,
+  fontWeight: 800,
+  letterSpacing: "0.08em",
+  color: "#9b8f81",
+};
+
+const chartYearBadge = {
+  padding: "3px 8px",
+  borderRadius: 4,
+  fontSize: 11,
+  fontWeight: 700,
+  color: "#756a5d",
+  background: "#f4ede4",
+  border: "1px solid #e5dccf",
+};
+
+const chartBars = {
+  marginTop: 20,
+  height: 122,
+  display: "grid",
+  gridTemplateColumns: "repeat(6, minmax(0, 1fr))",
+  gap: 10,
+  alignItems: "end",
+};
+
+const chartBarItem = {
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "flex-end",
+  gap: 8,
+  height: "100%",
+};
+
+const chartBar = {
+  width: "100%",
+  maxWidth: 44,
+  borderRadius: "2px 2px 0 0",
+  background: "#e9e2d7",
+};
+
+const chartBarActive = {
+  background: "#b0814d",
+};
+
+const chartLabel = {
+  fontSize: 11,
+  fontWeight: 800,
+  color: "#8f8375",
+};
+
+const chartLabelActive = {
+  color: "#b0814d",
+};
+
 const statsGrid = {
   display: "grid",
-  gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-  gap: 20,
-  marginBottom: 32,
+  gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+  gap: 16,
+  marginBottom: 24,
 };
 
 const statCard = {
-  background: "white",
-  border: "1px solid #e5e7eb",
-  borderRadius: 12,
-  padding: "20px",
+  background: "#ffffff",
+  border: "1px solid #e7dfd2",
+  borderRadius: 14,
+  padding: "18px",
   display: "flex",
   alignItems: "center",
-  gap: 16,
-  transition: "transform 0.2s, box-shadow 0.2s",
-  cursor: "default",
+  gap: 14,
+  boxShadow: "0 8px 24px rgba(17, 24, 39, 0.04)",
 };
 
-const statCardNew = {
-  background: "linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%)",
-  borderColor: "#bae6fd",
+const statCardSoft = {
+  background: "#fbf6ef",
 };
 
 const statIcon = {
-  fontSize: 32,
-  lineHeight: 1,
+  width: 42,
+  height: 42,
+  borderRadius: 12,
+  display: "inline-flex",
+  alignItems: "center",
+  justifyContent: "center",
+  background: "#f2e1cf",
+  color: "#9b6a3a",
+  fontSize: 13,
+  fontWeight: 800,
+  letterSpacing: "0.06em",
+  flexShrink: 0,
 };
 
 const statContent = {
@@ -324,84 +641,19 @@ const statContent = {
 };
 
 const statValue = {
-  fontSize: 36,
-  fontWeight: 700,
+  fontSize: 34,
+  fontWeight: 800,
   color: "#111827",
   lineHeight: 1,
   marginBottom: 4,
 };
 
 const statLabel = {
-  fontSize: 13,
-  fontWeight: 600,
-  color: "#6b7280",
-  textTransform: "uppercase",
-  letterSpacing: "0.05em",
-};
-
-const quickSection = {
-  marginBottom: 32,
-};
-
-const sectionTitle = {
-  fontSize: 18,
+  fontSize: 12,
   fontWeight: 700,
-  color: "#111827",
-  margin: "0 0 16px",
-};
-
-const quickGrid = {
-  display: "grid",
-  gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-  gap: 16,
-};
-
-const quickCard = {
-  textDecoration: "none",
-  background: "white",
-  border: "1px solid #e5e7eb",
-  borderRadius: 12,
-  padding: "20px",
-  display: "flex",
-  alignItems: "center",
-  gap: 16,
-  transition: "all 0.2s",
-  position: "relative",
-};
-
-const quickCardActive = {
-  borderColor: "#3b82f6",
-  boxShadow: "0 0 0 3px rgba(59, 130, 246, 0.1)",
-};
-
-const quickIcon = {
-  fontSize: 28,
-  lineHeight: 1,
-};
-
-const quickContent = {
-  flex: 1,
-  display: "flex",
-  flexDirection: "column",
-  gap: 4,
-};
-
-const quickTitle = {
-  fontSize: 16,
-  fontWeight: 600,
-  color: "#111827",
-};
-
-const quickDesc = {
-  fontSize: 13,
-  color: "#6b7280",
-  lineHeight: 1.4,
-};
-
-const quickArrow = {
-  fontSize: 20,
-  color: "#9ca3af",
-  fontWeight: 600,
+  color: "#7a6c5f",
+  textTransform: "uppercase",
+  letterSpacing: "0.06em",
 };
 
 const panelsGrid = {
@@ -411,10 +663,11 @@ const panelsGrid = {
 };
 
 const panel = {
-  background: "white",
+  background: "#ffffff",
   border: "1px solid #e5e7eb",
-  borderRadius: 12,
+  borderRadius: 14,
   overflow: "hidden",
+  boxShadow: "0 10px 24px rgba(17, 24, 39, 0.04)",
 };
 
 const panelHeader = {
@@ -437,21 +690,42 @@ const panelLink = {
   fontWeight: 600,
   color: "#3b82f6",
   textDecoration: "none",
-  transition: "color 0.2s",
 };
 
 const panelContent = {
-  padding: "0",
+  padding: 0,
 };
 
 const panelRow = {
-  padding: "16px 20px",
+  padding: "18px 20px",
   borderBottom: "1px solid #f3f4f6",
   display: "flex",
   justifyContent: "space-between",
-  alignItems: "center",
+  alignItems: "flex-start",
   gap: 16,
-  transition: "background 0.2s",
+};
+
+const panelRowIdentity = {
+  display: "flex",
+  alignItems: "flex-start",
+  gap: 14,
+  flex: 1,
+  minWidth: 0,
+};
+
+const panelAvatar = {
+  width: 42,
+  height: 42,
+  borderRadius: 14,
+  flexShrink: 0,
+  display: "inline-flex",
+  alignItems: "center",
+  justifyContent: "center",
+  background: "linear-gradient(135deg, #f3e2cf 0%, #ead3b6 100%)",
+  color: "#9b6a3a",
+  fontSize: 12,
+  fontWeight: 800,
+  letterSpacing: "0.06em",
 };
 
 const panelRowMain = {
@@ -459,9 +733,16 @@ const panelRowMain = {
   minWidth: 0,
 };
 
+const panelRowTop = {
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-between",
+  gap: 12,
+};
+
 const panelRowTitle = {
   fontSize: 14,
-  fontWeight: 600,
+  fontWeight: 700,
   color: "#111827",
   marginBottom: 4,
   overflow: "hidden",
@@ -469,9 +750,26 @@ const panelRowTitle = {
   whiteSpace: "nowrap",
 };
 
+const panelRowDate = {
+  flexShrink: 0,
+  color: "#9ca3af",
+  fontSize: 12,
+  fontWeight: 700,
+};
+
 const panelRowMeta = {
   fontSize: 13,
-  color: "#6b7280",
+  color: "#5f6b7a",
+  display: "flex",
+  alignItems: "center",
+  gap: 6,
+  flexWrap: "wrap",
+};
+
+const panelRowSubmeta = {
+  marginTop: 6,
+  fontSize: 12,
+  color: "#9a8d7c",
   display: "flex",
   alignItems: "center",
   gap: 6,
@@ -518,10 +816,56 @@ const statusBadgeReplied = {
   whiteSpace: "nowrap",
 };
 
+const emptyStateCard = {
+  minHeight: 220,
+  padding: "32px 24px",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
+  textAlign: "center",
+};
+
+const emptyStateIcon = {
+  width: 52,
+  height: 52,
+  borderRadius: 16,
+  display: "inline-flex",
+  alignItems: "center",
+  justifyContent: "center",
+  background: "linear-gradient(135deg, #f3e2cf 0%, #ead3b6 100%)",
+  color: "#9b6a3a",
+  fontSize: 14,
+  fontWeight: 800,
+  letterSpacing: "0.08em",
+};
+
+const emptyStateTitle = {
+  margin: "16px 0 6px",
+  color: "#1f2937",
+  fontSize: 18,
+  fontWeight: 700,
+};
+
+const emptyStateText = {
+  maxWidth: 320,
+  margin: 0,
+  color: "#9ca3af",
+  fontSize: 14,
+  lineHeight: 1.6,
+};
+
 const emptyState = {
   padding: "32px 20px",
   textAlign: "center",
   color: "#9ca3af",
   fontSize: 14,
   margin: 0,
+};
+
+const emptySearchState = {
+  margin: 0,
+  padding: "10px 2px 0",
+  color: "#9ca3af",
+  fontSize: 13,
 };

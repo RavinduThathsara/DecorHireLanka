@@ -1,5 +1,6 @@
 import React from "react";
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
+import logo from "../assets/images/logo.png";
 
 const GALLERY_PATHS = ["/admin/gallery", "/admin/view-gallery", "/admin/manage-gallery"];
 const DECORATION_PATHS = [
@@ -25,7 +26,10 @@ export default function AdminLayout() {
     <div className="admin-shell">
       <aside className="admin-sidebar" aria-label="Admin navigation">
         <div className="admin-brand">
-          Decor Hire <span className="admin-brand-tag">Admin</span>
+          <img src={logo} alt="Decor Hire logo" className="admin-brand-logo" />
+          <div className="admin-brand-copy">
+            Decor Hire <span className="admin-brand-tag">Admin</span>
+          </div>
         </div>
 
         <nav className="admin-nav">
