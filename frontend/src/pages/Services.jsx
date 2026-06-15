@@ -404,7 +404,7 @@ const ctaSection = {
 };
 
 const ctaContent = {
-    background: "#111827",
+    background: "linear-gradient(135deg, #9b5b34 0%, #7c4420 100%)",
     borderRadius: 24,
     padding: "60px 40px",
     textAlign: "center",

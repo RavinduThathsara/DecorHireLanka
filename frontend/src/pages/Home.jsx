@@ -5,19 +5,25 @@ import hero1Img from "../assets/images/hero1.png";
 
 const highlights = [
   {
+    eyebrow: "Homecoming",
     title: "Homecoming Decoration",
     description:
-      "Warm floral entrances, welcome boards, romantic lighting, and photo-ready details for your first evening at home.",
+      "Warm entrances, welcome boards, candlelight styling, and photo-ready details for your first evening at home.",
+    points: ["Floral entrance styling", "Welcome board and name details", "Soft lighting and romantic accents"],
   },
   {
+    eyebrow: "Wedding Stage",
     title: "Poruwa and Stage Styling",
     description:
-      "Traditional and modern setups designed to match your theme, hall size, and family style.",
+      "Traditional and modern poruwa setups designed to match your theme, hall size, and family style.",
+    points: ["Poruwa concept planning", "Stage backdrop and floral balance", "Theme-aligned fabrics and decor"],
   },
   {
+    eyebrow: "Reception",
     title: "Reception Atmosphere",
     description:
       "Ceiling work, table styling, backdrops, and coordinated color plans that make the venue feel complete.",
+    points: ["Ceiling and hall styling", "Table and cake area decor", "Color-coordinated finishing touches"],
   },
 ];
 
@@ -183,81 +189,104 @@ export default function Home() {
 
       <div className="home-page" style={{ paddingTop: "0" }}>
         <section className="home-section" style={{ padding: "40px 0" }}>
-          <div className="home-section-heading" style={{ alignItems: "center", marginBottom: "40px" }}>
-            <div style={{ flex: "1 1 400px" }}>
-              <p className="home-section-kicker" style={{ color: "var(--accent)", letterSpacing: "2px" }}>Our Core Services</p>
-              <h2 style={{ fontSize: "clamp(2rem, 3vw, 2.5rem)", letterSpacing: "-1px", margin: "10px 0 0 0" }}>Designed to attract customers and impress guests</h2>
+          <div className="home-services-shell">
+            <div className="home-services-head">
+              <div className="home-services-copy">
+                <p
+                  className="home-section-kicker"
+                  style={{ color: "var(--accent)", letterSpacing: "2px" }}
+                >
+                  Our Core Services
+                </p>
+                <h2 className="home-services-copy__title">
+                  Wedding and homecoming packages planned for easy booking
+                </h2>
+              </div>
+
+              <div className="home-services-intro">
+                <p>
+                  Choose the setup you need for your wedding, poruwa, or homecoming. Each service
+                  is planned around your venue, theme, and budget so you can book with confidence.
+                </p>
+                <div className="home-services-badges">
+                  <span>Theme-matched styling</span>
+                  <span>Photo-ready finishing</span>
+                  <span>Clear booking direction</span>
+                </div>
+              </div>
             </div>
-            <p style={{ flex: "1 1 400px", fontSize: "1.1rem", borderLeft: "4px solid var(--accent)", paddingLeft: "24px", margin: "0", color: "var(--muted)" }}>
-              Your home page now speaks more clearly about what you offer: wedding decoration,
-              homecoming styling, and beautiful setups that people want to book.
-            </p>
-          </div>
 
-          <div className="home-highlight-grid" style={{ gap: "24px", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))" }}>
-            {highlights.map((item, index) => (
-              <article
-                key={item.title}
-                className="home-highlight-card home-animated-card"
-                style={{
-                  animationDelay: `${index * 140}ms`,
-                  background: "#ffffff",
-                  border: "1px solid rgba(0,0,0,0.05)",
-                  borderRadius: "24px",
-                  boxShadow: "0 10px 30px rgba(0, 0, 0, 0.04)",
-                  padding: "40px 32px",
-                  display: "flex",
-                  flexDirection: "column",
-                  transition: "transform 0.3s ease, box-shadow 0.3s ease",
-                  cursor: "pointer"
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = "translateY(-8px)";
-                  e.currentTarget.style.boxShadow = "0 20px 40px rgba(155, 91, 52, 0.15)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = "translateY(0)";
-                  e.currentTarget.style.boxShadow = "0 10px 30px rgba(0, 0, 0, 0.04)";
-                }}
-              >
-                <div style={{
-                  width: "64px",
-                  height: "64px",
-                  borderRadius: "16px",
-                  background: "rgba(155, 91, 52, 0.1)",
-                  color: "var(--accent-deep)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  marginBottom: "24px"
-                }}>
-                  {index === 0 && <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>}
-                  {index === 1 && <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>}
-                  {index === 2 && <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>}
-                </div>
-                <h3 style={{ fontSize: "1.45rem", marginBottom: "16px", color: "var(--ink)", fontWeight: "700" }}>{item.title}</h3>
-                <p style={{ fontSize: "1.05rem", lineHeight: "1.6", color: "var(--muted)", margin: "0" }}>{item.description}</p>
+            <div
+              className="home-services-grid"
+              style={{ gap: "24px", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))" }}
+            >
+              {highlights.map((item, index) => (
+                <article
+                  key={item.title}
+                  className="home-services-card home-animated-card"
+                  style={{ animationDelay: `${index * 140}ms` }}
+                >
+                  <div className="home-services-card__top">
+                    <div className="home-services-card__icon">
+                      {index === 0 && (
+                        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                      )}
+                      {index === 1 && (
+                        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                          <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                          <polyline points="21 15 16 10 5 21"></polyline>
+                        </svg>
+                      )}
+                      {index === 2 && (
+                        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                          <polyline points="2 17 12 22 22 17"></polyline>
+                          <polyline points="2 12 12 17 22 12"></polyline>
+                        </svg>
+                      )}
+                    </div>
+                    <span className="home-services-card__eyebrow">{item.eyebrow}</span>
+                  </div>
 
-                <div style={{ marginTop: "auto", paddingTop: "32px" }}>
-                  <Link to="/services" style={{ color: "var(--accent-deep)", textDecoration: "none", fontWeight: "800", display: "inline-flex", alignItems: "center", gap: "8px", fontSize: "0.95rem", textTransform: "uppercase", letterSpacing: "1px" }}>
-                    Learn more <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                  </Link>
-                </div>
-              </article>
-            ))}
+                  <h3 className="home-services-card__title">{item.title}</h3>
+                  <p className="home-services-card__body">{item.description}</p>
+
+                  <ul className="home-services-card__list">
+                    {item.points.map((point) => (
+                      <li key={point}>{point}</li>
+                    ))}
+                  </ul>
+
+                  <div className="home-services-card__footer">
+                    <Link to="/services" className="home-services-card__link">
+                      View service details
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                      </svg>
+                    </Link>
+                  </div>
+                </article>
+              ))}
+            </div>
           </div>
         </section>
 
         <section className="home-section home-surface">
-          <div className="home-section-heading">
-            <div>
-              <p className="home-section-kicker">Story Articles</p>
-              <h2>Animated article-style sections for a better home page</h2>
+          <div className="home-section-heading home-story-heading">
+            <div className="home-story-heading__content">
+              <p className="home-section-kicker">Why Choose Us</p>
+              <h2>Decoration details that make your event feel complete</h2>
+              <p className="home-story-heading__lead">
+                Clear design planning, balanced styling, and photo-ready finishing help every part
+                of your wedding or homecoming look elegant from the first welcome to the final
+                photo.
+              </p>
             </div>
-            <p>
-              These blocks explain your value in a more modern way and animate into view to keep the
-              page feeling active.
-            </p>
           </div>
 
           <div className="home-story-grid">
@@ -279,7 +308,6 @@ export default function Home() {
           <div className="home-section-heading">
             <div>
               <p className="home-section-kicker">Album Preview</p>
-              <h2>Your album photos are included on the home page</h2>
             </div>
             <Link to="/gallery" className="home-text-link">
               Open full gallery
@@ -328,13 +356,13 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="home-cta">
-          <div>
+        <section className="home-cta home-cta--centered">
+          <div className="home-cta__content">
             <p className="home-section-kicker">Next Step</p>
-            <h2>Need a stronger first impression for your business?</h2>
+            <h2>Plan a wedding or homecoming setup your guests will remember</h2>
             <p>
-              This home page now promotes your work better. Customers can quickly understand your
-              services, view album photos, and move to contact or booking.
+              Share your date, venue, and style with us, and we will guide you toward a decoration
+              plan that feels elegant, organized, and ready for photos.
             </p>
           </div>
           <div className="home-actions">

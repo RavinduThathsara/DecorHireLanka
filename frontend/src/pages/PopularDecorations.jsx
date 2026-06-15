@@ -309,7 +309,6 @@ export default function PopularDecorations() {
               </div>
 
               <div style={bottomRow}>
-                <span style={price}>{d.priceFrom}</span>
                 <Link
                   to={`/book?id=${encodeURIComponent(d._id)}&title=${encodeURIComponent(
                     d.title
@@ -355,6 +354,9 @@ const card = {
   background: "rgba(255,255,255,0.8)",
   boxShadow: "0 20px 40px rgba(89, 49, 28, 0.08)",
   position: "relative",
+  display: "flex",
+  flexDirection: "column",
+  height: "100%",
 };
 
 const tag = {
@@ -431,15 +433,14 @@ const includeChip = {
 };
 
 const bottomRow = {
-  marginTop: 14,
+  marginTop: "auto",
+  paddingTop: 14,
   display: "flex",
-  justifyContent: "space-between",
+  justifyContent: "flex-start",
   alignItems: "center",
   gap: 10,
   flexWrap: "wrap",
 };
-
-const price = { fontWeight: 900, color: "#111827" };
 
 const btnLight = {
   textDecoration: "none",
