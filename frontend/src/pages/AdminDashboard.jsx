@@ -141,8 +141,10 @@ export default function AdminDashboard() {
   return (
     <div style={pageContainer}>
       <header style={pageHeader}>
-        <h1 style={pageTitle}>Dashboard Overview</h1>
-        <p style={pageLead}>Manage bookings, messages, gallery updates, and monthly activity.</p>
+        <div style={pageHeaderCopy}>
+          <h1 style={pageTitle}>Dashboard Overview</h1>
+          <p style={pageLead}>Manage bookings, messages, gallery updates, and monthly activity.</p>
+        </div>
         <label style={searchWrap}>
           <span style={searchIcon}>Q</span>
           <input
@@ -380,8 +382,16 @@ const pageContainer = {
 
 const pageHeader = {
   marginBottom: 20,
-  display: "grid",
-  gap: 14,
+  display: "flex",
+  alignItems: "flex-start",
+  justifyContent: "space-between",
+  gap: 20,
+  flexWrap: "wrap",
+};
+
+const pageHeaderCopy = {
+  flex: "1 1 420px",
+  minWidth: 0,
 };
 
 const pageTitle = {
@@ -403,7 +413,10 @@ const searchWrap = {
   display: "flex",
   alignItems: "center",
   gap: 10,
+  width: "100%",
   maxWidth: 420,
+  marginLeft: "auto",
+  flex: "0 0 420px",
   padding: "12px 14px",
   borderRadius: 10,
   background: "#ffffff",

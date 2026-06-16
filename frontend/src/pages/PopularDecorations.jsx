@@ -125,9 +125,9 @@ export default function PopularDecorations() {
             Customer Favorite Packages
           </p>
           <h1 style={{
-            fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+            fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
             fontSize: "clamp(2.5rem, 5vw, 4rem)",
-            fontWeight: "900",
+            fontWeight: "700",
             color: "#1a1a1a",
             lineHeight: "1.1",
             letterSpacing: "-0.5px",

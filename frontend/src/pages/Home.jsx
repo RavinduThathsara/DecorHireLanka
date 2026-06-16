@@ -80,8 +80,24 @@ export default function Home() {
       >
         <div className="home-hero-copy">
           <p className="home-eyebrow">DecorHire Lanka</p>
-          <h1 style={{ marginBottom: "20px", fontWeight: "normal" }}>
-            Customer-attracting wedding and homecoming decorations <i style={{ color: "var(--accent-deep)", fontStyle: "italic", fontWeight: "normal" }}>that feel premium.</i>
+          <h1
+            style={{
+              marginBottom: "20px",
+              fontWeight: "normal",
+              fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
+            }}
+          >
+            Customer-attracting wedding and homecoming decorations{" "}
+            <i
+              style={{
+                color: "var(--accent-deep)",
+                fontStyle: "italic",
+                fontWeight: "normal",
+                fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
+              }}
+            >
+              that feel premium.
+            </i>
           </h1>
           <p className="home-lead" style={{ marginBottom: "40px" }}>
             We curate ethereal atmospheres for Sri Lanka's most prestigious celebrations, blending traditional heritage with modern editorial aesthetics.
@@ -165,7 +181,9 @@ export default function Home() {
         </div>
         <article className="home-editorial-copy">
           <p className="home-section-kicker">Article</p>
-          <h2>How the right decoration plan makes your event feel premium from the first minute</h2>
+          <h2 style={{ fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif' }}>
+            How the right decoration plan makes your event feel premium from the first minute
+          </h2>
           <p>
             Guests decide the quality of an event in seconds. We plan lighting, floral zones,
             stage balance, and photo backgrounds as one complete design so your wedding or
@@ -198,7 +216,10 @@ export default function Home() {
                 >
                   Our Core Services
                 </p>
-                <h2 className="home-services-copy__title">
+                <h2
+                  className="home-services-copy__title"
+                  style={{ fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif' }}
+                >
                   Wedding and homecoming packages planned for easy booking
                 </h2>
               </div>
@@ -280,7 +301,9 @@ export default function Home() {
           <div className="home-section-heading home-story-heading">
             <div className="home-story-heading__content">
               <p className="home-section-kicker">Why Choose Us</p>
-              <h2>Decoration details that make your event feel complete</h2>
+              <h2 style={{ fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif' }}>
+                Decoration details that make your event feel complete
+              </h2>
               <p className="home-story-heading__lead">
                 Clear design planning, balanced styling, and photo-ready finishing help every part
                 of your wedding or homecoming look elegant from the first welcome to the final

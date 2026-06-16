@@ -236,10 +236,11 @@ const eyebrow = {
 
 const heroTitle = {
     fontSize: 42,
-    fontWeight: 900,
+    fontWeight: 700,
     color: "#111827",
     lineHeight: 1.2,
     marginBottom: 16,
+    fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
 };
 
 const heroText = {
