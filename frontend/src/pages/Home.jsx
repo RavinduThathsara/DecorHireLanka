@@ -46,9 +46,9 @@ const storyArticles = [
 ];
 
 const albumPhotos = [
-  { src: "/gallery/gallery1.png", title: "Poruwa setup" },
-  { src: "/gallery/gallery4.png", title: "Reception stage" },
-  { src: "/gallery/gallery7.png", title: "Elegant floral frame" },
+  { src: "/gallery/gallery16.png", title: "Premium wedding stage" },
+  { src: "/gallery/gallery4.png", title: "Reception table styling" },
+  { src: "/gallery/gallery11.png", title: "Floral entrance highlight" },
   { src: "/gallery/gallery10.png", title: "Luxury white theme" },
   { src: "/gallery/gallery12.png", title: "Hall detail" },
   { src: "/gallery/gallery14.png", title: "Outdoor decor" },

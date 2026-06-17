@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { api } from "../services/api.js";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
+import logo from "../assets/images/logo.png";
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || "";
 
@@ -125,6 +126,7 @@ export default function Login() {
   return (
     <div style={pageWrap}>
       <div style={card}>
+        <img src={logo} alt="DecorHire Lanka logo" style={headerLogo} />
         <h1 style={title}>Customer Login</h1>
 
         <form onSubmit={onSubmit} style={formStyle}>
@@ -198,6 +200,13 @@ const card = {
   border: "1px solid #eee",
   borderRadius: 20,
   background: "white",
+};
+
+const headerLogo = {
+  width: 74,
+  height: "auto",
+  display: "block",
+  margin: "0 auto 14px",
 };
 
 const title = {

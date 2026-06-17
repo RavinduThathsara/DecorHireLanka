@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { api } from "../services/api.js";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
+import logo from "../assets/images/logo.png";
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || "";
 
@@ -241,6 +242,7 @@ export default function Register() {
     <div style={container}>
       <div style={card}>
         <div style={header}>
+          <img src={logo} alt="DecorHire Lanka logo" style={headerLogo} />
           <h1 style={title}>Create Account</h1>
           <p style={subtitle}>Register to book decorations and manage your events</p>
         </div>
@@ -385,6 +387,13 @@ const header = {
   padding: "32px 32px 24px",
   textAlign: "center",
   borderBottom: "1px solid #f3f4f6",
+};
+
+const headerLogo = {
+  width: 74,
+  height: "auto",
+  display: "block",
+  margin: "0 auto 14px",
 };
 
 const title = {

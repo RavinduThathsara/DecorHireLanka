@@ -3,6 +3,19 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../services/api.js";
 
+const getGalleryImageSrc = (img) => {
+  if (img.imageUrl) {
+    if (/^https?:\/\//i.test(img.imageUrl)) return img.imageUrl;
+
+    const baseUrl = (api.defaults.baseURL || "").replace(/\/$/, "");
+    const normalizedPath = img.imageUrl.startsWith("/") ? img.imageUrl : `/${img.imageUrl}`;
+
+    return `${baseUrl}${normalizedPath}`;
+  }
+
+  return img.src;
+};
+
 export default function Gallery() {
   const [activeFilter, setActiveFilter] = useState("all"); // all | wedding | birthday | other
 
@@ -122,7 +135,7 @@ export default function Gallery() {
         {filteredImages.map((img) => (
           <div key={img._id || img.id} style={tile}>
             <img
-              src={img.imageUrl ? `http://localhost:5000${img.imageUrl}` : img.src}
+              src={getGalleryImageSrc(img)}
               alt={img.title || categoryLabel(img.category)}
               style={thumb}
             />
