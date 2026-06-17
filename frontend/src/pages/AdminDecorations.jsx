@@ -112,7 +112,7 @@ export default function AdminDecorations() {
     <div style={{ maxWidth: 1100, margin: "0 auto", padding: 20 }}>
       <div style={topRow}>
         <div>
-          <h1 style={{ margin: 0 }}>Manage Popular Decorations</h1>
+          <h1 style={{ margin: 0, fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif' }}>Manage Popular Decorations</h1>
           <p style={{ marginTop: 6, color: "#4b5563" }}>
             Add, edit, delete decorations shown on the customer popular page.
           </p>
@@ -129,7 +129,7 @@ export default function AdminDecorations() {
       </div>
 
       <div style={card}>
-        <h3 style={{ marginTop: 0 }}>{editingId ? "Edit Decoration" : "Add New Decoration"}</h3>
+        <h3 style={{ marginTop: 0, fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif' }}>{editingId ? "Edit Decoration" : "Add New Decoration"}</h3>
 
         <form onSubmit={onSubmit} style={{ display: "grid", gap: 12 }}>
           <input
@@ -197,7 +197,7 @@ export default function AdminDecorations() {
       </div>
 
       <div style={{ marginTop: 14 }}>
-        <h3 style={{ margin: "10px 0" }}>All Decorations</h3>
+        <h3 style={{ margin: "10px 0", fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif' }}>All Decorations</h3>
 
         {loading && <p>Loading...</p>}
 

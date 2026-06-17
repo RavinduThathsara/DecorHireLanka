@@ -207,7 +207,8 @@ export default function Services() {
 /* Styles */
 const pageWrap = {
     minHeight: "100vh",
-    background: "white",
+    background:
+        "radial-gradient(circle at top left, rgba(242, 214, 180, 0.75), transparent 28%), radial-gradient(circle at top right, rgba(220, 198, 179, 0.65), transparent 24%), linear-gradient(180deg, #fbf5ee 0%, #f7f2ea 42%, #f4ece1 100%)",
 };
 
 const hero = {
@@ -302,6 +303,7 @@ const sectionTitle = {
     fontWeight: 900,
     color: "#111827",
     marginBottom: 12,
+    fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
 };
 
 const sectionText = {
@@ -335,6 +337,7 @@ const serviceTitle = {
     fontWeight: 900,
     color: "#111827",
     marginBottom: 12,
+    fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
 };
 
 const serviceDesc = {
@@ -390,6 +393,7 @@ const processTitle = {
     fontWeight: 900,
     color: "#111827",
     marginBottom: 12,
+    fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
 };
 
 const processDesc = {
@@ -416,6 +420,7 @@ const ctaTitle = {
     fontWeight: 900,
     color: "white",
     marginBottom: 16,
+    fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
 };
 
 const ctaText = {

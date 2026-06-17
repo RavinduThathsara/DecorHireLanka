@@ -392,8 +392,7 @@ const title = {
   fontSize: 28,
   fontWeight: 700,
   color: "#111827",
-  fontFamily:
-    "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif",
+  fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
   letterSpacing: "-0.02em",
 };
 

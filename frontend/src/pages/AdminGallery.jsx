@@ -129,7 +129,7 @@ export default function AdminGallery() {
     <div style={{ maxWidth: 1100, margin: "0 auto", padding: 20 }}>
       <div style={topRow}>
         <div>
-          <h1 style={{ margin: 0 }}>Manage Gallery</h1>
+          <h1 style={{ margin: 0, fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif' }}>Manage Gallery</h1>
           <p style={{ marginTop: 6, color: "#4b5563" }}>
             Upload photos and show them on the Gallery page.
           </p>
@@ -142,7 +142,7 @@ export default function AdminGallery() {
       </div>
 
       <div style={card}>
-        <h3 style={{ marginTop: 0 }}>Upload New Photo</h3>
+        <h3 style={{ marginTop: 0, fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif' }}>Upload New Photo</h3>
 
         <form onSubmit={upload} style={{ display: "grid", gap: 12 }}>
           <select
@@ -178,7 +178,7 @@ export default function AdminGallery() {
       </div>
 
       <div style={{ marginTop: 14 }}>
-        <h3 style={{ margin: "10px 0" }}>Gallery Images</h3>
+        <h3 style={{ margin: "10px 0", fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif' }}>Gallery Images</h3>
 
         <div style={filterBar}>
           <select

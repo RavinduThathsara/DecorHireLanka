@@ -206,6 +206,7 @@ const title = {
   fontSize: 28,
   fontWeight: 800,
   color: "#111827",
+  fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
 };
 
 const formStyle = {

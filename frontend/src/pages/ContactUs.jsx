@@ -82,7 +82,7 @@ export default function ContactUs() {
     <div style={{ maxWidth: 1100, margin: "0 auto" }}>
       <div style={topBar}>
         <div>
-          <h1 style={{ margin: 0 }}>Contact Us</h1>
+          <h1 style={{ margin: 0, fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif' }}>Contact Us</h1>
           <p style={{ marginTop: 8, color: "#4b5563", lineHeight: 1.6 }}>
             Send your event details, date, location, and theme idea. We'll contact you soon.
           </p>
@@ -92,7 +92,7 @@ export default function ContactUs() {
       <div style={grid}>
         {/* Form */}
         <div style={card}>
-          <h3 style={{ marginTop: 0 }}>Send a Message</h3>
+          <h3 style={{ marginTop: 0, fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif' }}>Send a Message</h3>
 
           <form onSubmit={onSubmit} style={{ display: "grid", gap: 12 }}>
             <input
@@ -175,7 +175,7 @@ export default function ContactUs() {
 
         {/* Info */}
         <div style={card}>
-          <h3 style={{ marginTop: 0 }}>Business Details</h3>
+          <h3 style={{ marginTop: 0, fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif' }}>Business Details</h3>
 
           <div style={{ display: "grid", gap: 10, color: "#374151" }}>
             <div>

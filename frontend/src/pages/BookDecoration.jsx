@@ -220,6 +220,9 @@ const heroSection = {
   minHeight: 300,
   borderRadius: 0,
   overflow: "hidden",
+  width: "100vw",
+  marginLeft: "calc(50% - 50vw)",
+  marginRight: "calc(50% - 50vw)",
   backgroundImage: `linear-gradient(180deg, rgba(16, 11, 8, 0.48), rgba(16, 11, 8, 0.74)), url(${heroImage})`,
   backgroundSize: "cover",
   backgroundPosition: "center",
@@ -246,6 +249,7 @@ const heroTitle = {
   fontSize: "clamp(2.2rem, 4vw, 3.25rem)",
   fontWeight: 800,
   letterSpacing: "-0.03em",
+  fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
 };
 
 const heroLead = {
@@ -272,6 +276,7 @@ const formTitle = {
   fontSize: "1.35rem",
   color: "#1f2937",
   fontWeight: 800,
+  fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
 };
 
 const formLead = {

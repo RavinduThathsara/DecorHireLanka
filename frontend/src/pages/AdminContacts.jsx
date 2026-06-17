@@ -53,7 +53,7 @@ export default function AdminContacts() {
       {/* Top Bar */}
       <div style={topRow}>
         <div>
-          <h1 style={{ margin: 0 }}>Contact Messages</h1>
+          <h1 style={{ margin: 0, fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif' }}>Contact Messages</h1>
           <p style={{ marginTop: 6, color: "#4b5563" }}>
             Customer contact requests and replies.
           </p>

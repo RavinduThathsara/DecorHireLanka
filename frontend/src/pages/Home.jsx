@@ -147,8 +147,8 @@ export default function Home() {
             boxShadow: "0 18px 40px rgba(0, 0, 0, 0.15)",
             borderTopLeftRadius: "16px",
             borderBottomLeftRadius: "16px",
-            borderTopRightRadius: "0",
-            borderBottomRightRadius: "0"
+            borderTopRightRadius: "16px",
+            borderBottomRightRadius: "16px"
           }}
         >
         </div>
@@ -171,9 +171,9 @@ export default function Home() {
         <div
           className="home-editorial-media"
           style={{
-            borderTopLeftRadius: "0",
-            borderBottomLeftRadius: "0",
-            marginLeft: "calc(-1 * clamp(20px, 6vw, 80px))", // pull image exactly to the left screen edge
+            borderTopLeftRadius: "24px",
+            borderBottomLeftRadius: "24px",
+            marginLeft: "0",
             minHeight: "450px"
           }}
         >

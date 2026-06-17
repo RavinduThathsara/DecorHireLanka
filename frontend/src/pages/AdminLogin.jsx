@@ -37,7 +37,7 @@ export default function AdminLogin() {
 
   return (
     <div style={card}>
-      <h1 style={{ marginTop: 0 }}>Admin Login</h1>
+      <h1 style={{ marginTop: 0, fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif' }}>Admin Login</h1>
 
       <form onSubmit={onSubmit} style={{ display: "grid", gap: 12 }}>
         <input

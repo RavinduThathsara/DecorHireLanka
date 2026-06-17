@@ -400,6 +400,7 @@ const pageTitle = {
   fontWeight: 800,
   letterSpacing: "-0.03em",
   color: "#1d2430",
+  fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
 };
 
 const pageLead = {
@@ -479,6 +480,7 @@ const actionsTitle = {
   fontSize: 22,
   fontWeight: 800,
   color: "#1f2937",
+  fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
 };
 
 const actionsList = {
@@ -553,6 +555,7 @@ const chartTitle = {
   fontSize: 24,
   fontWeight: 800,
   color: "#3a332d",
+  fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
 };
 
 const chartSubhead = {
@@ -696,6 +699,7 @@ const panelTitle = {
   fontWeight: 700,
   color: "#111827",
   margin: 0,
+  fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
 };
 
 const panelLink = {

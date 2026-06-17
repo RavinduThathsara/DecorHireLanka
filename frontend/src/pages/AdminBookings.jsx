@@ -67,7 +67,7 @@ export default function AdminBookings() {
     <div style={{ maxWidth: 1200, margin: "0 auto", padding: "30px 20px" }}>
       <div style={topRow}>
         <div>
-          <h1 style={{ margin: 0, color: "#111827", fontSize: "2rem" }}>Bookings Management</h1>
+          <h1 style={{ margin: 0, color: "#111827", fontSize: "2rem", fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif' }}>Bookings Management</h1>
           <p style={{ marginTop: 8, color: "#4b5563", fontSize: "1.1rem" }}>
             Review customer booking requests, event details, and manage their status.
           </p>

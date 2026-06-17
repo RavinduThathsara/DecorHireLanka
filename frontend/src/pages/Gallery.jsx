@@ -69,7 +69,7 @@ export default function Gallery() {
     <div style={{ maxWidth: 1100, margin: "0 auto" }}>
       <div style={topBar}>
         <div>
-          <h1 style={{ margin: 0 }}>Gallery</h1>
+          <h1 style={{ margin: 0, fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif' }}>Gallery</h1>
           <p style={{ marginTop: 8, color: "#4b5563", lineHeight: 1.6 }}>
             Explore our decoration work by category.
           </p>

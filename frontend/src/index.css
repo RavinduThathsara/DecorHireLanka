@@ -277,9 +277,9 @@ img {
 }
 
 .home-page {
-  width: min(100%, 1400px);
+  width: min(100%, 1760px);
   margin: 0 auto;
-  padding: clamp(10px, 1.6vw, 20px);
+  padding: clamp(8px, 1vw, 14px);
   display: grid;
   gap: 28px;
 }
@@ -328,7 +328,7 @@ img {
 .home-cta h2,
 .home-plan-panel h2 {
   margin: 0;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: "Playfair Display", Georgia, "Times New Roman", serif;
   line-height: 1.06;
   letter-spacing: -0.03em;
 }
@@ -462,7 +462,7 @@ img {
 
 .home-editorial-copy h2 {
   margin: 0;
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: "Playfair Display", Georgia, "Times New Roman", serif;
   line-height: 1.08;
   letter-spacing: -0.03em;
   font-size: clamp(1.7rem, 3.6vw, 2.8rem);
@@ -570,6 +570,7 @@ img {
 .home-story-card h3 {
   margin: 0 0 10px;
   font-size: 1.2rem;
+  font-family: "Playfair Display", Georgia, "Times New Roman", serif;
 }
 
 .home-services-shell {
@@ -581,7 +582,7 @@ img {
   display: flex;
   justify-content: space-between;
   gap: 24px;
-  align-items: end;
+  align-items: center;
   flex-wrap: wrap;
 }
 
@@ -691,6 +692,7 @@ img {
   font-size: 1.45rem;
   line-height: 1.2;
   color: var(--ink);
+  font-family: "Playfair Display", Georgia, "Times New Roman", serif;
 }
 
 .home-services-card__body {
@@ -760,9 +762,9 @@ img {
 
 .home-story-heading__content h2 {
   max-width: 18ch;
-  font-family: "Segoe UI", "Trebuchet MS", sans-serif;
+  font-family: "Playfair Display", Georgia, "Times New Roman", serif;
   font-size: clamp(2rem, 4vw, 3rem);
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: -0.04em;
   line-height: 1.08;
 }
