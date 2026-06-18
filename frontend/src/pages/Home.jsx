@@ -64,93 +64,229 @@ export default function Home() {
   return (
     <>
       <section
-        className="home-hero home-surface"
         style={{
-          width: "100%",
-          maxWidth: "100vw",
-          margin: "0",
-          borderRadius: "0",
-          borderLeft: "none",
-          borderRight: "none",
-          borderTop: "none",
-          padding: "clamp(30px, 4vw, 60px) clamp(20px, 6vw, 80px)",
-          boxSizing: "border-box",
-          minHeight: "calc(100vh - 80px)",
-          display: "grid",
-          gridTemplateColumns: "minmax(0, 1.2fr) minmax(300px, 1fr)",
-          gap: "32px",
-          alignItems: "center"
+          position: "relative",
+          width: "100vw",
+          height: "100vh",
+          minHeight: "700px",
+          marginLeft: "calc(-50vw + 50%)",
+          marginRight: "calc(-50vw + 50%)",
+          overflow: "hidden",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center"
         }}
       >
-        <div className="home-hero-copy">
-          <p className="home-eyebrow">DecorHire Lanka</p>
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundImage: `url(${hero1Img})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+            zIndex: 1
+          }}
+        >
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              background: "linear-gradient(135deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.2) 100%)",
+              zIndex: 2
+            }}
+          />
+        </div>
+
+        <div
+          style={{
+            position: "relative",
+            zIndex: 3,
+            maxWidth: "1200px",
+            padding: "0 clamp(20px, 6vw, 80px)",
+            color: "#fff",
+            textAlign: "left"
+          }}
+        >
+          <p
+            style={{
+              fontSize: "clamp(12px, 1.2vw, 16px)",
+              letterSpacing: "3px",
+              textTransform: "uppercase",
+              marginBottom: "20px",
+              fontWeight: "500",
+              color: "#f5f5f5"
+            }}
+          >
+            DecorHire Lanka
+          </p>
+
           <h1
             style={{
-              marginBottom: "20px",
-              fontWeight: "normal",
+              fontSize: "clamp(36px, 5.5vw, 72px)",
+              lineHeight: "1.2",
+              marginBottom: "24px",
+              fontWeight: "300",
               fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
+              maxWidth: "900px"
             }}
           >
             Customer-attracting wedding and homecoming decorations{" "}
             <i
               style={{
-                color: "var(--accent-deep)",
+                color: "#d4af7a",
                 fontStyle: "italic",
-                fontWeight: "normal",
-                fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
+                fontWeight: "400",
+                fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif'
               }}
             >
               that feel premium.
             </i>
           </h1>
-          <p className="home-lead" style={{ marginBottom: "40px" }}>
+
+          <p
+            style={{
+              fontSize: "clamp(16px, 1.8vw, 22px)",
+              lineHeight: "1.6",
+              marginBottom: "50px",
+              maxWidth: "700px",
+              color: "#f5f5f5",
+              fontWeight: "300"
+            }}
+          >
             We curate ethereal atmospheres for Sri Lanka's most prestigious celebrations, blending traditional heritage with modern editorial aesthetics.
           </p>
 
-          <div className="home-actions" style={{ marginBottom: "50px" }}>
-            <Link to="/gallery" className="home-btn home-btn-primary">
+          <div
+            style={{
+              display: "flex",
+              gap: "20px",
+              flexWrap: "wrap",
+              marginBottom: "60px"
+            }}
+          >
+            <Link
+              to="/gallery"
+              className="home-btn home-btn-primary"
+              style={{
+                padding: "16px 40px",
+                fontSize: "16px",
+                fontWeight: "500",
+                backgroundColor: "#d4af7a",
+                color: "#1a1a1a",
+                border: "none",
+                borderRadius: "4px",
+                textDecoration: "none",
+                transition: "all 0.3s ease",
+                display: "inline-block"
+              }}
+            >
               View Album
             </Link>
-            <Link to="/contact" className="home-btn home-btn-secondary">
+            <Link
+              to="/contact"
+              className="home-btn home-btn-secondary"
+              style={{
+                padding: "16px 40px",
+                fontSize: "16px",
+                fontWeight: "500",
+                backgroundColor: "rgba(255, 255, 255, 0.1)",
+                color: "#fff",
+                border: "2px solid rgba(255, 255, 255, 0.3)",
+                borderRadius: "4px",
+                textDecoration: "none",
+                transition: "all 0.3s ease",
+                display: "inline-block",
+                backdropFilter: "blur(10px)"
+              }}
+            >
               Contact Us
             </Link>
           </div>
 
-          <div className="home-stats">
-            <div className="home-stat-card">
-              <strong>100+</strong>
-              <span>Events styled with care</span>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+              gap: "30px",
+              maxWidth: "900px"
+            }}
+          >
+            <div>
+              <strong
+                style={{
+                  display: "block",
+                  fontSize: "clamp(28px, 3vw, 42px)",
+                  fontWeight: "600",
+                  marginBottom: "8px",
+                  color: "#fff"
+                }}
+              >
+                100+
+              </strong>
+              <span
+                style={{
+                  fontSize: "clamp(13px, 1.2vw, 16px)",
+                  color: "#e0e0e0",
+                  fontWeight: "300"
+                }}
+              >
+                Events styled with care
+              </span>
             </div>
-            <div className="home-stat-card">
-              <strong style={{ color: "var(--accent-deep)" }}>
+
+            <div>
+              <strong
+                style={{
+                  display: "block",
+                  fontSize: "clamp(20px, 2vw, 28px)",
+                  fontWeight: "600",
+                  marginBottom: "8px",
+                  color: "#d4af7a"
+                }}
+              >
                 Wedding + Homecoming
               </strong>
-              <span>Traditional and modern concepts</span>
+              <span
+                style={{
+                  fontSize: "clamp(13px, 1.2vw, 16px)",
+                  color: "#e0e0e0",
+                  fontWeight: "300"
+                }}
+              >
+                Traditional and modern concepts
+              </span>
             </div>
-            <div className="home-stat-card">
-              <strong style={{ color: "var(--accent-deep)" }}>
+
+            <div>
+              <strong
+                style={{
+                  display: "block",
+                  fontSize: "clamp(20px, 2vw, 28px)",
+                  fontWeight: "600",
+                  marginBottom: "8px",
+                  color: "#d4af7a"
+                }}
+              >
                 Album-ready
               </strong>
-              <span>Decor planned to look strong in photos</span>
+              <span
+                style={{
+                  fontSize: "clamp(13px, 1.2vw, 16px)",
+                  color: "#e0e0e0",
+                  fontWeight: "300"
+                }}
+              >
+                Decor planned to look strong in photos
+              </span>
             </div>
           </div>
-        </div>
-
-        <div
-          className="home-hero-media"
-          style={{
-            position: "relative",
-            height: "100%",
-            minHeight: "calc(100vh - 160px)",
-            width: "100%",
-            borderRadius: "24px",
-            overflow: "hidden",
-            backgroundImage: `url(${hero1Img})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            boxShadow: "0 18px 40px rgba(0, 0, 0, 0.15)"
-          }}
-        >
         </div>
       </section>
 
