@@ -1,7 +1,16 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import heroImg from "../assets/images/hero2.png";
 import hero1Img from "../assets/images/hero1.png";
+
+// Hero carousel images
+const heroImages = [
+  hero1Img,
+  "/gallery/gallery19.png",
+  "/gallery/gallery32.png",
+  "/gallery/gallery29.png",
+  "/gallery/gallery30.png"
+];
 
 const highlights = [
   {
@@ -62,6 +71,17 @@ const planningPoints = [
 ];
 
 export default function Home() {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  // Auto-change images every 2 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % heroImages.length);
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <>
       <section
@@ -86,11 +106,12 @@ export default function Home() {
             left: 0,
             width: "100%",
             height: "100%",
-            backgroundImage: `url(${hero1Img})`,
+            backgroundImage: `url(${heroImages[currentImageIndex]})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
             backgroundRepeat: "no-repeat",
-            zIndex: 1
+            zIndex: 1,
+            transition: "background-image 1s ease-in-out"
           }}
         >
           <div
