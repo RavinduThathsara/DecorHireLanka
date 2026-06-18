@@ -261,6 +261,7 @@ export default function Register() {
               onError={() => setError("Google sign-up failed.")}
               text="signup_with"
               width="416"
+              use_fedcm_for_prompt
             />
           </div>
 

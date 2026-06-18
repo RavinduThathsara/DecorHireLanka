@@ -17,7 +17,7 @@ export default function Login() {
   const onChange = (e) => {
     setForm((p) => ({ ...p, [e.target.name]: e.target.value }));
   };
-  console.log("FRONTEND GOOGLE CLIENT ID =", import.meta.env.VITE_GOOGLE_CLIENT_ID);
+
   const handleGoogleSuccess = async (credentialResponse) => {
     try {
       setLoading(true);
@@ -102,6 +102,7 @@ export default function Login() {
               onError={() => setError("Google login failed.")}
               text="signin_with"
               width="400"
+              use_fedcm_for_prompt
             />
           </div>
 

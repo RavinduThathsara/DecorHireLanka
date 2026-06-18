@@ -13,7 +13,7 @@ export const api = axios.create({
 // Attach token automatically
 api.interceptors.request.use(
   (config) => {
-    const customerToken = localStorage.getItem("token");
+    const customerToken = localStorage.getItem("customerToken");
     const adminToken = localStorage.getItem("adminToken");
 
     const token = adminToken || customerToken;

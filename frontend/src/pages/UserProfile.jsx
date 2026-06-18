@@ -28,7 +28,7 @@ export default function UserProfile() {
             setError("");
 
             // Fetch bookings
-            const bookingsRes = await api.get("/api/booking/customer/my-bookings", {
+            const bookingsRes = await api.get("/api/bookings/customer/my-bookings", {
                 params: { email: customer.email },
             });
             setBookings(bookingsRes.data.bookings || []);
