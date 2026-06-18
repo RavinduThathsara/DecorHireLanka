@@ -126,19 +126,19 @@ export default function UserProfile() {
             {loading && <p style={{ color: "#6b7280", marginTop: 16 }}>Loading your data...</p>}
 
             {!loading && (
-                <div style={darkSection}>
+                <div style={contentSection}>
                     {/* Bookings Section */}
                     <div style={sectionWrapper}>
                         <div style={sectionHead}>
-                            <h3 style={sectionTitleDark}>My Bookings ({bookings.length})</h3>
+                            <h3 style={sectionTitleContent}>My Bookings ({bookings.length})</h3>
                         </div>
 
                         {bookings.length === 0 ? (
-                            <p style={{ color: "#94a3b8", marginTop: 12 }}>
+                            <p style={{ color: "#6f645a", marginTop: 12 }}>
                                 No bookings yet. <a href="/book" style={linkStyleGold}>Start booking now</a>
                             </p>
                         ) : (
-                            <div style={cardGrid}>
+                            <div style={cardList}>
                                 {bookings.map((booking) => {
                                     const dateObj = new Date(booking.eventDate);
                                     const day = dateObj.getDate();
@@ -190,11 +190,11 @@ export default function UserProfile() {
 
                                             {booking.note && (
                                                 <div style={cardDescription}>
-                                                    <strong style={{ color: "#d1d5db" }}>Note:</strong> {booking.note}
+                                                    <strong style={{ color: "#1f1a17" }}>Note:</strong> {booking.note}
                                                 </div>
                                             ) || (
                                                     <div style={cardDescription}>
-                                                        <span style={{ color: "#64748b", fontStyle: "italic" }}>No specific notes provided.</span>
+                                                        <span style={{ color: "#6f645a", fontStyle: "italic" }}>No specific notes provided.</span>
                                                     </div>
                                                 )}
 
@@ -212,15 +212,15 @@ export default function UserProfile() {
                     {/* Contact Messages Section */}
                     <div style={sectionWrapper}>
                         <div style={sectionHead}>
-                            <h3 style={sectionTitleDark}>Recent Messages ({messages.length})</h3>
+                            <h3 style={sectionTitleContent}>Recent Messages ({messages.length})</h3>
                         </div>
 
                         {messages.length === 0 ? (
-                            <p style={{ color: "#94a3b8", marginTop: 12 }}>
+                            <p style={{ color: "#6f645a", marginTop: 12 }}>
                                 No contact messages sent yet. <a href="/contact" style={linkStyleGold}>Send us a message</a>
                             </p>
                         ) : (
-                            <div style={cardGrid}>
+                            <div style={cardList}>
                                 {messages.map((msg) => (
                                     <div key={msg._id} style={modernCard}>
                                         <div style={cardMainContent}>
@@ -348,80 +348,79 @@ const msgError = {
     marginBottom: 12,
 };
 
-const darkSection = {
+const contentSection = {
     marginTop: 30,
-    background: "#0f172a", // Very dark blue/black
-    padding: "40px 20px",
-    borderRadius: 32,
 };
 
 const sectionWrapper = {
-    marginBottom: 40,
+    marginBottom: 50,
 };
 
-const sectionTitleDark = {
+const sectionTitleContent = {
     margin: "0 0 20px 0",
-    color: "#f8fafc",
+    color: "#14233b",
     fontFamily: '"Playfair Display", Georgia, serif',
-    fontSize: 24,
+    fontSize: 26,
 };
 
-const cardGrid = {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-    gap: 20,
+const cardList = {
+    display: "flex",
+    flexDirection: "column",
+    gap: 22,
 };
 
 const modernCard = {
-    background: "#1e293b", // Slate-800
-    borderRadius: 20,
-    padding: 20,
-    border: "1px solid rgba(255, 255, 255, 0.05)",
-    transition: "transform 0.2s ease",
+    background: "rgba(255, 255, 255, 0.7)", // Glass-like light surface
+    backdropFilter: "blur(10px)",
+    borderRadius: 24,
+    padding: 24,
+    border: "1px solid rgba(155, 91, 52, 0.12)",
+    boxShadow: "0 12px 30px rgba(70, 43, 22, 0.04)",
     display: "flex",
     flexDirection: "column",
 };
 
 const cardMainContent = {
     display: "flex",
-    gap: 16,
-    marginBottom: 16,
+    gap: 20,
+    marginBottom: 18,
 };
 
 const dateBox = {
-    background: "rgba(255,255,255,0.03)",
-    border: "1px solid rgba(255,255,255,0.1)",
-    borderRadius: 12,
-    minWidth: 64,
-    height: 70,
+    background: "linear-gradient(135deg, #1f1a17 0%, #3e352f 100%)",
+    borderRadius: 16,
+    minWidth: 70,
+    height: 76,
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
+    boxShadow: "0 8px 16px rgba(31, 26, 23, 0.15)",
 };
 
 const dateMonth = {
-    fontSize: 10,
+    fontSize: 11,
     fontWeight: 800,
     textTransform: "uppercase",
-    color: "#94a3b8",
+    color: "#d4b99a",
+    letterSpacing: "0.05em",
 };
 
 const dateDay = {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: 900,
-    color: "#f8fafc",
+    color: "#ffffff",
 };
 
 const iconBox = {
-    background: "rgba(255,255,255,0.03)",
-    border: "1px solid rgba(255,255,255,0.1)",
-    borderRadius: 12,
-    minWidth: 64,
-    height: 64,
+    background: "linear-gradient(135deg, #1f1a17 0%, #3e352f 100%)",
+    borderRadius: 16,
+    minWidth: 70,
+    height: 70,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    boxShadow: "0 8px 16px rgba(31, 26, 23, 0.15)",
 };
 
 const cardInfo = {
@@ -432,85 +431,94 @@ const cardTopRow = {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "flex-start",
-    marginBottom: 8,
+    marginBottom: 10,
 };
 
 const modernCardTitle = {
     margin: 0,
-    fontSize: 18,
-    color: "#f8fafc",
-    fontWeight: 700,
+    fontSize: 20,
+    color: "#1f1a17",
+    fontWeight: 800,
+    fontFamily: 'inherit',
 };
 
 const statusBadgeModern = {
-    padding: "4px 12px",
-    borderRadius: 20,
-    fontSize: 11,
+    padding: "6px 14px",
+    borderRadius: "99px",
+    fontSize: 12,
     fontWeight: 800,
     display: "flex",
     alignItems: "center",
+    letterSpacing: "0.02em",
 };
 
 const cardMetaRow = {
     display: "flex",
-    flexDirection: "column",
-    gap: 4,
+    flexWrap: "wrap",
+    gap: 16,
 };
 
 const metaItem = {
-    fontSize: 13,
-    color: "#94a3b8",
+    fontSize: 14,
+    color: "#6f645a",
     display: "flex",
     alignItems: "center",
     gap: 6,
+    fontWeight: 600,
 };
 
 const metaIcon = {
-    fontSize: 12,
+    fontSize: 14,
 };
 
 const cardDescription = {
-    fontSize: 14,
-    color: "#94a3b8",
-    lineHeight: 1.5,
-    marginBottom: 20,
+    fontSize: 15,
+    color: "#4a443f",
+    lineHeight: 1.6,
+    margin: "10px 0 24px 0",
+    padding: "14px 18px",
+    background: "rgba(155, 91, 52, 0.05)",
+    borderRadius: 14,
+    borderLeft: "4px solid #9b5b34",
     flex: 1,
 };
 
 const cardActions = {
     display: "flex",
-    gap: 10,
-    borderTop: "1px solid rgba(255,255,255,0.1)",
-    paddingTop: 16,
+    gap: 12,
+    borderTop: "1px solid rgba(102, 79, 58, 0.1)",
+    paddingTop: 20,
 };
 
 const actionBtnEdit = {
     flex: 1,
-    padding: "8px",
-    background: "rgba(255,255,255,0.05)",
-    border: "none",
-    borderRadius: 8,
-    color: "#f8fafc",
-    fontSize: 13,
-    fontWeight: 600,
+    padding: "12px",
+    background: "#ffffff",
+    border: "1px solid rgba(102, 79, 58, 0.15)",
+    borderRadius: 12,
+    color: "#1f1a17",
+    fontSize: 14,
+    fontWeight: 800,
     cursor: "pointer",
+    transition: "all 0.2s ease",
 };
 
 const actionBtnDelete = {
     flex: 1,
-    padding: "8px",
-    background: "rgba(239, 68, 68, 0.1)",
-    border: "none",
-    borderRadius: 8,
+    padding: "12px",
+    background: "rgba(239, 68, 68, 0.08)",
+    border: "1px solid rgba(239, 68, 68, 0.15)",
+    borderRadius: 12,
     color: "#ef4444",
-    fontSize: 13,
-    fontWeight: 600,
+    fontSize: 14,
+    fontWeight: 800,
     cursor: "pointer",
+    transition: "all 0.2s ease",
 };
 
 const linkStyleGold = {
-    color: "#eab308",
-    fontWeight: 700,
+    color: "#9b5b34",
+    fontWeight: 800,
     textDecoration: "none",
 };
 
