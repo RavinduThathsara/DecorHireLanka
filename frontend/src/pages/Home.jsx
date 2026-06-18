@@ -69,6 +69,7 @@ export default function Home() {
           width: "100vw",
           height: "100vh",
           minHeight: "700px",
+          marginTop: "-20px",
           marginLeft: "calc(-50vw + 50%)",
           marginRight: "calc(-50vw + 50%)",
           overflow: "hidden",
