@@ -10,7 +10,7 @@ const fallbackDecorations = [
       "A premium stage design with layered florals, warm lighting, and elegant table styling for a polished wedding reception.",
     priceFrom: "From LKR 185,000",
     tag: "Best Seller",
-    imageUrl: "/gallery/gallery10.png",
+    imageUrl: "/gallery/gallery18.png",
     idealFor: "Grand hotel receptions and evening events",
     includes: ["Main stage backdrop", "Floral aisle details", "Couple table styling"],
   },
@@ -21,7 +21,7 @@ const fallbackDecorations = [
       "A balanced Sri Lankan poruwa setup that keeps the traditional feel while still looking refined and photo-ready.",
     priceFrom: "From LKR 160,000",
     tag: "Classic",
-    imageUrl: "/gallery/gallery1.png",
+    imageUrl: "/gallery/gallery41.png",
     idealFor: "Families who want a cultural wedding look",
     includes: ["Poruwa styling", "Entrance florals", "Matching stage accents"],
   },
@@ -32,7 +32,7 @@ const fallbackDecorations = [
       "A romantic homecoming arrangement with soft colors, welcome details, and a warm arrival atmosphere for the couple.",
     priceFrom: "From LKR 95,000",
     tag: "Homecoming",
-    imageUrl: "/gallery/gallery7.png",
+    imageUrl: "/gallery/gallery25.png",
     idealFor: "Home entrances, villas, and intimate venues",
     includes: ["Welcome board area", "Entrance framing", "Soft light decor touches"],
   },
@@ -43,9 +43,20 @@ const fallbackDecorations = [
       "An outdoor concept with greenery, floral arch work, and gentle lighting that keeps the venue natural and elegant.",
     priceFrom: "From LKR 210,000",
     tag: "Outdoor",
-    imageUrl: "/gallery/gallery14.png",
+    imageUrl: "/gallery/gallery42.png",
     idealFor: "Open lawns, garden ceremonies, and sunset events",
     includes: ["Ceremony focal point", "Guest area accents", "Photo-zone styling"],
+  },
+  {
+    _id: "sample-5",
+    title: "Birthday Decoration",
+    description:
+      "A vibrant and festive birthday setup with colorful balloons, elegant backdrops, and personalized details for a memorable celebration.",
+    priceFrom: "From LKR 75,000",
+    tag: "Birthday",
+    imageUrl: "/gallery/gallery29.png",
+    idealFor: "Birthday parties, celebrations, and special milestone events",
+    includes: ["Balloon arrangements", "Custom backdrop", "Themed table decorations"],
   },
 ];
 
@@ -242,22 +253,65 @@ export default function PopularDecorations() {
       </section>
 
       {/* REST OF PAGE CONTENT CENTERED AS NORMAL */}
-      <div style={{ maxWidth: "1180px", margin: "0 auto", padding: "0 20px" }}>
+      <div style={{ maxWidth: "1400px", margin: "0 auto", padding: "0 10px" }}>
         <section className="popular-reasons" style={{
           display: "grid",
           gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-          gap: "24px",
-          marginBottom: "80px"
+          gap: "32px",
+          marginBottom: "80px",
+          padding: "20px 0"
         }}>
-          {customerReasons.map((reason) => (
+          {customerReasons.map((reason, index) => (
             <article key={reason.title} style={{
-              background: "#f8f9fa",
-              padding: "32px",
-              borderRadius: "20px",
-              boxShadow: "0 4px 15px rgba(0,0,0,0.03)"
+              background: "linear-gradient(135deg, #ffffff 0%, #f9fafb 100%)",
+              padding: "40px 32px",
+              borderRadius: "16px",
+              boxShadow: "0 8px 24px rgba(0,0,0,0.06)",
+              border: "1px solid rgba(155, 91, 52, 0.08)",
+              transition: "all 0.3s ease",
+              position: "relative",
+              overflow: "hidden"
             }}>
-              <h3 style={{ fontSize: "1.25rem", fontWeight: "700", color: "#1a1a1a", marginBottom: "16px", fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif' }}>{reason.title}</h3>
-              <p style={{ color: "#666", lineHeight: "1.6", margin: "0" }}>{reason.text}</p>
+              <div style={{
+                position: "absolute",
+                top: "0",
+                right: "0",
+                width: "80px",
+                height: "80px",
+                background: `linear-gradient(135deg, ${index === 0 ? '#9b5b34' : index === 1 ? '#d4af7a' : '#824b2b'} 0%, transparent 100%)`,
+                opacity: "0.05",
+                borderRadius: "0 0 0 80px"
+              }}></div>
+              <div style={{
+                width: "50px",
+                height: "50px",
+                borderRadius: "12px",
+                background: `linear-gradient(135deg, ${index === 0 ? '#9b5b34' : index === 1 ? '#d4af7a' : '#824b2b'} 0%, ${index === 0 ? '#824b2b' : index === 1 ? '#9b5b34' : '#9b5b34'} 100%)`,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                marginBottom: "20px",
+                fontSize: "24px",
+                color: "#fff",
+                fontWeight: "700",
+                boxShadow: "0 4px 12px rgba(155, 91, 52, 0.2)"
+              }}>
+                {index + 1}
+              </div>
+              <h3 style={{
+                fontSize: "1.35rem",
+                fontWeight: "700",
+                color: "#1a1a1a",
+                marginBottom: "16px",
+                fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
+                lineHeight: "1.3"
+              }}>{reason.title}</h3>
+              <p style={{
+                color: "#6f645a",
+                lineHeight: "1.7",
+                margin: "0",
+                fontSize: "15px"
+              }}>{reason.text}</p>
             </article>
           ))}
         </section>
@@ -277,12 +331,6 @@ export default function PopularDecorations() {
 
         {loading && <div style={msgInfo}>Loading packages...</div>}
         {error && <div style={msgError}>{error}</div>}
-
-        {!loading && decorations.length === 0 && (
-          <div style={msgInfo}>
-            No admin decorations added yet. Showing attractive sample packages for customers now.
-          </div>
-        )}
 
         <div style={grid}>
           {displayDecorations.map((d) => (
@@ -322,12 +370,6 @@ export default function PopularDecorations() {
             </div>
           ))}
         </div>
-
-        <div style={note}>
-          <strong>Note:</strong> Prices depend on location, hall size, flower type, lighting, and
-          customization. Add your own live packages from <strong>/admin/decorations</strong> and use
-          image paths like <strong>/gallery/gallery1.png</strong> to show your real work here.
-        </div>
       </div>
     </div>
   );
@@ -344,7 +386,7 @@ const topBar = {
 
 const grid = {
   display: "grid",
-  gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+  gridTemplateColumns: "repeat(5, 1fr)",
   gap: 18,
 };
 
