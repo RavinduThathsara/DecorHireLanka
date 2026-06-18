@@ -364,8 +364,8 @@ const sectionTitleContent = {
 };
 
 const cardList = {
-    display: "flex",
-    flexDirection: "column",
+    display: "grid",
+    gridTemplateColumns: "repeat(auto-fit, minmax(max(400px, 45%), 1fr))",
     gap: 22,
 };
 
@@ -493,10 +493,10 @@ const cardActions = {
 const actionBtnEdit = {
     flex: 1,
     padding: "12px",
-    background: "#ffffff",
-    border: "1px solid rgba(102, 79, 58, 0.15)",
+    background: "rgba(16, 185, 129, 0.1)",
+    border: "1px solid rgba(16, 185, 129, 0.2)",
     borderRadius: 12,
-    color: "#1f1a17",
+    color: "#059669",
     fontSize: 14,
     fontWeight: 800,
     cursor: "pointer",
@@ -506,10 +506,10 @@ const actionBtnEdit = {
 const actionBtnDelete = {
     flex: 1,
     padding: "12px",
-    background: "rgba(239, 68, 68, 0.08)",
-    border: "1px solid rgba(239, 68, 68, 0.15)",
+    background: "rgba(239, 68, 68, 0.1)",
+    border: "1px solid rgba(239, 68, 68, 0.2)",
     borderRadius: 12,
-    color: "#ef4444",
+    color: "#dc2626",
     fontSize: 14,
     fontWeight: 800,
     cursor: "pointer",
