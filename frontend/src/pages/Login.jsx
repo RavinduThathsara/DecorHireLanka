@@ -63,7 +63,7 @@ export default function Login() {
     <div style={pageWrap}>
       <div style={card}>
         <img src={logo} alt="DecorHire Lanka logo" style={headerLogo} />
-        <h1 style={title}>Customer Login</h1>
+        <h1 style={title}>DecoLanka Login</h1>
 
         <form onSubmit={onSubmit} style={formStyle}>
           <input
@@ -153,6 +153,7 @@ const title = {
   fontWeight: 800,
   color: "#111827",
   fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
+  textAlign: "center",
 };
 
 const formStyle = {
