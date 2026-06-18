@@ -62,57 +62,52 @@ export default function Navbar() {
                 onClick={handleNotifClick}
               >
                 <span style={{ fontSize: 20 }}>🔔</span>
-                {unreadCount > 0 && <span style={notificationDot}></span>}
-              </div>
-
-              {/* Industry-Level Notification Dropdown */}
-              {showNotifs && (
-                <div style={notifDropdown}>
-                  <div style={notifHeader}>
-                    <span style={notifTitle}>Notifications</span>
-                    <div style={notifHeaderActions}>
-                      <span style={notifActionIcon}>✓</span>
-                      <span style={notifActionIcon}>⚙</span>
-                      <span style={notifActionIcon} onClick={() => setShowNotifs(false)}>✕</span>
-                    </div>
-                  </div>
-
-                  <div style={notifList}>
-                    {notifications.length === 0 ? (
-                      <div style={emptyNotifs}>No new notifications</div>
-                    ) : (
-                      notifications.map(n => (
-                        <div
-                          key={n.id}
-                          style={notifItem}
-                          onClick={() => {
-                            setShowNotifs(false);
-                            navigate("/profile");
-                          }}
-                        >
-                          <div style={notifIcon}>✎</div>
-                          <div style={notifContent}>
-                            <div style={notifText}>{n.title}</div>
-                            <div style={notifMeta}>
-                              <span>{n.time}</span>
-                              <span style={notifLink}>View full notification</span>
-                            </div>
-                          </div>
-                        </div>
-                      ))
-                    )}
-                  </div>
-
-                  <div
-                    style={notifFooter}
-                    onClick={() => {
-                      setShowNotifs(false);
-                      navigate("/profile");
-                    }}
-                  >
-                    See all
+                {unreadCount > 0 && <span style={notificationDot}>{unreadCount}</span>}
+                <div style={notifHeader}>
+                  <span style={notifTitle}>Notifications</span>
+                  <div style={notifHeaderActions}>
+                    <span style={notifActionIcon}>✓</span>
+                    <span style={notifActionIcon}>⚙</span>
+                    <span style={notifActionIcon} onClick={() => setShowNotifs(false)}>✕</span>
                   </div>
                 </div>
+
+                <div style={notifList}>
+                  {notifications.length === 0 ? (
+                    <div style={emptyNotifs}>No new notifications</div>
+                  ) : (
+                    notifications.map(n => (
+                      <div
+                        key={n.id}
+                        style={notifItem}
+                        onClick={() => {
+                          setShowNotifs(false);
+                          navigate("/profile");
+                        }}
+                      >
+                        <div style={notifIcon}>✎</div>
+                        <div style={notifContent}>
+                          <div style={notifText}>{n.title}</div>
+                          <div style={notifMeta}>
+                            <span>{n.time}</span>
+                            <span style={notifLink}>View full notification</span>
+                          </div>
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+
+                <div
+                  style={notifFooter}
+                  onClick={() => {
+                    setShowNotifs(false);
+                    navigate("/profile");
+                  }}
+                >
+                  See all
+                </div>
+              </div>
               )}
             </div>
           )}
@@ -269,13 +264,21 @@ const notificationBadge = {
 
 const notificationDot = {
   position: "absolute",
-  top: 10,
-  right: 10,
-  width: 8,
-  height: 8,
+  top: -2,
+  right: -2,
+  minWidth: 18,
+  height: 18,
   background: "#ef4444",
-  borderRadius: "50%",
+  borderRadius: "10px",
   border: "2px solid #fff",
+  color: "#fff",
+  fontSize: "10px",
+  fontWeight: "900",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  padding: "0 4px",
+  boxShadow: "0 2px 5px rgba(0,0,0,0.2)",
 };
 
 const profileChip = {
