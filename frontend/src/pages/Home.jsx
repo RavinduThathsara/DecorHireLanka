@@ -1,3 +1,4 @@
+import React from "react";
 import { Link } from "react-router-dom";
 import heroImg from "../assets/images/hero2.png";
 import hero1Img from "../assets/images/hero1.png";
