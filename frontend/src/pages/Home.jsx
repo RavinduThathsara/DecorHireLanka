@@ -137,7 +137,7 @@ export default function Home() {
           style={{
             position: "relative",
             height: "100%",
-            minHeight: "700px",
+            minHeight: "85vh",
             width: "100%",
             borderRadius: "24px",
             overflow: "hidden",
