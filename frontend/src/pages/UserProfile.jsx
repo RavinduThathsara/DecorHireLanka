@@ -12,6 +12,7 @@ export default function UserProfile() {
     const [messages, setMessages] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const [searchQuery, setSearchQuery] = useState("");
 
     // Editing states for user-friendly UI
     const [editBooking, setEditBooking] = useState(null);
@@ -112,17 +113,45 @@ export default function UserProfile() {
         }
     };
 
+    const filteredBookings = useMemo(() => {
+        return bookings.filter(b =>
+            b.decorationTitle?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            b.eventLocation?.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+    }, [bookings, searchQuery]);
+
+    const filteredMessages = useMemo(() => {
+        return messages.filter(m =>
+            m.message?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            m.eventType?.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+    }, [messages, searchQuery]);
+
     return (
         <div style={pageShell}>
             {/* Profile Header */}
             <div style={profileHeader}>
-                <div style={profileAvatarCircle}>
-                    {customer?.username ? customer.username.charAt(0).toUpperCase() : "U"}
-                    <div style={editIconBadge}>📷</div>
+                <div style={{ display: "flex", alignItems: "center", gap: 20, flex: 1 }}>
+                    <div style={profileAvatarCircle}>
+                        {customer?.username ? customer.username.charAt(0).toUpperCase() : "U"}
+                        <div style={editIconBadge}>📷</div>
+                    </div>
+                    <div>
+                        <h1 style={pageTitle}>My Profile</h1>
+                        <p style={pageSubtitle}>Manage your account details and view your activities</p>
+                    </div>
                 </div>
-                <div>
-                    <h1 style={pageTitle}>My Profile</h1>
-                    <p style={pageSubtitle}>Manage your account details and view your activities</p>
+
+                {/* Left/Right side search bar (Positioned in header for industry-level look) */}
+                <div style={searchContainer}>
+                    <span style={{ position: "absolute", left: 16, top: "50%", transform: "translateY(-50%)", fontSize: 16, opacity: 0.5 }}>🔍</span>
+                    <input
+                        type="text"
+                        placeholder="Search bookings or messages..."
+                        style={searchInput}
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                    />
                 </div>
             </div>
 
@@ -138,6 +167,10 @@ export default function UserProfile() {
                         <span style={infoLabel}>Email</span>
                         <span style={infoValue}>{customer?.email || "N/A"}</span>
                     </div>
+                    <div style={infoItem}>
+                        <span style={infoLabel}>Phone Number</span>
+                        <span style={infoValue}>{customer?.phone || customer?.mobile || "Not Provided"}</span>
+                    </div>
                 </div>
             </div>
 
@@ -150,16 +183,16 @@ export default function UserProfile() {
                     {/* Bookings Section */}
                     <div style={sectionWrapper}>
                         <div style={sectionHead}>
-                            <h3 style={sectionTitleContent}>My Bookings ({bookings.length})</h3>
+                            <h3 style={sectionTitleContent}>My Bookings ({filteredBookings.length})</h3>
                         </div>
 
-                        {bookings.length === 0 ? (
+                        {filteredBookings.length === 0 ? (
                             <p style={{ color: "#6f645a", marginTop: 12 }}>
-                                No bookings yet. <a href="/book" style={linkStyleGold}>Start booking now</a>
+                                {searchQuery ? "No matching bookings found." : "No bookings yet."} {!searchQuery && <a href="/book" style={linkStyleGold}>Start booking now</a>}
                             </p>
                         ) : (
                             <div style={cardList}>
-                                {bookings.map((booking) => {
+                                {filteredBookings.map((booking) => {
                                     const dateObj = new Date(booking.eventDate);
                                     const day = dateObj.getDate();
                                     const month = dateObj.toLocaleString('default', { month: 'short' });
@@ -229,16 +262,16 @@ export default function UserProfile() {
                     {/* Contact Messages Section */}
                     <div style={sectionWrapper}>
                         <div style={sectionHead}>
-                            <h3 style={sectionTitleContent}>Recent Messages ({messages.length})</h3>
+                            <h3 style={sectionTitleContent}>Recent Messages ({filteredMessages.length})</h3>
                         </div>
 
-                        {messages.length === 0 ? (
+                        {filteredMessages.length === 0 ? (
                             <p style={{ color: "#6f645a", marginTop: 12 }}>
-                                No contact messages sent yet. <a href="/contact" style={linkStyleGold}>Send us a message</a>
+                                {searchQuery ? "No matching messages found." : "No contact messages sent yet."} {!searchQuery && <a href="/contact" style={linkStyleGold}>Send us a message</a>}
                             </p>
                         ) : (
                             <div style={cardList}>
-                                {messages.map((msg) => (
+                                {filteredMessages.map((msg) => (
                                     <div key={msg._id} style={modernCard}>
                                         <div style={cardMainContent}>
                                             <div style={iconBox}>
@@ -598,35 +631,53 @@ const cardDescription = {
 
 const cardActions = {
     display: "flex",
-    gap: 10,
+    gap: 8,
     marginTop: "auto",
     paddingTop: 16,
+    justifyContent: "flex-end", // Align buttons to the right
 };
 
 const actionBtnEdit = {
-    flex: 1,
-    padding: "10px",
+    padding: "8px 16px", // Reduced horizontal padding for shorter length
     background: "#10b981",
     border: "none",
-    borderRadius: 10,
+    borderRadius: 8,
     color: "#fff",
-    fontSize: 13,
+    fontSize: 12, // Slightly smaller font
     fontWeight: 700,
     cursor: "pointer",
     boxShadow: "0 4px 12px rgba(16, 185, 129, 0.2)",
+    minWidth: "80px", // Fixed minimum width for consistency
 };
 
 const actionBtnDelete = {
-    flex: 1,
-    padding: "10px",
+    padding: "8px 16px",
     background: "#ef4444",
     border: "none",
-    borderRadius: 10,
+    borderRadius: 8,
     color: "#fff",
-    fontSize: 13,
+    fontSize: 12,
     fontWeight: 700,
     cursor: "pointer",
     boxShadow: "0 4px 12px rgba(239, 68, 68, 0.2)",
+    minWidth: "80px",
+};
+
+const searchContainer = {
+    position: "relative",
+    width: "350px",
+};
+
+const searchInput = {
+    width: "100%",
+    padding: "12px 16px 12px 42px",
+    borderRadius: "14px",
+    border: "1px solid rgba(155, 91, 52, 0.15)",
+    background: "rgba(255, 255, 255, 0.8)",
+    fontSize: "14px",
+    outline: "none",
+    transition: "all 0.3s ease",
+    color: "#1f1a17",
 };
 
 const modalOverlay = {
