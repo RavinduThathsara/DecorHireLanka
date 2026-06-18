@@ -1,6 +1,8 @@
 // backend/src/controllers/galleryController.js
 import GalleryImage from "../models/GalleryImage.js";
 
+const allowedGalleryCategories = ["wedding", "birthday", "table", "hall", "other"];
+
 // PUBLIC: customers see active gallery images
 export const getActiveGallery = async (req, res) => {
   try {
@@ -46,7 +48,7 @@ export const adminUploadGalleryImage = async (req, res) => {
     }
 
     const normalizedCategoryRaw = (category ?? "").toString().trim().toLowerCase();
-    const normalizedCategory = ["wedding", "birthday", "other"].includes(normalizedCategoryRaw)
+    const normalizedCategory = allowedGalleryCategories.includes(normalizedCategoryRaw)
       ? normalizedCategoryRaw
       : "other";
 
@@ -77,7 +79,7 @@ export const adminUpdateGalleryImage = async (req, res) => {
     if (isActive !== undefined) img.isActive = isActive;
     if (category !== undefined) {
       const normalizedCategoryRaw = (category ?? "").toString().trim().toLowerCase();
-      img.category = ["wedding", "birthday", "other"].includes(normalizedCategoryRaw)
+      img.category = allowedGalleryCategories.includes(normalizedCategoryRaw)
         ? normalizedCategoryRaw
         : "other";
     }

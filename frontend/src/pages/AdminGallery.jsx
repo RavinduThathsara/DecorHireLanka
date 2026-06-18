@@ -17,6 +17,8 @@ const getGalleryImageSrc = (imageUrl) => {
 const getCategoryLabel = (category) => {
   if (category === "wedding") return "Wedding Decoration";
   if (category === "birthday") return "Birthday Decoration";
+  if (category === "table") return "Table Decoration";
+  if (category === "hall") return "Hall Decoration";
   return "Other Event Decoration";
 };
 
@@ -193,48 +195,54 @@ export default function AdminGallery() {
           </div>
         </div>
 
-        <form onSubmit={upload} style={{ display: "grid", gap: 16 }}>
-          <div style={fieldGroup}>
-            <label style={fieldLabel}>Decoration category</label>
-            <select
-              style={input}
-              value={uploadCategory}
-              onChange={(e) => setUploadCategory(e.target.value)}
-            >
-              <option value="wedding">Wedding Decoration</option>
-              <option value="birthday">Birthday Decoration</option>
-              <option value="other">Other Event Decoration</option>
-            </select>
-          </div>
+        <form onSubmit={upload} style={uploadForm}>
+          <div style={uploadFieldsGrid}>
+            <div style={fieldGroup}>
+              <label style={fieldLabel}>Decoration category</label>
+              <select
+                style={compactInput}
+                value={uploadCategory}
+                onChange={(e) => setUploadCategory(e.target.value)}
+              >
+                <option value="wedding">Wedding Decoration</option>
+                <option value="birthday">Birthday Decoration</option>
+                <option value="table">Table Decoration</option>
+                <option value="hall">Hall Decoration</option>
+                <option value="other">Other Event Decoration</option>
+              </select>
+            </div>
 
-          <div style={fieldGroup}>
-            <label style={fieldLabel}>Choose image file</label>
-            <input
-              style={input}
-              type="file"
-              accept="image/png,image/jpeg,image/webp"
-              onChange={(e) => setImageFile(e.target.files?.[0] || null)}
-            />
-            <div style={fileHint}>
-              {imageFile ? imageFile.name : "Accepted formats: PNG, JPG, WEBP"}
+            <div style={fieldGroup}>
+              <label style={fieldLabel}>Choose image file</label>
+              <input
+                style={fileInput}
+                type="file"
+                accept="image/png,image/jpeg,image/webp"
+                onChange={(e) => setImageFile(e.target.files?.[0] || null)}
+              />
+              <div style={fileHint}>
+                {imageFile ? imageFile.name : "Accepted formats: PNG, JPG, WEBP"}
+              </div>
             </div>
           </div>
 
-          <label style={toggleRow}>
-            <input
-              type="checkbox"
-              checked={uploadIsActive}
-              onChange={(e) => setUploadIsActive(e.target.checked)}
-            />
-            <span style={{ display: "grid", gap: 2 }}>
-              <span>Active visibility</span>
-              <span style={toggleHint}>
-                Show this image to customers after upload.
+          <div style={uploadFooter}>
+            <label style={toggleRow}>
+              <input
+                type="checkbox"
+                checked={uploadIsActive}
+                onChange={(e) => setUploadIsActive(e.target.checked)}
+              />
+              <span style={{ display: "grid", gap: 2 }}>
+                <span>Active visibility</span>
+                <span style={toggleHint}>
+                  Show this image to customers after upload.
+                </span>
               </span>
-            </span>
-          </label>
+            </label>
 
-          <button style={btnDark} type="submit">Upload</button>
+            <button style={btnDark} type="submit">Upload</button>
+          </div>
 
           {error && <div style={msgError}>{error}</div>}
         </form>
@@ -262,6 +270,8 @@ export default function AdminGallery() {
             <option value="ALL">All Categories</option>
             <option value="wedding">Wedding Decoration</option>
             <option value="birthday">Birthday Decoration</option>
+            <option value="table">Table Decoration</option>
+            <option value="hall">Hall Decoration</option>
             <option value="other">Other Event Decoration</option>
           </select>
 
@@ -324,7 +334,11 @@ export default function AdminGallery() {
                     ? "Wedding"
                     : (img.category || "other") === "birthday"
                       ? "Birthday"
-                      : "Other"}
+                      : (img.category || "other") === "table"
+                        ? "Table"
+                        : (img.category || "other") === "hall"
+                          ? "Hall"
+                          : "Other"}
                 </span>
                 <span style={metaDot}>/</span>
                 <span>{img.isActive ? "Customer-facing" : "Not visible"}</span>
@@ -339,6 +353,8 @@ export default function AdminGallery() {
                 >
                   <option value="wedding">Wedding</option>
                   <option value="birthday">Birthday</option>
+                  <option value="table">Table</option>
+                  <option value="hall">Hall</option>
                   <option value="other">Other</option>
                 </select>
                 <button type="button" style={btnLight} onClick={() => toggleActive(img)}>
@@ -384,7 +400,7 @@ const pageTitle = {
   margin: 0,
   color: "#14233b",
   fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
-  fontSize: "clamp(2.5rem, 4vw, 3.6rem)",
+  fontSize: "clamp(2rem, 3vw, 2.9rem)",
   lineHeight: 1,
 };
 
@@ -481,6 +497,25 @@ const sectionBadge = {
 const fieldGroup = {
   display: "grid",
   gap: 8,
+};
+
+const uploadForm = {
+  display: "grid",
+  gap: 14,
+};
+
+const uploadFieldsGrid = {
+  display: "grid",
+  gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+  gap: 14,
+};
+
+const uploadFooter = {
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "flex-end",
+  gap: 14,
+  flexWrap: "wrap",
 };
 
 const fieldLabel = {
@@ -658,15 +693,30 @@ const input = {
   minHeight: 54,
 };
 
+const compactInput = {
+  ...input,
+  minHeight: 46,
+  padding: "11px 14px",
+  fontSize: 15,
+};
+
+const fileInput = {
+  ...compactInput,
+  paddingTop: 9,
+  paddingBottom: 9,
+  fontSize: 14,
+};
+
 const btnDark = {
-  padding: "14px 16px",
+  padding: "13px 18px",
   borderRadius: 16,
   border: "none",
   fontWeight: 900,
   background: "linear-gradient(135deg, #1b2538 0%, #131b2b 100%)",
   color: "white",
   cursor: "pointer",
-  minHeight: 52,
+  minHeight: 48,
+  minWidth: 140,
   boxShadow: "0 16px 28px rgba(17, 24, 39, 0.18)",
 };
 

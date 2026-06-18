@@ -48,6 +48,24 @@ export default function AdminContacts() {
     }
   };
 
+  const renderMessageContent = (message) => {
+    const text = String(message || "").trim();
+    const isImageUrl = /^https?:\/\/.+\.(png|jpe?g|webp|gif|bmp)(\?.*)?$/i.test(text);
+
+    if (isImageUrl) {
+      return (
+        <div style={messageImageWrap}>
+          <img src={text} alt="Customer message attachment" style={messageImage} />
+          <a href={text} target="_blank" rel="noreferrer" style={messageImageLink}>
+            Open image
+          </a>
+        </div>
+      );
+    }
+
+    return <div style={messageText}>{text}</div>;
+  };
+
   return (
     <div style={{ maxWidth: 1100, margin: "0 auto", padding: 20 }}>
       {/* Top Bar */}
@@ -91,7 +109,7 @@ export default function AdminContacts() {
             <div style={headerRow}>
               <div style={{ fontWeight: 900, color: "#111827" }}>{m.name}</div>
               <div style={{ color: "#6b7280", fontSize: 12 }}>
-                {new Date(m.createdAt).toLocaleString()}
+                Last updated: {new Date(m.updatedAt || m.createdAt).toLocaleString()}
               </div>
             </div>
 
@@ -117,9 +135,7 @@ export default function AdminContacts() {
               </div>
             )}
 
-            <div style={{ marginTop: 10, color: "#374151", lineHeight: 1.6 }}>
-              {m.message}
-            </div>
+            <div style={{ marginTop: 10 }}>{renderMessageContent(m.message)}</div>
 
             <div style={{ marginTop: 12, display: "flex", gap: 8, flexWrap: "wrap" }}>
               <a
@@ -216,4 +232,40 @@ const msgError = {
   background: "#fee2e2",
   color: "#991b1b",
   fontWeight: 700,
+};
+
+const messageText = {
+  color: "#374151",
+  lineHeight: 1.6,
+  whiteSpace: "pre-wrap",
+  wordBreak: "break-word",
+  background: "#f9fafb",
+  border: "1px solid #e5e7eb",
+  borderRadius: 12,
+  padding: 12,
+};
+
+const messageImageWrap = {
+  display: "grid",
+  gap: 10,
+};
+
+const messageImage = {
+  width: "100%",
+  maxWidth: 320,
+  borderRadius: 12,
+  border: "1px solid #e5e7eb",
+  objectFit: "cover",
+  background: "#f9fafb",
+};
+
+const messageImageLink = {
+  width: "fit-content",
+  textDecoration: "none",
+  fontWeight: 900,
+  color: "#111827",
+  border: "1px solid #e5e7eb",
+  background: "#f9fafb",
+  padding: "8px 10px",
+  borderRadius: 10,
 };

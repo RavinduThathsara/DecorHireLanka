@@ -3,6 +3,33 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../services/api.js";
 
+const showcaseImages = [
+  { id: 1, title: "Wedding Decoration 1", src: "/gallery/gallery1.png", category: "wedding" },
+  { id: 2, title: "Wedding Decoration 2", src: "/gallery/gallery2.png", category: "wedding" },
+  { id: 3, title: "Wedding Decoration 3", src: "/gallery/gallery3.png", category: "wedding" },
+  { id: 4, title: "Table Decoration 1", src: "/gallery/gallery4.png", category: "table" },
+  { id: 5, title: "Wedding Decoration 5", src: "/gallery/gallery5.png", category: "wedding" },
+  { id: 6, title: "Wedding Decoration 6", src: "/gallery/gallery6.png", category: "wedding" },
+  { id: 7, title: "Wedding Decoration 7", src: "/gallery/gallery7.png", category: "wedding" },
+  { id: 8, title: "Birthday Decoration 8", src: "/gallery/gallery8.png", category: "birthday" },
+  { id: 9, title: "Birthday Decoration 9", src: "/gallery/gallery9.png", category: "birthday" },
+  { id: 10, title: "Wedding Decoration 10", src: "/gallery/gallery10.png", category: "wedding" },
+  { id: 11, title: "Wedding Decoration 11", src: "/gallery/gallery11.png", category: "wedding" },
+  { id: 12, title: "Table Decoration 2", src: "/gallery/gallery12.png", category: "table" },
+  { id: 14, title: "Other Event Decoration 14", src: "/gallery/gallery14.png", category: "other" },
+  { id: 15, title: "Hall Decoration 1", src: "/gallery/gallery15.png", category: "hall" },
+  { id: 16, title: "Hall Decoration 2", src: "/gallery/gallery16.png", category: "hall" },
+];
+
+const mergeGalleryImages = (apiImages = []) => {
+  const bySource = new Set(
+    apiImages.map((img) => img.imageUrl || img.src).filter(Boolean)
+  );
+
+  const missingShowcaseImages = showcaseImages.filter((img) => !bySource.has(img.src));
+  return [...apiImages, ...missingShowcaseImages];
+};
+
 const getGalleryImageSrc = (img) => {
   if (img.imageUrl) {
     if (/^https?:\/\//i.test(img.imageUrl)) return img.imageUrl;
@@ -17,36 +44,10 @@ const getGalleryImageSrc = (img) => {
 };
 
 export default function Gallery() {
-  const [activeFilter, setActiveFilter] = useState("all"); // all | wedding | birthday | other
-
+  const [activeFilter, setActiveFilter] = useState("all");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-
-  // ✅ Images from public/gallery folder (add category)
-  const [images, setImages] = useState([
-    { id: 1, title: "Wedding Decoration 1", src: "/gallery/gallery1.png", category: "wedding" },
-    { id: 2, title: "Wedding Decoration 2", src: "/gallery/gallery2.png", category: "wedding" },
-    { id: 3, title: "Wedding Decoration 3", src: "/gallery/gallery3.png", category: "wedding" },
-    { id: 4, title: "Wedding Decoration 4", src: "/gallery/gallery4.png", category: "wedding" },
-    { id: 5, title: "Wedding Decoration 5", src: "/gallery/gallery5.png", category: "wedding" },
-    { id: 6, title: "Wedding Decoration 6", src: "/gallery/gallery6.png", category: "wedding" },
-    { id: 7, title: "Wedding Decoration 7", src: "/gallery/gallery7.png", category: "wedding" },
-
-    { id: 8, title: "Birthday Decoration 8", src: "/gallery/gallery8.png", category: "birthday" },
-    { id: 9, title: "Birthday Decoration 9", src: "/gallery/gallery9.png", category: "birthday" },
-
-    { id: 10, title: "Wedding Decoration 10", src: "/gallery/gallery10.png", category: "wedding" },
-    { id: 11, title: "Wedding Decoration 11", src: "/gallery/gallery11.png", category: "wedding" },
-    { id: 12, title: "Wedding Decoration 12", src: "/gallery/gallery12.png", category: "wedding" },
-    { id: 14, title: "OutDoor Decoration 14", src: "/gallery/gallery14.png", category: "OutDoor" },
-    //{ id: 15, title: "Wedding Decoration 15", src: "/gallery/gallery15.png", category: "birthday" },
-    //{ id: 16, title: "OutDoor Decoration 16", src: "/gallery/gallery16.png", category: "OutDoor Event" },
-
-
-
-    // ✅ Add your "other event" photos like this:
-    // { id: 10, title: "Other Event Decoration 10", src: "/gallery/gallery10.png", category: "other" },
-  ]);
+  const [images, setImages] = useState(showcaseImages);
 
   useEffect(() => {
     const fetchActiveGallery = async () => {
@@ -54,9 +55,10 @@ export default function Gallery() {
         setLoading(true);
         setError("");
         const res = await api.get("/api/gallery");
-        setImages(res.data.images || []);
+        setImages(mergeGalleryImages(res.data.images || []));
       } catch (err) {
         setError(err?.response?.data?.message || "Failed to load gallery.");
+        setImages(showcaseImages);
       } finally {
         setLoading(false);
       }
@@ -68,13 +70,15 @@ export default function Gallery() {
 
   const filteredImages = useMemo(() => {
     if (activeFilter === "all") return images;
-    return images.filter((img) => (img.category || "other") === activeFilter);
+    return images.filter((img) => (img.category || "other").toLowerCase() === activeFilter);
   }, [activeFilter, images]);
 
   const categoryLabel = (category) => {
     const c = (category || "other").toLowerCase();
     if (c === "wedding") return "Wedding Decoration";
     if (c === "birthday") return "Birthday Decoration";
+    if (c === "table") return "Table Decoration";
+    if (c === "hall") return "Hall Decoration";
     return "Other Event Decoration";
   };
 
@@ -93,7 +97,6 @@ export default function Gallery() {
         </Link>
       </div>
 
-      {/* ✅ Filters */}
       <div style={filterBar}>
         <button
           onClick={() => setActiveFilter("all")}
@@ -117,6 +120,20 @@ export default function Gallery() {
         </button>
 
         <button
+          onClick={() => setActiveFilter("table")}
+          style={activeFilter === "table" ? filterBtnActive : filterBtn}
+        >
+          Table Decoration
+        </button>
+
+        <button
+          onClick={() => setActiveFilter("hall")}
+          style={activeFilter === "hall" ? filterBtnActive : filterBtn}
+        >
+          Hall Decoration
+        </button>
+
+        <button
           onClick={() => setActiveFilter("other")}
           style={activeFilter === "other" ? filterBtnActive : filterBtn}
         >
@@ -124,7 +141,6 @@ export default function Gallery() {
         </button>
       </div>
 
-      {/* ✅ Empty message based on filtered results */}
       {loading && <div style={note}>Loading gallery...</div>}
       {!loading && error && <div style={note}>{error}</div>}
       {!loading && !error && filteredImages.length === 0 && (

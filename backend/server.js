@@ -3,6 +3,8 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import path from "path";
+import fs from "fs";
+import { fileURLToPath } from "url";
 
 import { connectDB } from "./src/config/db.js";
 
@@ -21,13 +23,18 @@ import { requireAuth, requireAdmin } from "./src/middleware/auth.js";
 dotenv.config();
 
 const app = express();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const uploadsDir = path.resolve(__dirname, "uploads");
+
+fs.mkdirSync(uploadsDir, { recursive: true });
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 
 // Serve uploaded files
-app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
+app.use("/uploads", express.static(uploadsDir));
 
 // Routes
 app.use("/api/customers", customerAuthRoutes);
