@@ -13,6 +13,11 @@ export default function UserProfile() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
+    // Editing states for user-friendly UI
+    const [editBooking, setEditBooking] = useState(null);
+    const [editMessage, setEditMessage] = useState(null);
+    const [updating, setUpdating] = useState(false);
+
     useEffect(() => {
         if (!customer) {
             navigate("/login");
@@ -56,19 +61,24 @@ export default function UserProfile() {
         }
     };
 
-    const handleUpdateBooking = async (booking) => {
-        const newLocation = window.prompt("Enter new event location:", booking.eventLocation);
-        const newNote = window.prompt("Enter new note:", booking.note);
-        if (newLocation === null) return;
+    const handleUpdateBooking = (booking) => {
+        setEditBooking({ ...booking });
+    };
 
+    const saveBookingUpdate = async () => {
+        if (!editBooking) return;
         try {
-            const res = await api.put(`/api/bookings/customer/${booking._id}`, {
-                eventLocation: newLocation,
-                note: newNote
+            setUpdating(true);
+            const res = await api.put(`/api/bookings/customer/${editBooking._id}`, {
+                eventLocation: editBooking.eventLocation,
+                note: editBooking.note
             });
-            setBookings(bookings.map(b => b._id === booking._id ? res.data.booking : b));
+            setBookings(bookings.map(b => b._id === editBooking._id ? res.data.booking : b));
+            setEditBooking(null);
         } catch (err) {
             alert(err?.response?.data?.message || "Failed to update booking.");
+        } finally {
+            setUpdating(false);
         }
     };
 
@@ -82,17 +92,23 @@ export default function UserProfile() {
         }
     };
 
-    const handleUpdateMessage = async (msg) => {
-        const newMessage = window.prompt("Update your message:", msg.message);
-        if (newMessage === null) return;
+    const handleUpdateMessage = (msg) => {
+        setEditMessage({ ...msg });
+    };
 
+    const saveMessageUpdate = async () => {
+        if (!editMessage) return;
         try {
-            const res = await api.put(`/api/contact/customer/${msg._id}`, {
-                message: newMessage
+            setUpdating(true);
+            const res = await api.put(`/api/contact/customer/${editMessage._id}`, {
+                message: editMessage.message
             });
-            setMessages(messages.map(m => m._id === msg._id ? res.data.msg : m));
+            setMessages(messages.map(m => m._id === editMessage._id ? res.data.msg : m));
+            setEditMessage(null);
         } catch (err) {
             alert(err?.response?.data?.message || "Failed to update message.");
+        } finally {
+            setUpdating(false);
         }
     };
 
@@ -190,13 +206,10 @@ export default function UserProfile() {
 
                                             {booking.note && (
                                                 <div style={cardDescription}>
-                                                    <strong style={{ color: "#1f1a17" }}>Note:</strong> {booking.note}
+                                                    <span style={{ fontWeight: 700, marginRight: 8, color: "#9b5b34" }}>Note:</span>
+                                                    {booking.note}
                                                 </div>
-                                            ) || (
-                                                    <div style={cardDescription}>
-                                                        <span style={{ color: "#6f645a", fontStyle: "italic" }}>No specific notes provided.</span>
-                                                    </div>
-                                                )}
+                                            )}
 
                                             <div style={cardActions}>
                                                 <button onClick={() => handleUpdateBooking(booking)} style={actionBtnEdit}>Update</button>
@@ -247,7 +260,7 @@ export default function UserProfile() {
                                                 </div>
                                             </div>
                                         </div>
-                                        <p style={cardDescription}>{msg.message}</p>
+                                        <div style={cardDescription}>{msg.message}</div>
                                         <div style={cardActions}>
                                             <button onClick={() => handleUpdateMessage(msg)} style={actionBtnEdit}>Update</button>
                                             <button onClick={() => handleDeleteMessage(msg._id)} style={actionBtnDelete}>Delete</button>
@@ -257,6 +270,60 @@ export default function UserProfile() {
                             </div>
                         )}
                     </div>
+
+                    {/* Booking Edit Modal */}
+                    {editBooking && (
+                        <div style={modalOverlay}>
+                            <div style={modalContent}>
+                                <h3 style={{ ...sectionTitle, marginBottom: 20 }}>Update Booking</h3>
+                                <div style={inputGroup}>
+                                    <label style={inputLabel}>Event Location</label>
+                                    <input
+                                        style={inputStyle}
+                                        value={editBooking.eventLocation}
+                                        onChange={(e) => setEditBooking({ ...editBooking, eventLocation: e.target.value })}
+                                    />
+                                </div>
+                                <div style={inputGroup}>
+                                    <label style={inputLabel}>Note (Optional)</label>
+                                    <textarea
+                                        style={{ ...inputStyle, minHeight: 100, resize: "vertical" }}
+                                        value={editBooking.note}
+                                        onChange={(e) => setEditBooking({ ...editBooking, note: e.target.value })}
+                                    />
+                                </div>
+                                <div style={modalActions}>
+                                    <button onClick={() => setEditBooking(null)} style={cancelBtn}>Cancel</button>
+                                    <button onClick={saveBookingUpdate} style={saveBtn} disabled={updating}>
+                                        {updating ? "Saving..." : "Save Changes"}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Message Edit Modal */}
+                    {editMessage && (
+                        <div style={modalOverlay}>
+                            <div style={modalContent}>
+                                <h3 style={{ ...sectionTitle, marginBottom: 20 }}>Update Message</h3>
+                                <div style={inputGroup}>
+                                    <label style={inputLabel}>Your Message</label>
+                                    <textarea
+                                        style={{ ...inputStyle, minHeight: 120, resize: "vertical" }}
+                                        value={editMessage.message}
+                                        onChange={(e) => setEditMessage({ ...editMessage, message: e.target.value })}
+                                    />
+                                </div>
+                                <div style={modalActions}>
+                                    <button onClick={() => setEditMessage(null)} style={cancelBtn}>Cancel</button>
+                                    <button onClick={saveMessageUpdate} style={saveBtn} disabled={updating}>
+                                        {updating ? "Saving..." : "Save Changes"}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </div>
             )}
         </div>
@@ -472,48 +539,122 @@ const metaIcon = {
 };
 
 const cardDescription = {
-    fontSize: 15,
-    color: "#4a443f",
-    lineHeight: 1.6,
-    margin: "10px 0 24px 0",
-    padding: "14px 18px",
-    background: "rgba(155, 91, 52, 0.05)",
-    borderRadius: 14,
-    borderLeft: "4px solid #9b5b34",
+    fontSize: "14px",
+    color: "#6f645a",
+    lineHeight: "1.5",
+    margin: "12px 0",
+    padding: "12px 16px",
+    background: "rgba(155, 91, 52, 0.04)",
+    borderRadius: "12px",
+    border: "1px solid rgba(155, 91, 52, 0.12)",
     flex: 1,
 };
 
 const cardActions = {
     display: "flex",
-    gap: 12,
-    borderTop: "1px solid rgba(102, 79, 58, 0.1)",
-    paddingTop: 20,
+    gap: 10,
+    marginTop: "auto",
+    paddingTop: 16,
 };
 
 const actionBtnEdit = {
     flex: 1,
-    padding: "12px",
-    background: "rgba(16, 185, 129, 0.1)",
-    border: "1px solid rgba(16, 185, 129, 0.2)",
-    borderRadius: 12,
-    color: "#059669",
-    fontSize: 14,
-    fontWeight: 800,
+    padding: "10px",
+    background: "#10b981",
+    border: "none",
+    borderRadius: 10,
+    color: "#fff",
+    fontSize: 13,
+    fontWeight: 700,
     cursor: "pointer",
-    transition: "all 0.2s ease",
+    boxShadow: "0 4px 12px rgba(16, 185, 129, 0.2)",
 };
 
 const actionBtnDelete = {
     flex: 1,
-    padding: "12px",
-    background: "rgba(239, 68, 68, 0.1)",
-    border: "1px solid rgba(239, 68, 68, 0.2)",
-    borderRadius: 12,
-    color: "#dc2626",
-    fontSize: 14,
-    fontWeight: 800,
+    padding: "10px",
+    background: "#ef4444",
+    border: "none",
+    borderRadius: 10,
+    color: "#fff",
+    fontSize: 13,
+    fontWeight: 700,
     cursor: "pointer",
-    transition: "all 0.2s ease",
+    boxShadow: "0 4px 12px rgba(239, 68, 68, 0.2)",
+};
+
+const modalOverlay = {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "rgba(31, 26, 23, 0.7)",
+    backdropFilter: "blur(6px)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 2000,
+    padding: "20px",
+};
+
+const modalContent = {
+    background: "#fff",
+    padding: "30px",
+    borderRadius: "24px",
+    width: "100%",
+    maxWidth: "450px",
+    boxShadow: "0 30px 60px rgba(0,0,0,0.4)",
+};
+
+const inputGroup = {
+    marginBottom: "20px",
+};
+
+const inputLabel = {
+    display: "block",
+    fontSize: "14px",
+    fontWeight: "700",
+    color: "#9b5b34",
+    marginBottom: "5px",
+};
+
+const inputStyle = {
+    width: "100%",
+    padding: "12px 15px",
+    borderRadius: "12px",
+    border: "1px solid #e2e2e2",
+    fontSize: "15px",
+    backgroundColor: "#fff",
+    color: "#1f1a17",
+};
+
+const modalActions = {
+    display: "flex",
+    gap: "12px",
+    marginTop: "25px",
+};
+
+const saveBtn = {
+    flex: 2,
+    padding: "12px",
+    backgroundColor: "#9b5b34",
+    color: "white",
+    border: "none",
+    borderRadius: "12px",
+    cursor: "pointer",
+    fontWeight: "700",
+};
+
+const cancelBtn = {
+    flex: 1,
+    padding: "12px",
+    backgroundColor: "#f3f4f6",
+    color: "#4b5563",
+    border: "none",
+    borderRadius: "12px",
+    cursor: "pointer",
+    fontWeight: "600",
 };
 
 const linkStyleGold = {
