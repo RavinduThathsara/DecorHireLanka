@@ -74,3 +74,23 @@ export const adminUpdateBookingStatus = async (req, res) => {
     return res.status(500).json({ message: "Server error." });
   }
 };
+
+// CUSTOMER: get their own bookings by email
+export const customerGetMyBookings = async (req, res) => {
+  try {
+    const { email } = req.query;
+
+    if (!email) {
+      return res.status(400).json({ message: "Email is required." });
+    }
+
+    const bookings = await Booking.find({ email: email.toLowerCase() }).sort({
+      createdAt: -1,
+    });
+
+    return res.json({ bookings });
+  } catch (e) {
+    console.error("customerGetMyBookings:", e.message);
+    return res.status(500).json({ message: "Server error." });
+  }
+};

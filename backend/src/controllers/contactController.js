@@ -64,3 +64,23 @@ export const updateContactMessageStatus = async (req, res) => {
     return res.status(500).json({ message: "Server error." });
   }
 };
+
+// CUSTOMER: get their own contact messages by email
+export const customerGetMyMessages = async (req, res) => {
+  try {
+    const { email } = req.query;
+
+    if (!email) {
+      return res.status(400).json({ message: "Email is required." });
+    }
+
+    const messages = await ContactMessage.find({
+      email: email.toLowerCase(),
+    }).sort({ createdAt: -1 });
+
+    return res.json({ messages });
+  } catch (error) {
+    console.error("customerGetMyMessages error:", error.message);
+    return res.status(500).json({ message: "Server error." });
+  }
+};

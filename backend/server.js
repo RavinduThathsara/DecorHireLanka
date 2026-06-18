@@ -1,7 +1,8 @@
-// backend/src/server.js
+import dotenv from "dotenv";
+dotenv.config();
+
 import express from "express";
 import cors from "cors";
-import dotenv from "dotenv";
 import path from "path";
 import fs from "fs";
 import { fileURLToPath } from "url";
@@ -17,10 +18,7 @@ import galleryRoutes from "./src/routes/galleryRoutes.js";
 import bookingRoutes from "./src/routes/bookingRoutes.js";
 import adminRoutes from "./src/routes/adminRoutes.js";
 
-
 import { requireAuth, requireAdmin } from "./src/middleware/auth.js";
-
-dotenv.config();
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);

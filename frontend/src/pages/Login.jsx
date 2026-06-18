@@ -50,40 +50,46 @@ export default function Login() {
 
       try {
         await loadGoogleScript();
-        if (!mounted || !window.google?.accounts?.id || !googleBtnRef.current) return;
+        if (!mounted || !googleBtnRef.current) return;
 
-        window.google.accounts.id.initialize({
-          client_id: GOOGLE_CLIENT_ID,
-          callback: async (response) => {
-            try {
-              setLoading(true);
-              setError("");
-              setSuccess("");
+        // Only initialize if it hasn't been done yet to avoid "multiple initialization" warnings
+        if (window.google?.accounts?.id) {
+          window.google.accounts.id.initialize({
+            client_id: GOOGLE_CLIENT_ID,
+            auto_select: false,
+            itp_support: true,
+            callback: async (response) => {
+              try {
+                setLoading(true);
+                setError("");
+                setSuccess("");
 
-              const res = await api.post("/api/customers/google", {
-                credential: response.credential,
-              });
+                const res = await api.post("/api/customers/google", {
+                  credential: response.credential,
+                });
 
-              loginCustomer({ token: res.data.token, customer: res.data.customer });
-              setSuccess("Google login successful! Redirecting to home...");
-              setTimeout(() => navigate("/"), 900);
-            } catch (err) {
-              setError(err?.response?.data?.message || "Google login failed.");
-            } finally {
-              setLoading(false);
-            }
-          },
-        });
+                loginCustomer({ token: res.data.token, customer: res.data.customer });
+                setSuccess("Google login successful! Redirecting to home...");
+                setTimeout(() => navigate("/"), 900);
+              } catch (err) {
+                console.error("Login API Error:", err);
+                setError(err?.response?.data?.message || "Google login failed.");
+              } finally {
+                setLoading(false);
+              }
+            },
+          });
 
-        googleBtnRef.current.innerHTML = "";
-        window.google.accounts.id.renderButton(googleBtnRef.current, {
-          theme: "outline",
-          size: "large",
-          shape: "rectangular",
-          text: "signin_with",
-          width: 420,
-        });
-        setGoogleReady(true);
+          googleBtnRef.current.innerHTML = "";
+          window.google.accounts.id.renderButton(googleBtnRef.current, {
+            theme: "outline",
+            size: "large",
+            shape: "rectangular",
+            text: "signin_with",
+            width: googleBtnRef.current.offsetWidth || 400,
+          });
+          setGoogleReady(true);
+        }
       } catch (err) {
         if (mounted) {
           setError("Google login is unavailable right now.");

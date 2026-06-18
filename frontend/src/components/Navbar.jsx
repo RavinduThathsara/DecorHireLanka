@@ -9,6 +9,8 @@ function navLinkClass({ isActive }) {
 
 export default function Navbar() {
   const { customer, logoutCustomer } = useAuth();
+  const profileName = customer?.username || "Customer";
+  const profileInitial = profileName.trim().charAt(0).toUpperCase() || "C";
 
   return (
     <header className="site-header">
@@ -54,7 +56,13 @@ export default function Navbar() {
             </>
           ) : (
             <>
-              <span className="site-user">Hi, {customer?.username || "Customer"}</span>
+              <Link to="/profile" style={profileChip} aria-label="Customer profile">
+                <span style={profileAvatar}>{profileInitial}</span>
+                <div style={profileCopy}>
+                  <span style={profileLabel}>Profile</span>
+                  <span style={profileNameStyle}>{profileName}</span>
+                </div>
+              </Link>
               <button
                 type="button"
                 className="site-btn site-btn--ghost"
@@ -69,3 +77,54 @@ export default function Navbar() {
     </header>
   );
 }
+
+const profileChip = {
+  display: "flex",
+  alignItems: "center",
+  gap: 8,
+  padding: "7px 10px",
+  borderRadius: 999,
+  border: "1px solid rgba(102, 79, 58, 0.18)",
+  background: "rgba(255, 255, 255, 0.78)",
+  boxShadow: "0 8px 18px rgba(70, 43, 22, 0.08)",
+  flex: "0 0 auto",
+  textDecoration: "none",
+  cursor: "pointer",
+  transition: "background 160ms ease, transform 160ms ease",
+};
+
+const profileAvatar = {
+  width: 30,
+  height: 30,
+  borderRadius: "50%",
+  display: "grid",
+  placeItems: "center",
+  background: "linear-gradient(135deg, #9b5b34 0%, #7c4420 100%)",
+  color: "#fff",
+  fontWeight: 900,
+  fontSize: 13,
+  flex: "0 0 auto",
+};
+
+const profileCopy = {
+  display: "grid",
+  gap: 0,
+  minWidth: 0,
+};
+
+const profileLabel = {
+  fontSize: 10,
+  fontWeight: 900,
+  letterSpacing: "0.06em",
+  textTransform: "uppercase",
+  color: "#9b5b34",
+};
+
+const profileNameStyle = {
+  fontSize: 12,
+  fontWeight: 900,
+  color: "#1f1a17",
+  whiteSpace: "nowrap",
+  overflow: "hidden",
+  textOverflow: "ellipsis",
+};

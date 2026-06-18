@@ -19,6 +19,7 @@ import AdminBookings from "./pages/AdminBookings.jsx";
 import AdminContacts from "./pages/AdminContacts.jsx";
 
 import BookDecoration from "./pages/BookDecoration.jsx";
+import UserProfile from "./pages/UserProfile.jsx";
 import AdminProtected from "./components/AdminProtected.jsx";
 import Services from "./pages/Services.jsx";
 
@@ -35,6 +36,7 @@ export default function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/book" element={<BookDecoration />} />
+        <Route path="/profile" element={<UserProfile />} />
       </Route>
 
       <Route path="/admin/login" element={<AdminLogin />} />

@@ -5,7 +5,18 @@ import Customer from "../models/Customer.js";
 import { generateToken } from "../utils/token.js";
 
 const googleClientId = process.env.GOOGLE_CLIENT_ID || "";
-const googleClient = googleClientId ? new OAuth2Client(googleClientId) : null;
+let googleClient;
+
+const getGoogleClient = () => {
+  if (!googleClient) {
+    const id = (process.env.GOOGLE_CLIENT_ID || "").trim();
+    if (id) {
+      console.log("Initializing Google Auth with ID:", id.substring(0, 10) + "...");
+      googleClient = new OAuth2Client(id);
+    }
+  }
+  return googleClient;
+};
 
 function buildCustomerAuthPayload(customer) {
   return {
@@ -91,8 +102,13 @@ export const loginCustomer = async (req, res) => {
 export const googleCustomerAuth = async (req, res) => {
   try {
     const { credential } = req.body;
+    console.log("Recieved Google Credential:", credential ? "Yes" : "No");
 
-    if (!googleClient) {
+    const client = getGoogleClient();
+    const id = process.env.GOOGLE_CLIENT_ID || "";
+
+    if (!client) {
+      console.error("Google Auth Error: client not initialized. ID from env:", id);
       return res.status(503).json({ message: "Google sign-in is not configured." });
     }
 
@@ -100,9 +116,9 @@ export const googleCustomerAuth = async (req, res) => {
       return res.status(400).json({ message: "Google credential is required." });
     }
 
-    const ticket = await googleClient.verifyIdToken({
+    const ticket = await client.verifyIdToken({
       idToken: credential,
-      audience: googleClientId,
+      audience: id,
     });
     const payload = ticket.getPayload();
 
@@ -150,7 +166,7 @@ export const googleCustomerAuth = async (req, res) => {
 
     return res.json(buildAuthResponse(customer, "Google sign-in successful."));
   } catch (error) {
-    console.error("googleCustomerAuth error:", error.message);
-    return res.status(401).json({ message: "Google authentication failed." });
+    console.error("googleCustomerAuth error detail:", error);
+    return res.status(401).json({ message: "Google authentication failed.", error: error.message });
   }
 };

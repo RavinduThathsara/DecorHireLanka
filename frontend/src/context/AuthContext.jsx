@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
+import React, { createContext, useContext, useEffect, useMemo, useState, useCallback } from "react";
 
 const AuthContext = createContext(null);
 
@@ -10,17 +10,17 @@ export function AuthProvider({ children }) {
     setCustomer(saved ? JSON.parse(saved) : null);
   }, []);
 
-  const loginCustomer = ({ token, customer }) => {
+  const loginCustomer = useCallback(({ token, customer }) => {
     localStorage.setItem("customerToken", token);
     localStorage.setItem("customer", JSON.stringify(customer));
     setCustomer(customer);
-  };
+  }, []);
 
-  const logoutCustomer = () => {
+  const logoutCustomer = useCallback(() => {
     localStorage.removeItem("customerToken");
     localStorage.removeItem("customer");
     setCustomer(null);
-  };
+  }, []);
 
   const value = useMemo(
     () => ({
