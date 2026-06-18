@@ -1,0 +1,364 @@
+{
+    "images":  [
+                   {
+                       "_id":  "6a3387cc4b6af0572f8b605c",
+                       "title":  "",
+                       "category":  "wedding",
+                       "imageUrl":  "/uploads/1781761995646-544981804.png",
+                       "isActive":  true,
+                       "createdAt":  "2026-06-18T05:53:16.767Z",
+                       "updatedAt":  "2026-06-18T05:53:16.767Z",
+                       "__v":  0
+                   },
+                   {
+                       "_id":  "6a3387b44b6af0572f8b6059",
+                       "title":  "",
+                       "category":  "wedding",
+                       "imageUrl":  "/uploads/1781761970777-132122142.png",
+                       "isActive":  true,
+                       "createdAt":  "2026-06-18T05:52:52.216Z",
+                       "updatedAt":  "2026-06-18T05:52:52.216Z",
+                       "__v":  0
+                   },
+                   {
+                       "_id":  "6a33833b60fbc38bfb64f476",
+                       "title":  "",
+                       "category":  "wedding",
+                       "imageUrl":  "/uploads/1781760826433-997325930.png",
+                       "isActive":  true,
+                       "createdAt":  "2026-06-18T05:33:47.955Z",
+                       "updatedAt":  "2026-06-18T05:33:47.955Z",
+                       "__v":  0
+                   },
+                   {
+                       "_id":  "6a33826a60fbc38bfb64f471",
+                       "title":  "",
+                       "category":  "birthday",
+                       "imageUrl":  "/uploads/1781760617382-278011130.png",
+                       "isActive":  true,
+                       "createdAt":  "2026-06-18T05:30:18.568Z",
+                       "updatedAt":  "2026-06-18T05:30:18.568Z",
+                       "__v":  0
+                   },
+                   {
+                       "_id":  "6a3381d460fbc38bfb64f468",
+                       "title":  "",
+                       "category":  "other",
+                       "imageUrl":  "/uploads/1781760464212-993753102.png",
+                       "isActive":  true,
+                       "createdAt":  "2026-06-18T05:27:48.756Z",
+                       "updatedAt":  "2026-06-18T05:27:48.756Z",
+                       "__v":  0
+                   },
+                   {
+                       "_id":  "6a3381b560fbc38bfb64f465",
+                       "title":  "",
+                       "category":  "wedding",
+                       "imageUrl":  "/uploads/1781760434401-866274480.png",
+                       "isActive":  true,
+                       "createdAt":  "2026-06-18T05:27:17.358Z",
+                       "updatedAt":  "2026-06-18T05:27:17.358Z",
+                       "__v":  0
+                   },
+                   {
+                       "_id":  "6a337dbb60fbc38bfb64f458",
+                       "title":  "",
+                       "category":  "wedding",
+                       "imageUrl":  "/uploads/1781759417646-105716743.png",
+                       "isActive":  true,
+                       "createdAt":  "2026-06-18T05:10:19.954Z",
+                       "updatedAt":  "2026-06-18T05:10:19.954Z",
+                       "__v":  0
+                   },
+                   {
+                       "_id":  "6a337da760fbc38bfb64f455",
+                       "title":  "",
+                       "category":  "wedding",
+                       "imageUrl":  "/uploads/1781759397600-811145673.png",
+                       "isActive":  true,
+                       "createdAt":  "2026-06-18T05:09:59.745Z",
+                       "updatedAt":  "2026-06-18T05:09:59.745Z",
+                       "__v":  0
+                   },
+                   {
+                       "_id":  "6a337bd360fbc38bfb64f44c",
+                       "title":  "",
+                       "category":  "wedding",
+                       "imageUrl":  "/uploads/1781758929298-519321966.png",
+                       "isActive":  true,
+                       "createdAt":  "2026-06-18T05:02:11.213Z",
+                       "updatedAt":  "2026-06-18T05:02:11.213Z",
+                       "__v":  0
+                   },
+                   {
+                       "_id":  "6a337bba60fbc38bfb64f449",
+                       "title":  "",
+                       "category":  "wedding",
+                       "imageUrl":  "/uploads/1781758904482-373158181.png",
+                       "isActive":  true,
+                       "createdAt":  "2026-06-18T05:01:46.317Z",
+                       "updatedAt":  "2026-06-18T05:01:46.317Z",
+                       "__v":  0
+                   },
+                   {
+                       "_id":  "6a3373ad60fbc38bfb64f3ce",
+                       "title":  "",
+                       "category":  "other",
+                       "imageUrl":  "/uploads/1781756842191-738854050.png",
+                       "isActive":  true,
+                       "createdAt":  "2026-06-18T04:27:25.614Z",
+                       "updatedAt":  "2026-06-18T04:27:25.614Z",
+                       "__v":  0
+                   },
+                   {
+                       "_id":  "6a33739a60fbc38bfb64f3cb",
+                       "title":  "",
+                       "category":  "birthday",
+                       "imageUrl":  "/uploads/1781756820936-339204469.png",
+                       "isActive":  true,
+                       "createdAt":  "2026-06-18T04:27:06.680Z",
+                       "updatedAt":  "2026-06-18T04:27:32.170Z",
+                       "__v":  0
+                   },
+                   {
+                       "_id":  "6a33738460fbc38bfb64f3c8",
+                       "title":  "",
+                       "category":  "wedding",
+                       "imageUrl":  "/uploads/1781756802761-85467927.png",
+                       "isActive":  true,
+                       "createdAt":  "2026-06-18T04:26:44.364Z",
+                       "updatedAt":  "2026-06-18T04:26:44.364Z",
+                       "__v":  0
+                   },
+                   {
+                       "_id":  "6a33737060fbc38bfb64f3c5",
+                       "title":  "",
+                       "category":  "other",
+                       "imageUrl":  "/uploads/1781756783230-74143731.png",
+                       "isActive":  true,
+                       "createdAt":  "2026-06-18T04:26:24.775Z",
+                       "updatedAt":  "2026-06-18T04:26:24.775Z",
+                       "__v":  0
+                   },
+                   {
+                       "_id":  "6a33735460fbc38bfb64f3c2",
+                       "title":  "",
+                       "category":  "other",
+                       "imageUrl":  "/uploads/1781756754409-907273348.png",
+                       "isActive":  true,
+                       "createdAt":  "2026-06-18T04:25:56.980Z",
+                       "updatedAt":  "2026-06-18T04:25:56.980Z",
+                       "__v":  0
+                   },
+                   {
+                       "_id":  "6a33733860fbc38bfb64f3bf",
+                       "title":  "",
+                       "category":  "wedding",
+                       "imageUrl":  "/uploads/1781756725701-282612495.png",
+                       "isActive":  true,
+                       "createdAt":  "2026-06-18T04:25:28.590Z",
+                       "updatedAt":  "2026-06-18T04:25:28.590Z",
+                       "__v":  0
+                   },
+                   {
+                       "_id":  "6a33728660fbc38bfb64f3bc",
+                       "title":  "",
+                       "category":  "wedding",
+                       "imageUrl":  "/uploads/1781756546864-842870567.png",
+                       "isActive":  true,
+                       "createdAt":  "2026-06-18T04:22:30.251Z",
+                       "updatedAt":  "2026-06-18T04:22:30.251Z",
+                       "__v":  0
+                   },
+                   {
+                       "_id":  "6a33727160fbc38bfb64f3b9",
+                       "title":  "",
+                       "category":  "wedding",
+                       "imageUrl":  "/uploads/1781756528659-942507773.png",
+                       "isActive":  true,
+                       "createdAt":  "2026-06-18T04:22:09.884Z",
+                       "updatedAt":  "2026-06-18T04:22:09.884Z",
+                       "__v":  0
+                   },
+                   {
+                       "_id":  "6a33725e60fbc38bfb64f3b6",
+                       "title":  "",
+                       "category":  "other",
+                       "imageUrl":  "/uploads/1781756509416-930688102.png",
+                       "isActive":  true,
+                       "createdAt":  "2026-06-18T04:21:50.700Z",
+                       "updatedAt":  "2026-06-18T04:21:50.700Z",
+                       "__v":  0
+                   },
+                   {
+                       "_id":  "6a33724460fbc38bfb64f3b3",
+                       "title":  "",
+                       "category":  "birthday",
+                       "imageUrl":  "/uploads/1781756482554-131152008.png",
+                       "isActive":  true,
+                       "createdAt":  "2026-06-18T04:21:24.349Z",
+                       "updatedAt":  "2026-06-18T04:21:24.349Z",
+                       "__v":  0
+                   },
+                   {
+                       "_id":  "6a33722d60fbc38bfb64f3b0",
+                       "title":  "",
+                       "category":  "wedding",
+                       "imageUrl":  "/uploads/1781756459228-404566221.png",
+                       "isActive":  true,
+                       "createdAt":  "2026-06-18T04:21:01.083Z",
+                       "updatedAt":  "2026-06-18T04:21:01.083Z",
+                       "__v":  0
+                   },
+                   {
+                       "_id":  "6a33721b60fbc38bfb64f3ad",
+                       "title":  "",
+                       "category":  "wedding",
+                       "imageUrl":  "/uploads/1781756439200-560804073.png",
+                       "isActive":  true,
+                       "createdAt":  "2026-06-18T04:20:43.759Z",
+                       "updatedAt":  "2026-06-18T04:20:43.759Z",
+                       "__v":  0
+                   },
+                   {
+                       "_id":  "6a3371ff60fbc38bfb64f3a4",
+                       "title":  "",
+                       "category":  "wedding",
+                       "imageUrl":  "/uploads/1781756405868-621502167.png",
+                       "isActive":  true,
+                       "createdAt":  "2026-06-18T04:20:15.098Z",
+                       "updatedAt":  "2026-06-18T04:20:15.098Z",
+                       "__v":  0
+                   },
+                   {
+                       "_id":  "69be194589feeb509fc34112",
+                       "title":  "",
+                       "category":  "birthday",
+                       "imageUrl":  "/uploads/1774065989118-709238768.png",
+                       "isActive":  true,
+                       "createdAt":  "2026-03-21T04:06:29.194Z",
+                       "updatedAt":  "2026-03-21T04:06:29.194Z",
+                       "__v":  0
+                   },
+                   {
+                       "_id":  "69be193289feeb509fc3410f",
+                       "title":  "",
+                       "category":  "wedding",
+                       "imageUrl":  "/uploads/1774065970858-157850546.png",
+                       "isActive":  true,
+                       "createdAt":  "2026-03-21T04:06:10.864Z",
+                       "updatedAt":  "2026-03-21T04:06:10.864Z",
+                       "__v":  0
+                   },
+                   {
+                       "_id":  "69be192889feeb509fc3410c",
+                       "title":  "",
+                       "category":  "wedding",
+                       "imageUrl":  "/uploads/1774065960451-616807388.png",
+                       "isActive":  true,
+                       "createdAt":  "2026-03-21T04:06:00.458Z",
+                       "updatedAt":  "2026-03-21T04:06:00.458Z",
+                       "__v":  0
+                   },
+                   {
+                       "_id":  "69be192289feeb509fc34109",
+                       "title":  "",
+                       "category":  "wedding",
+                       "imageUrl":  "/uploads/1774065954166-933137552.png",
+                       "isActive":  true,
+                       "createdAt":  "2026-03-21T04:05:54.170Z",
+                       "updatedAt":  "2026-03-21T04:05:54.170Z",
+                       "__v":  0
+                   },
+                   {
+                       "_id":  "69be191789feeb509fc34106",
+                       "title":  "",
+                       "category":  "wedding",
+                       "imageUrl":  "/uploads/1774065942983-92511489.png",
+                       "isActive":  true,
+                       "createdAt":  "2026-03-21T04:05:43.037Z",
+                       "updatedAt":  "2026-03-21T04:05:43.037Z",
+                       "__v":  0
+                   },
+                   {
+                       "_id":  "69be191089feeb509fc34103",
+                       "title":  "",
+                       "category":  "wedding",
+                       "imageUrl":  "/uploads/1774065936369-857367831.png",
+                       "isActive":  true,
+                       "createdAt":  "2026-03-21T04:05:36.372Z",
+                       "updatedAt":  "2026-03-21T04:05:36.372Z",
+                       "__v":  0
+                   },
+                   {
+                       "_id":  "69be190889feeb509fc34100",
+                       "title":  "",
+                       "category":  "wedding",
+                       "imageUrl":  "/uploads/1774065928849-319288718.png",
+                       "isActive":  true,
+                       "createdAt":  "2026-03-21T04:05:28.858Z",
+                       "updatedAt":  "2026-03-21T04:05:28.858Z",
+                       "__v":  0
+                   },
+                   {
+                       "_id":  "69be190289feeb509fc340fd",
+                       "title":  "",
+                       "category":  "wedding",
+                       "imageUrl":  "/uploads/1774065922060-187407414.png",
+                       "isActive":  true,
+                       "createdAt":  "2026-03-21T04:05:22.068Z",
+                       "updatedAt":  "2026-03-21T04:05:22.068Z",
+                       "__v":  0
+                   },
+                   {
+                       "_id":  "69be18ed89feeb509fc340f4",
+                       "title":  "",
+                       "category":  "wedding",
+                       "imageUrl":  "/uploads/1774065901151-593436732.png",
+                       "isActive":  true,
+                       "createdAt":  "2026-03-21T04:05:01.166Z",
+                       "updatedAt":  "2026-03-21T04:05:01.166Z",
+                       "__v":  0
+                   },
+                   {
+                       "_id":  "69be18e089feeb509fc340f1",
+                       "title":  "",
+                       "category":  "wedding",
+                       "imageUrl":  "/uploads/1774065888601-219108067.png",
+                       "isActive":  true,
+                       "createdAt":  "2026-03-21T04:04:48.603Z",
+                       "updatedAt":  "2026-03-21T04:04:48.603Z",
+                       "__v":  0
+                   },
+                   {
+                       "_id":  "69be18bd89feeb509fc340ee",
+                       "title":  "",
+                       "category":  "birthday",
+                       "imageUrl":  "/uploads/1774065853921-695584899.png",
+                       "isActive":  true,
+                       "createdAt":  "2026-03-21T04:04:13.934Z",
+                       "updatedAt":  "2026-03-21T04:04:13.934Z",
+                       "__v":  0
+                   },
+                   {
+                       "_id":  "69be18b189feeb509fc340eb",
+                       "title":  "",
+                       "category":  "wedding",
+                       "imageUrl":  "/uploads/1774065841801-147672903.png",
+                       "isActive":  true,
+                       "createdAt":  "2026-03-21T04:04:01.816Z",
+                       "updatedAt":  "2026-03-21T04:04:01.816Z",
+                       "__v":  0
+                   },
+                   {
+                       "_id":  "69be184f89feeb509fc340e8",
+                       "title":  "",
+                       "category":  "wedding",
+                       "imageUrl":  "/uploads/1774065743045-604771599.png",
+                       "isActive":  true,
+                       "createdAt":  "2026-03-21T04:02:23.059Z",
+                       "updatedAt":  "2026-03-21T04:02:23.059Z",
+                       "__v":  0
+                   }
+               ]
+}
