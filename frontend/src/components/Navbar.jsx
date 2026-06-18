@@ -63,51 +63,56 @@ export default function Navbar() {
               >
                 <span style={{ fontSize: 20 }}>🔔</span>
                 {unreadCount > 0 && <span style={notificationDot}>{unreadCount}</span>}
-                <div style={notifHeader}>
-                  <span style={notifTitle}>Notifications</span>
-                  <div style={notifHeaderActions}>
-                    <span style={notifActionIcon}>✓</span>
-                    <span style={notifActionIcon}>⚙</span>
-                    <span style={notifActionIcon} onClick={() => setShowNotifs(false)}>✕</span>
-                  </div>
-                </div>
+              </div>
 
-                <div style={notifList}>
-                  {notifications.length === 0 ? (
-                    <div style={emptyNotifs}>No new notifications</div>
-                  ) : (
-                    notifications.map(n => (
-                      <div
-                        key={n.id}
-                        style={notifItem}
-                        onClick={() => {
-                          setShowNotifs(false);
-                          navigate("/profile");
-                        }}
-                      >
-                        <div style={notifIcon}>✎</div>
-                        <div style={notifContent}>
-                          <div style={notifText}>{n.title}</div>
-                          <div style={notifMeta}>
-                            <span>{n.time}</span>
-                            <span style={notifLink}>View full notification</span>
+              {/* Industry-Level Notification Dropdown */}
+              {showNotifs && (
+                <div style={notifDropdown}>
+                  <div style={notifHeader}>
+                    <span style={notifTitle}>Notifications</span>
+                    <div style={notifHeaderActions}>
+                      <span style={notifActionIcon}>✓</span>
+                      <span style={notifActionIcon}>⚙</span>
+                      <span style={notifActionIcon} onClick={(e) => { e.stopPropagation(); setShowNotifs(false); }}>✕</span>
+                    </div>
+                  </div>
+
+                  <div style={notifList}>
+                    {notifications.length === 0 ? (
+                      <div style={emptyNotifs}>No new notifications</div>
+                    ) : (
+                      notifications.map(n => (
+                        <div
+                          key={n.id}
+                          style={notifItem}
+                          onClick={() => {
+                            setShowNotifs(false);
+                            navigate("/profile");
+                          }}
+                        >
+                          <div style={notifIcon}>✎</div>
+                          <div style={notifContent}>
+                            <div style={notifText}>{n.title}</div>
+                            <div style={notifMeta}>
+                              <span>{n.time}</span>
+                              <span style={notifLink}>View full notification</span>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ))
-                  )}
-                </div>
+                      ))
+                    )}
+                  </div>
 
-                <div
-                  style={notifFooter}
-                  onClick={() => {
-                    setShowNotifs(false);
-                    navigate("/profile");
-                  }}
-                >
-                  See all
+                  <div
+                    style={notifFooter}
+                    onClick={() => {
+                      setShowNotifs(false);
+                      navigate("/profile");
+                    }}
+                  >
+                    See all
+                  </div>
                 </div>
-              </div>
               )}
             </div>
           )}
