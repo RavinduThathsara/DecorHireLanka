@@ -1,7 +1,7 @@
 // frontend/src/pages/Gallery.jsx
 import React, { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { api } from "../services/api.js";
+import { api, resolveAssetUrl } from "../services/api.js";
 
 const showcaseImages = [
   { id: 1, title: "Wedding Decoration 1", src: "/gallery/gallery1.png", category: "wedding" },
@@ -32,12 +32,7 @@ const mergeGalleryImages = (apiImages = []) => {
 
 const getGalleryImageSrc = (img) => {
   if (img.imageUrl) {
-    if (/^https?:\/\//i.test(img.imageUrl)) return img.imageUrl;
-
-    const baseUrl = (api.defaults.baseURL || "").replace(/\/$/, "");
-    const normalizedPath = img.imageUrl.startsWith("/") ? img.imageUrl : `/${img.imageUrl}`;
-
-    return `${baseUrl}${normalizedPath}`;
+    return resolveAssetUrl(img.imageUrl);
   }
 
   return img.src;

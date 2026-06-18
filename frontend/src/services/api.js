@@ -36,4 +36,29 @@ export const setAuthToken = (token) => {
   }
 };
 
+const getApiAssetBaseUrl = () => {
+  const configuredBaseUrl = api.defaults.baseURL || "";
+  if (!configuredBaseUrl) return "";
+
+  try {
+    const url = new URL(configuredBaseUrl, window.location.origin);
+    url.pathname = url.pathname.replace(/\/api\/?$/, "/");
+    url.search = "";
+    url.hash = "";
+    return url.toString().replace(/\/$/, "");
+  } catch {
+    return "";
+  }
+};
+
+export const resolveAssetUrl = (assetPath) => {
+  if (!assetPath) return "";
+  if (/^https?:\/\//i.test(assetPath)) return assetPath;
+
+  const normalizedPath = assetPath.startsWith("/") ? assetPath : `/${assetPath}`;
+  const assetBaseUrl = getApiAssetBaseUrl();
+
+  return assetBaseUrl ? `${assetBaseUrl}${normalizedPath}` : normalizedPath;
+};
+
 export default api;

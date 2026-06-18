@@ -2,16 +2,11 @@
 import React from "react";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { api } from "../services/api.js";
+import { api, resolveAssetUrl } from "../services/api.js";
 
 const getGalleryImageSrc = (imageUrl) => {
   if (!imageUrl) return "";
-  if (/^https?:\/\//i.test(imageUrl)) return imageUrl;
-
-  const baseUrl = (api.defaults.baseURL || "").replace(/\/$/, "");
-  const normalizedPath = imageUrl.startsWith("/") ? imageUrl : `/${imageUrl}`;
-
-  return `${baseUrl}${normalizedPath}`;
+  return resolveAssetUrl(imageUrl);
 };
 
 const getCategoryLabel = (category) => {
