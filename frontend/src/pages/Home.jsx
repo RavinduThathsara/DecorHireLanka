@@ -144,7 +144,8 @@ export default function Home() {
                 color: "#d4af7a",
                 fontStyle: "italic",
                 fontWeight: "400",
-                fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif'
+                fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
+                whiteSpace: "nowrap"
               }}
             >that feel premium.</i>
           </h1>
