@@ -139,17 +139,14 @@ export default function Home() {
               maxWidth: "900px"
             }}
           >
-            Customer-attracting wedding and homecoming decorations{" "}
-            <i
+            Customer-attracting wedding and homecoming decorations <i
               style={{
                 color: "#d4af7a",
                 fontStyle: "italic",
                 fontWeight: "400",
                 fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif'
               }}
-            >
-              that feel premium.
-            </i>
+            >that feel premium.</i>
           </h1>
 
           <p
@@ -169,8 +166,7 @@ export default function Home() {
             style={{
               display: "flex",
               gap: "20px",
-              flexWrap: "wrap",
-              marginBottom: "60px"
+              flexWrap: "wrap"
             }}
           >
             <Link
@@ -210,84 +206,6 @@ export default function Home() {
             >
               Contact Us
             </Link>
-          </div>
-
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-              gap: "30px",
-              maxWidth: "900px"
-            }}
-          >
-            <div>
-              <strong
-                style={{
-                  display: "block",
-                  fontSize: "clamp(28px, 3vw, 42px)",
-                  fontWeight: "600",
-                  marginBottom: "8px",
-                  color: "#fff"
-                }}
-              >
-                100+
-              </strong>
-              <span
-                style={{
-                  fontSize: "clamp(13px, 1.2vw, 16px)",
-                  color: "#e0e0e0",
-                  fontWeight: "300"
-                }}
-              >
-                Events styled with care
-              </span>
-            </div>
-
-            <div>
-              <strong
-                style={{
-                  display: "block",
-                  fontSize: "clamp(20px, 2vw, 28px)",
-                  fontWeight: "600",
-                  marginBottom: "8px",
-                  color: "#d4af7a"
-                }}
-              >
-                Wedding + Homecoming
-              </strong>
-              <span
-                style={{
-                  fontSize: "clamp(13px, 1.2vw, 16px)",
-                  color: "#e0e0e0",
-                  fontWeight: "300"
-                }}
-              >
-                Traditional and modern concepts
-              </span>
-            </div>
-
-            <div>
-              <strong
-                style={{
-                  display: "block",
-                  fontSize: "clamp(20px, 2vw, 28px)",
-                  fontWeight: "600",
-                  marginBottom: "8px",
-                  color: "#d4af7a"
-                }}
-              >
-                Album-ready
-              </strong>
-              <span
-                style={{
-                  fontSize: "clamp(13px, 1.2vw, 16px)",
-                  color: "#e0e0e0",
-                  fontWeight: "300"
-                }}
-              >
-                Decor planned to look strong in photos
-              </span>
-            </div>
           </div>
         </div>
       </section>
