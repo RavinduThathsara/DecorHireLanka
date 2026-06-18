@@ -1,3 +1,6 @@
+.env
+.env.local
+frontend/.env
+backend/.env
 node_modules/
 dist/
-.env

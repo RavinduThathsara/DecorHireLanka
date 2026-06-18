@@ -1,40 +1,13 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import { api } from "../services/api.js";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
+import { GoogleLogin } from "@react-oauth/google";
 import logo from "../assets/images/logo.png";
-
-const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || "";
-
-function loadGoogleScript() {
-  return new Promise((resolve, reject) => {
-    if (window.google?.accounts?.id) {
-      resolve();
-      return;
-    }
-
-    const existing = document.querySelector('script[data-google-identity="true"]');
-    if (existing) {
-      existing.addEventListener("load", resolve, { once: true });
-      existing.addEventListener("error", reject, { once: true });
-      return;
-    }
-
-    const script = document.createElement("script");
-    script.src = "https://accounts.google.com/gsi/client";
-    script.async = true;
-    script.defer = true;
-    script.dataset.googleIdentity = "true";
-    script.onload = resolve;
-    script.onerror = () => reject(new Error("Failed to load Google sign-in."));
-    document.body.appendChild(script);
-  });
-}
 
 export default function Register() {
   const navigate = useNavigate();
   const { loginCustomer } = useAuth();
-  const googleBtnRef = useRef(null);
 
   const [form, setForm] = useState({
     email: "",
@@ -49,113 +22,46 @@ export default function Register() {
   const [success, setSuccess] = useState("");
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
-  const [googleReady, setGoogleReady] = useState(false);
-
-  useEffect(() => {
-    let mounted = true;
-
-    const setupGoogle = async () => {
-      if (!GOOGLE_CLIENT_ID || !googleBtnRef.current) return;
-
-      try {
-        await loadGoogleScript();
-        if (!mounted || !window.google?.accounts?.id || !googleBtnRef.current) return;
-
-        window.google.accounts.id.initialize({
-          client_id: GOOGLE_CLIENT_ID,
-          callback: async (response) => {
-            try {
-              setLoading(true);
-              setError("");
-              setSuccess("");
-
-              const res = await api.post("/api/customers/google", {
-                credential: response.credential,
-              });
-
-              loginCustomer({ token: res.data.token, customer: res.data.customer });
-              setSuccess("Google sign-up successful! Redirecting to home...");
-              setTimeout(() => navigate("/"), 900);
-            } catch (err) {
-              setError(err?.response?.data?.message || "Google sign-up failed.");
-            } finally {
-              setLoading(false);
-            }
-          },
-        });
-
-        googleBtnRef.current.innerHTML = "";
-        window.google.accounts.id.renderButton(googleBtnRef.current, {
-          theme: "outline",
-          size: "large",
-          shape: "rectangular",
-          text: "signup_with",
-          width: 416,
-        });
-        setGoogleReady(true);
-      } catch (err) {
-        if (mounted) {
-          setError("Google sign-up is unavailable right now.");
-        }
-      }
-    };
-
-    setupGoogle();
-
-    return () => {
-      mounted = false;
-    };
-  }, [loginCustomer, navigate]);
 
   const validateField = (name, value) => {
     const trimmed = value.trim();
 
     switch (name) {
-      case "email": {
+      case "email":
         if (!trimmed) return "Email is required.";
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) return "Enter a valid email address.";
         return "";
-      }
-      case "username": {
+
+      case "username":
         if (!trimmed) return "Full name is required.";
         if (trimmed.length < 3) return "Full name must be at least 3 characters.";
         if (!/^[A-Za-z]+(?: [A-Za-z]+)*$/.test(trimmed)) return "Full name can contain alphabets only.";
         return "";
-      }
+
       case "phone": {
         if (!trimmed) return "Phone number is required.";
-        if (!/^\+?[\d\s()-]+$/.test(trimmed)) {
-          return "Phone number can contain digits, spaces, and + - ( ) only.";
-        }
-        const plusCount = (trimmed.match(/\+/g) || []).length;
-        if (plusCount > 1 || (plusCount === 1 && !trimmed.startsWith("+"))) {
-          return "Enter a valid phone number.";
-        }
+        if (!/^\+?[\d\s()-]+$/.test(trimmed)) return "Enter a valid phone number.";
+
         const digits = trimmed.replace(/\D/g, "");
         const localDigits = digits.startsWith("94") && digits.length === 11 ? `0${digits.slice(2)}` : digits;
         const validPrefixes = ["070", "071", "072", "074", "075", "076", "077", "078"];
 
-        if (localDigits.length !== 10) {
-          return "Phone number must be exactly 10 digits.";
-        }
-
-        if (!validPrefixes.some((prefix) => localDigits.startsWith(prefix))) {
-          return "Phone number start digits are invalid.";
-        }
-
+        if (localDigits.length !== 10) return "Phone number must be exactly 10 digits.";
+        if (!validPrefixes.some((prefix) => localDigits.startsWith(prefix))) return "Phone number start digits are invalid.";
         return "";
       }
-      case "location": {
+
+      case "location":
         if (!trimmed) return "Location is required.";
         if (trimmed.length < 2) return "Location must be at least 2 characters.";
         return "";
-      }
-      case "password": {
+
+      case "password":
         if (!value) return "Password is required.";
         if (value.length < 6) return "Password must be at least 6 characters.";
         if (!/[A-Za-z]/.test(value) || !/\d/.test(value)) return "Password must include letters and numbers.";
         return "";
-      }
+
       default:
         return "";
     }
@@ -163,12 +69,10 @@ export default function Register() {
 
   const validateForm = (values) => {
     const nextErrors = {};
-
     Object.keys(values).forEach((field) => {
       const fieldError = validateField(field, values[field]);
       if (fieldError) nextErrors[field] = fieldError;
     });
-
     return nextErrors;
   };
 
@@ -177,16 +81,14 @@ export default function Register() {
     setForm((p) => ({ ...p, [name]: value }));
 
     if (touched[name]) {
-      const fieldError = validateField(name, value);
-      setErrors((p) => ({ ...p, [name]: fieldError }));
+      setErrors((p) => ({ ...p, [name]: validateField(name, value) }));
     }
   };
 
   const onBlur = (e) => {
     const { name, value } = e.target;
     setTouched((p) => ({ ...p, [name]: true }));
-    const fieldError = validateField(name, value);
-    setErrors((p) => ({ ...p, [name]: fieldError }));
+    setErrors((p) => ({ ...p, [name]: validateField(name, value) }));
   };
 
   const sanitizeForm = (values) => ({
@@ -197,9 +99,25 @@ export default function Register() {
     location: values.location.trim(),
   });
 
-  const getInputStyle = (name) => {
-    if (!touched[name]) return input;
-    return errors[name] ? { ...input, ...inputError } : { ...input, ...inputValid };
+  const handleGoogleSuccess = async (credentialResponse) => {
+    try {
+      setLoading(true);
+      setError("");
+      setSuccess("");
+
+      const res = await api.post("/api/customers/google", {
+        credential: credentialResponse.credential,
+      });
+
+      loginCustomer({ token: res.data.token, customer: res.data.customer });
+      setSuccess("Google sign-up successful! Redirecting to home...");
+      setTimeout(() => navigate("/"), 900);
+    } catch (err) {
+      console.error("Google Register API Error:", err);
+      setError(err?.response?.data?.message || "Google sign-up failed.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const onSubmit = async (e) => {
@@ -215,20 +133,18 @@ export default function Register() {
 
     const nextErrors = validateForm(form);
     setErrors(nextErrors);
+
     if (Object.keys(nextErrors).length > 0) {
       setError("Please fix the highlighted fields and try again.");
       return;
     }
 
-    const cleanedForm = sanitizeForm(form);
-
     try {
       setLoading(true);
 
-      const res = await api.post("/api/customers/register", cleanedForm);
+      const res = await api.post("/api/customers/register", sanitizeForm(form));
 
       loginCustomer({ token: res.data.token, customer: res.data.customer });
-
       setSuccess("Registration successful! Redirecting to home...");
       setTimeout(() => navigate("/"), 900);
     } catch (err) {
@@ -236,6 +152,11 @@ export default function Register() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const getInputStyle = (name) => {
+    if (!touched[name]) return input;
+    return errors[name] ? { ...input, ...inputError } : { ...input, ...inputValid };
   };
 
   return (
@@ -273,8 +194,6 @@ export default function Register() {
               value={form.username}
               onChange={onChange}
               onBlur={onBlur}
-              pattern="[A-Za-z]+( [A-Za-z]+)*"
-              title="Full name can contain alphabets only"
               required
             />
             {touched.username && errors.username && <span style={fieldError}>{errors.username}</span>}
@@ -290,8 +209,6 @@ export default function Register() {
               value={form.phone}
               onChange={onChange}
               onBlur={onBlur}
-              pattern="\+?[0-9()\-\s]{10,20}"
-              title="Use a valid Sri Lankan mobile number with 10 digits starting 070, 071, 072, 074, 075, 076, 077, or 078"
               required
             />
             {touched.phone && errors.phone && <span style={fieldError}>{errors.phone}</span>}
@@ -339,13 +256,12 @@ export default function Register() {
           </div>
 
           <div style={googleSection}>
-            <div ref={googleBtnRef} style={googleButtonMount} />
-            {!GOOGLE_CLIENT_ID && (
-              <div style={googleInfo}>Set `VITE_GOOGLE_CLIENT_ID` to enable Google sign-up.</div>
-            )}
-            {GOOGLE_CLIENT_ID && !googleReady && !loading && (
-              <div style={googleInfo}>Loading Google sign-up...</div>
-            )}
+            <GoogleLogin
+              onSuccess={handleGoogleSuccess}
+              onError={() => setError("Google sign-up failed.")}
+              text="signup_with"
+              width="416"
+            />
           </div>
 
           {error && <div style={msgError}>{error}</div>}
@@ -429,8 +345,6 @@ const label = {
   fontSize: 14,
   fontWeight: 600,
   color: "#374151",
-  fontFamily:
-    "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif",
 };
 
 const input = {
@@ -439,9 +353,6 @@ const input = {
   border: "1px solid #d1d5db",
   outline: "none",
   fontSize: 15,
-  fontFamily:
-    "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif",
-  fontWeight: 400,
   color: "#111827",
   backgroundColor: "white",
   transition: "border-color 0.2s, box-shadow 0.2s",
@@ -473,9 +384,6 @@ const btn = {
   background: "#111827",
   color: "white",
   cursor: "pointer",
-  transition: "background 0.2s, transform 0.1s",
-  fontFamily:
-    "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif",
   marginTop: 8,
 };
 
@@ -499,20 +407,8 @@ const dividerText = {
 };
 
 const googleSection = {
-  display: "grid",
-  gap: 8,
-};
-
-const googleButtonMount = {
   display: "flex",
   justifyContent: "center",
-  minHeight: 44,
-};
-
-const googleInfo = {
-  textAlign: "center",
-  color: "#6b7280",
-  fontSize: 13,
 };
 
 const msgError = {
@@ -552,5 +448,4 @@ const link = {
   color: "#3b82f6",
   textDecoration: "none",
   fontWeight: 600,
-  transition: "color 0.2s",
 };

@@ -1,111 +1,42 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import { api } from "../services/api.js";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
+import { GoogleLogin } from "@react-oauth/google";
 import logo from "../assets/images/logo.png";
-
-const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || "";
-
-function loadGoogleScript() {
-  return new Promise((resolve, reject) => {
-    if (window.google?.accounts?.id) {
-      resolve();
-      return;
-    }
-
-    const existing = document.querySelector('script[data-google-identity="true"]');
-    if (existing) {
-      existing.addEventListener("load", resolve, { once: true });
-      existing.addEventListener("error", reject, { once: true });
-      return;
-    }
-
-    const script = document.createElement("script");
-    script.src = "https://accounts.google.com/gsi/client";
-    script.async = true;
-    script.defer = true;
-    script.dataset.googleIdentity = "true";
-    script.onload = resolve;
-    script.onerror = () => reject(new Error("Failed to load Google sign-in."));
-    document.body.appendChild(script);
-  });
-}
 
 export default function Login() {
   const navigate = useNavigate();
   const { loginCustomer } = useAuth();
-  const googleBtnRef = useRef(null);
 
   const [form, setForm] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  const [googleReady, setGoogleReady] = useState(false);
-
-  useEffect(() => {
-    let mounted = true;
-
-    const setupGoogle = async () => {
-      if (!GOOGLE_CLIENT_ID || !googleBtnRef.current) return;
-
-      try {
-        await loadGoogleScript();
-        if (!mounted || !googleBtnRef.current) return;
-
-        // Only initialize if it hasn't been done yet to avoid "multiple initialization" warnings
-        if (window.google?.accounts?.id) {
-          window.google.accounts.id.initialize({
-            client_id: GOOGLE_CLIENT_ID,
-            auto_select: false,
-            itp_support: true,
-            callback: async (response) => {
-              try {
-                setLoading(true);
-                setError("");
-                setSuccess("");
-
-                const res = await api.post("/api/customers/google", {
-                  credential: response.credential,
-                });
-
-                loginCustomer({ token: res.data.token, customer: res.data.customer });
-                setSuccess("Google login successful! Redirecting to home...");
-                setTimeout(() => navigate("/"), 900);
-              } catch (err) {
-                console.error("Login API Error:", err);
-                setError(err?.response?.data?.message || "Google login failed.");
-              } finally {
-                setLoading(false);
-              }
-            },
-          });
-
-          googleBtnRef.current.innerHTML = "";
-          window.google.accounts.id.renderButton(googleBtnRef.current, {
-            theme: "outline",
-            size: "large",
-            shape: "rectangular",
-            text: "signin_with",
-            width: googleBtnRef.current.offsetWidth || 400,
-          });
-          setGoogleReady(true);
-        }
-      } catch (err) {
-        if (mounted) {
-          setError("Google login is unavailable right now.");
-        }
-      }
-    };
-
-    setupGoogle();
-
-    return () => {
-      mounted = false;
-    };
-  }, [loginCustomer, navigate]);
 
   const onChange = (e) => {
     setForm((p) => ({ ...p, [e.target.name]: e.target.value }));
+  };
+  console.log("FRONTEND GOOGLE CLIENT ID =", import.meta.env.VITE_GOOGLE_CLIENT_ID);
+  const handleGoogleSuccess = async (credentialResponse) => {
+    try {
+      setLoading(true);
+      setError("");
+      setSuccess("");
+
+      const res = await api.post("/api/customers/google", {
+        credential: credentialResponse.credential,
+      });
+
+      loginCustomer({ token: res.data.token, customer: res.data.customer });
+      setSuccess("Google login successful! Redirecting to home...");
+      setTimeout(() => navigate("/"), 900);
+    } catch (err) {
+      console.error("Google Login API Error:", err);
+      setError(err?.response?.data?.message || "Google login failed.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const onSubmit = async (e) => {
@@ -119,7 +50,6 @@ export default function Login() {
       const res = await api.post("/api/customers/login", form);
 
       loginCustomer({ token: res.data.token, customer: res.data.customer });
-
       setSuccess("Login successful! Redirecting to home...");
       setTimeout(() => navigate("/"), 900);
     } catch (err) {
@@ -145,6 +75,7 @@ export default function Login() {
             onChange={onChange}
             required
           />
+
           <input
             style={input}
             name="password"
@@ -166,13 +97,12 @@ export default function Login() {
           </div>
 
           <div style={googleSection}>
-            <div ref={googleBtnRef} style={googleButtonMount} />
-            {!GOOGLE_CLIENT_ID && (
-              <div style={googleInfo}>Set `VITE_GOOGLE_CLIENT_ID` to enable Google login.</div>
-            )}
-            {GOOGLE_CLIENT_ID && !googleReady && !loading && (
-              <div style={googleInfo}>Loading Google login...</div>
-            )}
+            <GoogleLogin
+              onSuccess={handleGoogleSuccess}
+              onError={() => setError("Google login failed.")}
+              text="signin_with"
+              width="400"
+            />
           </div>
 
           {error && <div style={msgError}>{error}</div>}
@@ -267,20 +197,8 @@ const dividerText = {
 };
 
 const googleSection = {
-  display: "grid",
-  gap: 8,
-};
-
-const googleButtonMount = {
   display: "flex",
   justifyContent: "center",
-  minHeight: 44,
-};
-
-const googleInfo = {
-  textAlign: "center",
-  color: "#6b7280",
-  fontSize: 13,
 };
 
 const msgError = {
