@@ -64,20 +64,7 @@ const planningPoints = [
 export default function Home() {
   return (
     <>
-      <section
-        className="home-hero home-surface"
-        style={{
-          width: "100%",
-          maxWidth: "100vw",
-          margin: "0",
-          borderRadius: "0",
-          borderLeft: "none",
-          borderRight: "none",
-          borderTop: "none",
-          padding: "clamp(30px, 4vw, 60px) clamp(20px, 6vw, 80px)",
-          boxSizing: "border-box"
-        }}
-      >
+      <section className="home-hero home-surface">
         <div className="home-hero-copy">
           <p className="home-eyebrow">DecorHire Lanka</p>
           <h1
@@ -132,25 +119,8 @@ export default function Home() {
           </div>
         </div>
 
-        <div
-          className="home-hero-media"
-          style={{
-            position: "relative",
-            height: "100%",
-            minHeight: "85vh",
-            width: "100%",
-            borderRadius: "24px",
-            overflow: "hidden",
-            backgroundImage: `url(${hero1Img})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            boxShadow: "0 18px 40px rgba(0, 0, 0, 0.15)",
-            borderTopLeftRadius: "16px",
-            borderBottomLeftRadius: "16px",
-            borderTopRightRadius: "16px",
-            borderBottomRightRadius: "16px"
-          }}
-        >
+        <div className="home-hero-media">
+          <img src={hero1Img} alt="Wedding decoration showcase" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
         </div>
       </section>
 
