@@ -193,10 +193,10 @@ export default function UserProfile() {
                                                     <strong style={{ color: "#d1d5db" }}>Note:</strong> {booking.note}
                                                 </div>
                                             ) || (
-                                                <div style={cardDescription}>
-                                                    <span style={{ color: "#64748b", fontStyle: "italic" }}>No specific notes provided.</span>
-                                                </div>
-                                            )}
+                                                    <div style={cardDescription}>
+                                                        <span style={{ color: "#64748b", fontStyle: "italic" }}>No specific notes provided.</span>
+                                                    </div>
+                                                )}
 
                                             <div style={cardActions}>
                                                 <button onClick={() => handleUpdateBooking(booking)} style={actionBtnEdit}>Update</button>
