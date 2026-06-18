@@ -84,3 +84,36 @@ export const customerGetMyMessages = async (req, res) => {
     return res.status(500).json({ message: "Server error." });
   }
 };
+
+export const customerUpdateContactMessage = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { message, eventType, location } = req.body;
+
+    const msg = await ContactMessage.findById(id);
+    if (!msg) return res.status(404).json({ message: "Message not found." });
+
+    if (message) msg.message = message;
+    if (eventType) msg.eventType = eventType;
+    if (location) msg.location = location;
+
+    await msg.save();
+    return res.json({ message: "Message updated ✅", msg });
+  } catch (error) {
+    console.error("customerUpdateContactMessage error:", error.message);
+    return res.status(500).json({ message: "Server error." });
+  }
+};
+
+export const customerDeleteContactMessage = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const msg = await ContactMessage.findByIdAndDelete(id);
+    if (!msg) return res.status(404).json({ message: "Message not found." });
+
+    return res.json({ message: "Message deleted ✅" });
+  } catch (error) {
+    console.error("customerDeleteContactMessage error:", error.message);
+    return res.status(500).json({ message: "Server error." });
+  }
+};

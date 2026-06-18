@@ -94,3 +94,36 @@ export const customerGetMyBookings = async (req, res) => {
     return res.status(500).json({ message: "Server error." });
   }
 };
+
+export const customerUpdateBooking = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { eventDate, eventLocation, note } = req.body;
+
+    const booking = await Booking.findById(id);
+    if (!booking) return res.status(404).json({ message: "Booking not found." });
+
+    if (eventDate) booking.eventDate = eventDate;
+    if (eventLocation) booking.eventLocation = eventLocation;
+    if (note !== undefined) booking.note = note;
+
+    await booking.save();
+    return res.json({ message: "Booking updated ✅", booking });
+  } catch (e) {
+    console.error("customerUpdateBooking:", e.message);
+    return res.status(500).json({ message: "Server error." });
+  }
+};
+
+export const customerDeleteBooking = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const booking = await Booking.findByIdAndDelete(id);
+    if (!booking) return res.status(404).json({ message: "Booking not found." });
+
+    return res.json({ message: "Booking deleted ✅" });
+  } catch (e) {
+    console.error("customerDeleteBooking:", e.message);
+    return res.status(500).json({ message: "Server error." });
+  }
+};

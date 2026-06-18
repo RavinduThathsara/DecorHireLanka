@@ -46,6 +46,56 @@ export default function UserProfile() {
         }
     };
 
+    const handleDeleteBooking = async (id) => {
+        if (!window.confirm("Are you sure you want to delete this booking?")) return;
+        try {
+            await api.delete(`/api/bookings/customer/${id}`);
+            setBookings(bookings.filter(b => b._id !== id));
+        } catch (err) {
+            alert(err?.response?.data?.message || "Failed to delete booking.");
+        }
+    };
+
+    const handleUpdateBooking = async (booking) => {
+        const newLocation = window.prompt("Enter new event location:", booking.eventLocation);
+        const newNote = window.prompt("Enter new note:", booking.note);
+        if (newLocation === null) return;
+
+        try {
+            const res = await api.put(`/api/bookings/customer/${booking._id}`, {
+                eventLocation: newLocation,
+                note: newNote
+            });
+            setBookings(bookings.map(b => b._id === booking._id ? res.data.booking : b));
+        } catch (err) {
+            alert(err?.response?.data?.message || "Failed to update booking.");
+        }
+    };
+
+    const handleDeleteMessage = async (id) => {
+        if (!window.confirm("Are you sure you want to delete this message?")) return;
+        try {
+            await api.delete(`/api/contact/customer/${id}`);
+            setMessages(messages.filter(m => m._id !== id));
+        } catch (err) {
+            alert(err?.response?.data?.message || "Failed to delete message.");
+        }
+    };
+
+    const handleUpdateMessage = async (msg) => {
+        const newMessage = window.prompt("Update your message:", msg.message);
+        if (newMessage === null) return;
+
+        try {
+            const res = await api.put(`/api/contact/customer/${msg._id}`, {
+                message: newMessage
+            });
+            setMessages(messages.map(m => m._id === msg._id ? res.data.msg : m));
+        } catch (err) {
+            alert(err?.response?.data?.message || "Failed to update message.");
+        }
+    };
+
     return (
         <div style={pageShell}>
             {/* Profile Header */}
@@ -76,104 +126,138 @@ export default function UserProfile() {
             {loading && <p style={{ color: "#6b7280", marginTop: 16 }}>Loading your data...</p>}
 
             {!loading && (
-                <>
+                <div style={darkSection}>
                     {/* Bookings Section */}
-                    <div style={card}>
+                    <div style={sectionWrapper}>
                         <div style={sectionHead}>
-                            <h3 style={sectionTitle}>My Bookings ({bookings.length})</h3>
+                            <h3 style={sectionTitleDark}>My Bookings ({bookings.length})</h3>
                         </div>
 
                         {bookings.length === 0 ? (
-                            <p style={{ color: "#6b7280", marginTop: 12 }}>
-                                No bookings yet. <a href="/book" style={linkStyle}>Start booking now</a>
+                            <p style={{ color: "#94a3b8", marginTop: 12 }}>
+                                No bookings yet. <a href="/book" style={linkStyleGold}>Start booking now</a>
                             </p>
                         ) : (
-                            <div style={itemList}>
-                                {bookings.map((booking) => (
-                                    <div key={booking._id} style={bookingItem}>
-                                        <div style={bookingHeader}>
-                                            <div>
-                                                <h4 style={bookingTitle}>{booking.decorationTitle}</h4>
-                                                <p style={bookingMeta}>
-                                                    {new Date(booking.eventDate).toLocaleDateString()} • {booking.eventLocation}
-                                                </p>
+                            <div style={cardGrid}>
+                                {bookings.map((booking) => {
+                                    const dateObj = new Date(booking.eventDate);
+                                    const day = dateObj.getDate();
+                                    const month = dateObj.toLocaleString('default', { month: 'short' });
+
+                                    return (
+                                        <div key={booking._id} style={modernCard}>
+                                            <div style={cardMainContent}>
+                                                <div style={dateBox}>
+                                                    <span style={dateMonth}>{month}</span>
+                                                    <span style={dateDay}>{day}</span>
+                                                </div>
+                                                <div style={cardInfo}>
+                                                    <div style={cardTopRow}>
+                                                        <h4 style={modernCardTitle}>{booking.decorationTitle}</h4>
+                                                        <div
+                                                            style={{
+                                                                ...statusBadgeModern,
+                                                                background:
+                                                                    booking.status === "CONFIRMED"
+                                                                        ? "rgba(16, 185, 129, 0.1)"
+                                                                        : booking.status === "CANCELLED"
+                                                                            ? "rgba(239, 68, 68, 0.1)"
+                                                                            : "rgba(245, 158, 11, 0.1)",
+                                                                color:
+                                                                    booking.status === "CONFIRMED"
+                                                                        ? "#10b981"
+                                                                        : booking.status === "CANCELLED"
+                                                                            ? "#ef4444"
+                                                                            : "#f59e0b",
+                                                            }}
+                                                        >
+                                                            <span style={{ fontSize: 10, marginRight: 6 }}>●</span>
+                                                            {booking.status}
+                                                        </div>
+                                                    </div>
+                                                    <div style={cardMetaRow}>
+                                                        <div style={metaItem}>
+                                                            <span style={metaIcon}>📍</span>
+                                                            {booking.eventLocation}
+                                                        </div>
+                                                        <div style={metaItem}>
+                                                            <span style={metaIcon}>📅</span>
+                                                            {booking.eventDate}
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div
-                                                style={{
-                                                    ...statusBadge,
-                                                    background:
-                                                        booking.status === "CONFIRMED"
-                                                            ? "#dcfce7"
-                                                            : booking.status === "CANCELLED"
-                                                                ? "#fee2e2"
-                                                                : "#fef3c7",
-                                                    color:
-                                                        booking.status === "CONFIRMED"
-                                                            ? "#166534"
-                                                            : booking.status === "CANCELLED"
-                                                                ? "#991b1b"
-                                                                : "#92400e",
-                                                }}
-                                            >
-                                                {booking.status}
+
+                                            {booking.note && (
+                                                <div style={cardDescription}>
+                                                    <strong style={{ color: "#d1d5db" }}>Note:</strong> {booking.note}
+                                                </div>
+                                            ) || (
+                                                <div style={cardDescription}>
+                                                    <span style={{ color: "#64748b", fontStyle: "italic" }}>No specific notes provided.</span>
+                                                </div>
+                                            )}
+
+                                            <div style={cardActions}>
+                                                <button onClick={() => handleUpdateBooking(booking)} style={actionBtnEdit}>Update</button>
+                                                <button onClick={() => handleDeleteBooking(booking._id)} style={actionBtnDelete}>Delete</button>
                                             </div>
                                         </div>
-                                        {booking.note && (
-                                            <p style={bookingNote}>
-                                                <strong>Note:</strong> {booking.note}
-                                            </p>
-                                        )}
-                                        <p style={bookingTime}>
-                                            Submitted: {new Date(booking.createdAt).toLocaleString()}
-                                        </p>
-                                    </div>
-                                ))}
+                                    );
+                                })}
                             </div>
                         )}
                     </div>
 
                     {/* Contact Messages Section */}
-                    <div style={card}>
+                    <div style={sectionWrapper}>
                         <div style={sectionHead}>
-                            <h3 style={sectionTitle}>My Contact Messages ({messages.length})</h3>
+                            <h3 style={sectionTitleDark}>Recent Messages ({messages.length})</h3>
                         </div>
 
                         {messages.length === 0 ? (
-                            <p style={{ color: "#6b7280", marginTop: 12 }}>
-                                No contact messages sent yet. <a href="/contact" style={linkStyle}>Send us a message</a>
+                            <p style={{ color: "#94a3b8", marginTop: 12 }}>
+                                No contact messages sent yet. <a href="/contact" style={linkStyleGold}>Send us a message</a>
                             </p>
                         ) : (
-                            <div style={itemList}>
+                            <div style={cardGrid}>
                                 {messages.map((msg) => (
-                                    <div key={msg._id} style={messageItem}>
-                                        <div style={messageHeader}>
-                                            <div>
-                                                <h4 style={messageTitle}>{msg.message.substring(0, 60)}...</h4>
-                                                <p style={messageMeta}>
-                                                    {msg.eventType && `${msg.eventType} • `}
-                                                    {msg.location || "No location"}
-                                                </p>
+                                    <div key={msg._id} style={modernCard}>
+                                        <div style={cardMainContent}>
+                                            <div style={iconBox}>
+                                                <span style={{ fontSize: 24 }}>💬</span>
                                             </div>
-                                            <div
-                                                style={{
-                                                    ...statusBadge,
-                                                    background: msg.status === "REPLIED" ? "#dcfce7" : "#fef3c7",
-                                                    color: msg.status === "REPLIED" ? "#166534" : "#92400e",
-                                                }}
-                                            >
-                                                {msg.status || "NEW"}
+                                            <div style={cardInfo}>
+                                                <div style={cardTopRow}>
+                                                    <h4 style={modernCardTitle}>{msg.eventType || "Contact Message"}</h4>
+                                                    <div
+                                                        style={{
+                                                            ...statusBadgeModern,
+                                                            background: msg.status === "REPLIED" ? "rgba(16, 185, 129, 0.1)" : "rgba(245, 158, 11, 0.1)",
+                                                            color: msg.status === "REPLIED" ? "#10b981" : "#f59e0b",
+                                                        }}
+                                                    >
+                                                        {msg.status || "NEW"}
+                                                    </div>
+                                                </div>
+                                                <div style={cardMetaRow}>
+                                                    <div style={metaItem}>
+                                                        {new Date(msg.createdAt).toLocaleDateString()}
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                        <p style={messageContent}>{msg.message}</p>
-                                        <p style={messageTime}>
-                                            Sent: {new Date(msg.createdAt).toLocaleString()}
-                                        </p>
+                                        <p style={cardDescription}>{msg.message}</p>
+                                        <div style={cardActions}>
+                                            <button onClick={() => handleUpdateMessage(msg)} style={actionBtnEdit}>Update</button>
+                                            <button onClick={() => handleDeleteMessage(msg._id)} style={actionBtnDelete}>Delete</button>
+                                        </div>
                                     </div>
                                 ))}
                             </div>
                         )}
                     </div>
-                </>
+                </div>
             )}
         </div>
     );
@@ -264,98 +348,170 @@ const msgError = {
     marginBottom: 12,
 };
 
-const itemList = {
+const darkSection = {
+    marginTop: 30,
+    background: "#0f172a", // Very dark blue/black
+    padding: "40px 20px",
+    borderRadius: 32,
+};
+
+const sectionWrapper = {
+    marginBottom: 40,
+};
+
+const sectionTitleDark = {
+    margin: "0 0 20px 0",
+    color: "#f8fafc",
+    fontFamily: '"Playfair Display", Georgia, serif',
+    fontSize: 24,
+};
+
+const cardGrid = {
     display: "grid",
-    gap: 14,
-    marginTop: 12,
+    gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+    gap: 20,
 };
 
-const bookingItem = {
-    border: "1px solid rgba(165, 116, 74, 0.14)",
-    borderRadius: 16,
-    padding: 16,
-    background: "#fafaf9",
+const modernCard = {
+    background: "#1e293b", // Slate-800
+    borderRadius: 20,
+    padding: 20,
+    border: "1px solid rgba(255, 255, 255, 0.05)",
+    transition: "transform 0.2s ease",
+    display: "flex",
+    flexDirection: "column",
 };
 
-const bookingHeader = {
+const cardMainContent = {
+    display: "flex",
+    gap: 16,
+    marginBottom: 16,
+};
+
+const dateBox = {
+    background: "rgba(255,255,255,0.03)",
+    border: "1px solid rgba(255,255,255,0.1)",
+    borderRadius: 12,
+    minWidth: 64,
+    height: 70,
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+};
+
+const dateMonth = {
+    fontSize: 10,
+    fontWeight: 800,
+    textTransform: "uppercase",
+    color: "#94a3b8",
+};
+
+const dateDay = {
+    fontSize: 24,
+    fontWeight: 900,
+    color: "#f8fafc",
+};
+
+const iconBox = {
+    background: "rgba(255,255,255,0.03)",
+    border: "1px solid rgba(255,255,255,0.1)",
+    borderRadius: 12,
+    minWidth: 64,
+    height: 64,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+};
+
+const cardInfo = {
+    flex: 1,
+};
+
+const cardTopRow = {
     display: "flex",
     justifyContent: "space-between",
-    gap: 12,
     alignItems: "flex-start",
+    marginBottom: 8,
 };
 
-const bookingTitle = {
-    margin: "0 0 6px 0",
-    color: "#1f1a17",
-    fontSize: 16,
-    fontWeight: 900,
-};
-
-const bookingMeta = {
+const modernCardTitle = {
     margin: 0,
-    color: "#6b7280",
-    fontSize: 14,
-    fontWeight: 600,
+    fontSize: 18,
+    color: "#f8fafc",
+    fontWeight: 700,
 };
 
-const bookingNote = {
-    marginTop: 10,
-    color: "#374151",
-    fontSize: 14,
-    lineHeight: 1.6,
-    background: "rgba(155, 91, 52, 0.06)",
-    padding: 10,
-    borderRadius: 8,
+const statusBadgeModern = {
+    padding: "4px 12px",
+    borderRadius: 20,
+    fontSize: 11,
+    fontWeight: 800,
+    display: "flex",
+    alignItems: "center",
 };
 
-const bookingTime = {
-    marginTop: 8,
-    color: "#9ca3af",
+const cardMetaRow = {
+    display: "flex",
+    flexDirection: "column",
+    gap: 4,
+};
+
+const metaItem = {
+    fontSize: 13,
+    color: "#94a3b8",
+    display: "flex",
+    alignItems: "center",
+    gap: 6,
+};
+
+const metaIcon = {
     fontSize: 12,
 };
 
-const messageItem = {
-    border: "1px solid rgba(165, 116, 74, 0.14)",
-    borderRadius: 16,
-    padding: 16,
-    background: "#fafaf9",
+const cardDescription = {
+    fontSize: 14,
+    color: "#94a3b8",
+    lineHeight: 1.5,
+    marginBottom: 20,
+    flex: 1,
 };
 
-const messageHeader = {
+const cardActions = {
     display: "flex",
-    justifyContent: "space-between",
-    gap: 12,
-    alignItems: "flex-start",
+    gap: 10,
+    borderTop: "1px solid rgba(255,255,255,0.1)",
+    paddingTop: 16,
 };
 
-const messageTitle = {
-    margin: "0 0 6px 0",
-    color: "#1f1a17",
-    fontSize: 16,
-    fontWeight: 900,
-};
-
-const messageMeta = {
-    margin: 0,
-    color: "#6b7280",
-    fontSize: 14,
-    fontWeight: 600,
-};
-
-const messageContent = {
-    marginTop: 10,
-    color: "#374151",
-    fontSize: 14,
-    lineHeight: 1.6,
-    background: "rgba(155, 91, 52, 0.06)",
-    padding: 10,
+const actionBtnEdit = {
+    flex: 1,
+    padding: "8px",
+    background: "rgba(255,255,255,0.05)",
+    border: "none",
     borderRadius: 8,
+    color: "#f8fafc",
+    fontSize: 13,
+    fontWeight: 600,
+    cursor: "pointer",
 };
 
-const messageTime = {
-    marginTop: 8,
-    color: "#9ca3af",
-    fontSize: 12,
+const actionBtnDelete = {
+    flex: 1,
+    padding: "8px",
+    background: "rgba(239, 68, 68, 0.1)",
+    border: "none",
+    borderRadius: 8,
+    color: "#ef4444",
+    fontSize: 13,
+    fontWeight: 600,
+    cursor: "pointer",
+};
+
+const linkStyleGold = {
+    color: "#eab308",
+    fontWeight: 700,
+    textDecoration: "none",
 };
 
 const statusBadge = {

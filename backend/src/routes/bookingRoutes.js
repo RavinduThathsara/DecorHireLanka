@@ -5,6 +5,8 @@ import {
   adminGetAllBookings,
   adminUpdateBookingStatus,
   customerGetMyBookings,
+  customerUpdateBooking,
+  customerDeleteBooking,
 } from "../controllers/bookingController.js";
 import { requireAuth, requireAdmin } from "../middleware/auth.js";
 
@@ -15,6 +17,8 @@ router.post("/", createBooking);
 
 // Customer: get their own bookings
 router.get("/customer/my-bookings", customerGetMyBookings);
+router.put("/customer/:id", customerUpdateBooking);
+router.delete("/customer/:id", customerDeleteBooking);
 
 // Admin: view + update status
 router.get("/admin/all", requireAuth, requireAdmin, adminGetAllBookings);
