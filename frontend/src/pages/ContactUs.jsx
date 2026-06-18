@@ -2,8 +2,10 @@
 import React from "react";
 import { useState } from "react";
 import { api } from "../services/api.js";
+import { useAuth } from "../context/AuthContext.jsx";
 
 export default function ContactUs() {
+  const { addNotification } = useAuth();
   const shopAddress = "149, Kowil Kade, Passara, Sri Lanka";
   const mapSrc =
     "https://www.google.com/maps?q=149%2C%20Kowil%20Kade%2C%20Passara%2C%20Sri%20Lanka&z=17&output=embed";
@@ -61,7 +63,16 @@ export default function ContactUs() {
     try {
       setLoading(true);
       const res = await api.post("/api/contact", form);
-      setSuccess(res.data?.message || "Message sent successfully ✅");
+      const msg = res.data?.message || "Message sent successfully ✅";
+      setSuccess(msg);
+
+      // Add notification
+      addNotification({
+        title: "Your message has been sent to our team.",
+        subtitle: "We will get back to you with a response as soon as possible.",
+        type: "MESSAGE"
+      });
+
       setForm({
         name: "",
         email: "",

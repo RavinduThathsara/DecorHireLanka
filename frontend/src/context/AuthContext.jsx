@@ -4,11 +4,21 @@ const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
   const [customer, setCustomer] = useState(null);
+  const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
     const saved = localStorage.getItem("customer");
     setCustomer(saved ? JSON.parse(saved) : null);
+
+    const savedNotifs = localStorage.getItem("notifications");
+    if (savedNotifs) setNotifications(JSON.parse(savedNotifs));
   }, []);
+
+  useEffect(() => {
+    if (notifications.length > 0) {
+      localStorage.setItem("notifications", JSON.stringify(notifications));
+    }
+  }, [notifications]);
 
   const loginCustomer = useCallback(({ token, customer }) => {
     localStorage.setItem("customerToken", token);
@@ -19,7 +29,23 @@ export function AuthProvider({ children }) {
   const logoutCustomer = useCallback(() => {
     localStorage.removeItem("customerToken");
     localStorage.removeItem("customer");
+    localStorage.removeItem("notifications");
     setCustomer(null);
+    setNotifications([]);
+  }, []);
+
+  const addNotification = useCallback((notif) => {
+    const newNotif = {
+      id: Date.now(),
+      time: "Just now",
+      read: false,
+      ...notif
+    };
+    setNotifications(prev => [newNotif, ...prev]);
+  }, []);
+
+  const markAllAsRead = useCallback(() => {
+    setNotifications(prev => prev.map(n => ({ ...n, read: true })));
   }, []);
 
   const value = useMemo(
@@ -28,8 +54,11 @@ export function AuthProvider({ children }) {
       isCustomerLoggedIn: !!customer,
       loginCustomer,
       logoutCustomer,
+      notifications,
+      addNotification,
+      markAllAsRead
     }),
-    [customer]
+    [customer, notifications, addNotification, markAllAsRead]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -1,5 +1,5 @@
-import React from "react";
-import { Link, NavLink } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
 import logo from "../assets/images/logo.png";
 
@@ -8,9 +8,18 @@ function navLinkClass({ isActive }) {
 }
 
 export default function Navbar() {
-  const { customer, logoutCustomer } = useAuth();
+  const { customer, logoutCustomer, notifications, markAllAsRead } = useAuth();
+  const navigate = useNavigate();
+  const [showNotifs, setShowNotifs] = useState(false);
+
   const profileName = customer?.username || "Customer";
   const profileInitial = profileName.trim().charAt(0).toUpperCase() || "C";
+  const unreadCount = notifications.filter(n => !n.read).length;
+
+  const handleNotifClick = () => {
+    setShowNotifs(!showNotifs);
+    if (!showNotifs) markAllAsRead();
+  };
 
   return (
     <header className="site-header">
@@ -46,9 +55,65 @@ export default function Navbar() {
 
         <div className="site-actions">
           {customer && (
-            <div style={notificationBadge} title="Notifications">
-              <span style={{ fontSize: 20 }}>🔔</span>
-              <span style={notificationDot}></span>
+            <div style={{ position: "relative" }}>
+              <div
+                style={notificationBadge}
+                title="Notifications"
+                onClick={handleNotifClick}
+              >
+                <span style={{ fontSize: 20 }}>🔔</span>
+                {unreadCount > 0 && <span style={notificationDot}></span>}
+              </div>
+
+              {/* Industry-Level Notification Dropdown */}
+              {showNotifs && (
+                <div style={notifDropdown}>
+                  <div style={notifHeader}>
+                    <span style={notifTitle}>Notifications</span>
+                    <div style={notifHeaderActions}>
+                      <span style={notifActionIcon}>✓</span>
+                      <span style={notifActionIcon}>⚙</span>
+                      <span style={notifActionIcon} onClick={() => setShowNotifs(false)}>✕</span>
+                    </div>
+                  </div>
+
+                  <div style={notifList}>
+                    {notifications.length === 0 ? (
+                      <div style={emptyNotifs}>No new notifications</div>
+                    ) : (
+                      notifications.map(n => (
+                        <div
+                          key={n.id}
+                          style={notifItem}
+                          onClick={() => {
+                            setShowNotifs(false);
+                            navigate("/profile");
+                          }}
+                        >
+                          <div style={notifIcon}>✎</div>
+                          <div style={notifContent}>
+                            <div style={notifText}>{n.title}</div>
+                            <div style={notifMeta}>
+                              <span>{n.time}</span>
+                              <span style={notifLink}>View full notification</span>
+                            </div>
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </div>
+
+                  <div
+                    style={notifFooter}
+                    onClick={() => {
+                      setShowNotifs(false);
+                      navigate("/profile");
+                    }}
+                  >
+                    See all
+                  </div>
+                </div>
+              )}
             </div>
           )}
           {!customer ? (
@@ -83,6 +148,109 @@ export default function Navbar() {
     </header>
   );
 }
+
+const notifDropdown = {
+  position: "absolute",
+  top: "50px",
+  right: "0px",
+  width: "380px",
+  background: "#fff",
+  borderRadius: "12px",
+  boxShadow: "0 10px 40px rgba(0,0,0,0.15)",
+  border: "1px solid rgba(155, 91, 52, 0.12)",
+  zIndex: 1000,
+  overflow: "hidden",
+  display: "flex",
+  flexDirection: "column",
+};
+
+const notifHeader = {
+  padding: "14px 18px",
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  borderBottom: "1px solid #f0f0f0",
+};
+
+const notifTitle = {
+  fontSize: "16px",
+  fontWeight: "800",
+  color: "#1f1a17",
+};
+
+const notifHeaderActions = {
+  display: "flex",
+  gap: "12px",
+  color: "#d4b99a",
+  fontSize: "14px",
+  cursor: "pointer",
+};
+
+const notifActionIcon = {
+  padding: "4px",
+  cursor: "pointer",
+};
+
+const notifList = {
+  maxHeight: "400px",
+  overflowY: "auto",
+};
+
+const notifItem = {
+  padding: "16px 18px",
+  display: "flex",
+  gap: "14px",
+  borderBottom: "1px solid #f8f8f8",
+  cursor: "pointer",
+  transition: "background 0.2s",
+};
+
+const notifIcon = {
+  fontSize: "16px",
+  color: "#6f645a",
+  marginTop: "2px",
+};
+
+const notifContent = {
+  flex: 1,
+};
+
+const notifText = {
+  fontSize: "13.5px",
+  fontWeight: "600",
+  lineHeight: "1.4",
+  color: "#4a443f",
+  marginBottom: "6px",
+};
+
+const notifMeta = {
+  display: "flex",
+  justifyContent: "space-between",
+  fontSize: "11px",
+  color: "#999",
+};
+
+const notifLink = {
+  color: "#d4b99a",
+  fontWeight: "700",
+};
+
+const notifFooter = {
+  padding: "12px",
+  textAlign: "center",
+  fontSize: "13px",
+  fontWeight: "800",
+  color: "#d4b99a",
+  borderTop: "1px solid #f0f0f0",
+  cursor: "pointer",
+};
+
+const emptyNotifs = {
+  padding: "30px",
+  textAlign: "center",
+  color: "#999",
+  fontSize: "14px",
+};
 
 const notificationBadge = {
   position: "relative",

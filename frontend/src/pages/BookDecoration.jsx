@@ -13,7 +13,7 @@ function useQuery() {
 export default function BookDecoration() {
   const navigate = useNavigate();
   const q = useQuery();
-  const { customer } = useAuth();
+  const { customer, addNotification } = useAuth();
 
   const decorationId = q.get("id") || "";
   const decorationTitleFromUrl = q.get("title") || "";
@@ -57,7 +57,15 @@ export default function BookDecoration() {
       setLoading(true);
       const res = await api.post("/api/bookings", form);
       setSuccess(res.data?.message || "Booking sent ✅");
-      setTimeout(() => navigate("/"), 1000);
+
+      // Add a notification
+      addNotification({
+        title: `Your ${form.decorationTitle} booking has been received.`,
+        subtitle: "We will review your booking and get back to you shortly.",
+        type: "BOOKING"
+      });
+
+      setTimeout(() => navigate("/profile"), 1000); // Navigate to profile to see the item
     } catch (err) {
       setError(err?.response?.data?.message || "Booking failed.");
     } finally {
