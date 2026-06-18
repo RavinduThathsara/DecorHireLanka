@@ -116,9 +116,13 @@ export default function UserProfile() {
         <div style={pageShell}>
             {/* Profile Header */}
             <div style={profileHeader}>
+                <div style={profileAvatarCircle}>
+                    {customer?.username ? customer.username.charAt(0).toUpperCase() : "U"}
+                    <div style={editIconBadge}>📷</div>
+                </div>
                 <div>
                     <h1 style={pageTitle}>My Profile</h1>
-                    <p style={pageSubtitle}>Manage your account details and view your activities.</p>
+                    <p style={pageSubtitle}>Manage your account details and view your activities</p>
                 </div>
             </div>
 
@@ -332,42 +336,83 @@ export default function UserProfile() {
 
 /* Styles */
 const pageShell = {
-    maxWidth: 1100,
+    maxWidth: 1450,
     margin: "0 auto",
-    padding: "26px 22px 36px",
+    padding: "20px 2.5%",
+    width: "100%",
 };
 
 const profileHeader = {
-    marginBottom: 22,
+    display: "flex",
+    alignItems: "center",
+    gap: 20,
+    marginBottom: 35,
+};
+
+const profileAvatarCircle = {
+    position: "relative",
+    width: 70,
+    height: 70,
+    borderRadius: "50%",
+    background: "linear-gradient(135deg, #1f1a17 0%, #3e352f 100%)",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    color: "#d4b99a",
+    fontSize: 28,
+    fontWeight: 800,
+    boxShadow: "0 10px 25px rgba(31, 26, 23, 0.15)",
+    border: "2px solid #fff",
+    cursor: "pointer",
+};
+
+const editIconBadge = {
+    position: "absolute",
+    bottom: -2,
+    right: -2,
+    background: "#9b5b34",
+    width: 24,
+    height: 24,
+    borderRadius: "50%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    border: "2px solid #fff",
+    fontSize: 12,
+    color: "#fff",
+    boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
 };
 
 const pageTitle = {
     margin: 0,
     color: "#14233b",
     fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
-    fontSize: "clamp(2rem, 3vw, 2.8rem)",
-    lineHeight: 1,
+    fontSize: 28,
+    fontWeight: 800,
+    lineHeight: 1.2,
 };
 
 const pageSubtitle = {
-    marginTop: 10,
-    color: "#5d6576",
-    fontSize: 17,
-    lineHeight: 1.7,
+    marginTop: 2,
+    color: "#6f645a",
+    fontSize: 15,
+    lineHeight: 1.5,
+    fontWeight: 500,
 };
 
 const card = {
     border: "1px solid rgba(165, 116, 74, 0.14)",
     borderRadius: 28,
-    padding: 22,
+    padding: "24px 34px",
     background: "rgba(255, 255, 255, 0.96)",
     boxShadow: "0 18px 40px rgba(67, 37, 17, 0.08)",
-    marginBottom: 20,
+    marginBottom: 15,
 };
 
 const sectionHead = {
     display: "flex",
     justifyContent: "space-between",
+    alignItems: "center",
     gap: 16,
     marginBottom: 16,
 };
@@ -376,64 +421,65 @@ const sectionTitle = {
     margin: 0,
     color: "#14233b",
     fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
-    fontSize: 22,
-    lineHeight: 1.05,
+    fontSize: 24,
+    lineHeight: 1,
 };
 
 const infoGrid = {
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-    gap: 20,
-    marginTop: 16,
+    gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+    gap: 24,
+    marginTop: 15,
 };
 
 const infoItem = {
     display: "grid",
-    gap: 6,
+    gap: 4,
 };
 
 const infoLabel = {
     fontSize: 13,
     fontWeight: 900,
-    letterSpacing: "0.08em",
+    letterSpacing: "0.1em",
     textTransform: "uppercase",
     color: "#9b5b34",
 };
 
 const infoValue = {
-    fontSize: 15,
+    fontSize: 17,
     fontWeight: 700,
     color: "#1f1a17",
 };
 
 const msgError = {
-    padding: 12,
+    padding: 14,
     borderRadius: 14,
     background: "#fee2e2",
     color: "#991b1b",
     fontWeight: 700,
-    marginBottom: 12,
+    marginBottom: 14,
 };
 
 const contentSection = {
-    marginTop: 30,
+    marginTop: 25,
 };
 
 const sectionWrapper = {
-    marginBottom: 50,
+    marginBottom: 45,
 };
 
 const sectionTitleContent = {
-    margin: "0 0 20px 0",
+    margin: 0,
     color: "#14233b",
     fontFamily: '"Playfair Display", Georgia, serif',
-    fontSize: 26,
+    fontSize: 32,
+    fontWeight: 700,
 };
 
 const cardList = {
     display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(max(400px, 45%), 1fr))",
-    gap: 22,
+    gridTemplateColumns: "repeat(auto-fit, minmax(520px, 1fr))",
+    gap: 28,
 };
 
 const modernCard = {
