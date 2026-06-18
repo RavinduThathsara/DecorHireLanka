@@ -60,13 +60,13 @@ img {
 }
 
 .site-header__inner {
-  width: min(100%, 1240px);
+  width: min(100%, 1450px);
   margin: 0 auto;
-  padding: 14px 24px;
+  padding: 10px 3%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 14px;
+  gap: 20px;
   flex-wrap: nowrap;
 }
 

@@ -45,6 +45,12 @@ export default function Navbar() {
         </nav>
 
         <div className="site-actions">
+          {customer && (
+            <div style={notificationBadge} title="Notifications">
+              <span style={{ fontSize: 20 }}>🔔</span>
+              <span style={notificationDot}></span>
+            </div>
+          )}
           {!customer ? (
             <>
               <Link to="/login" className="site-btn site-btn--ghost">
@@ -77,6 +83,32 @@ export default function Navbar() {
     </header>
   );
 }
+
+const notificationBadge = {
+  position: "relative",
+  width: 40,
+  height: 40,
+  borderRadius: "50%",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  background: "rgba(255, 255, 255, 0.7)",
+  border: "1px solid rgba(102, 79, 58, 0.12)",
+  cursor: "pointer",
+  transition: "all 0.2s ease",
+  color: "#9b5b34",
+};
+
+const notificationDot = {
+  position: "absolute",
+  top: 10,
+  right: 10,
+  width: 8,
+  height: 8,
+  background: "#ef4444",
+  borderRadius: "50%",
+  border: "2px solid #fff",
+};
 
 const profileChip = {
   display: "flex",
