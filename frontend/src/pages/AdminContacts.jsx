@@ -71,8 +71,8 @@ export default function AdminContacts() {
       {/* Top Bar */}
       <div style={topRow}>
         <div>
-          <h1 style={{ margin: 0, fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif' }}>Contact Messages</h1>
-          <p style={{ marginTop: 6, color: "#4b5563" }}>
+          <h1 style={pageTitle}>Contact Manager</h1>
+          <p style={pageSubtitle}>
             Customer contact requests and replies.
           </p>
         </div>
@@ -180,10 +180,25 @@ export default function AdminContacts() {
 const topRow = {
   display: "flex",
   justifyContent: "space-between",
-  gap: 12,
+  gap: 16,
   flexWrap: "wrap",
-  alignItems: "flex-end",
-  marginBottom: 14,
+  alignItems: "flex-start",
+  marginBottom: 28,
+};
+
+const pageTitle = {
+  margin: 0,
+  color: "#14233b",
+  fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
+  fontSize: "clamp(2rem, 3vw, 2.9rem)",
+  lineHeight: 1,
+};
+
+const pageSubtitle = {
+  marginTop: 10,
+  color: "#5d6576",
+  fontSize: 17,
+  lineHeight: 1.7,
 };
 
 const card = {

@@ -112,8 +112,8 @@ export default function AdminDecorations() {
     <div style={{ maxWidth: 1100, margin: "0 auto", padding: 20 }}>
       <div style={topRow}>
         <div>
-          <h1 style={{ margin: 0, fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif' }}>Manage Popular Decorations</h1>
-          <p style={{ marginTop: 6, color: "#4b5563" }}>
+          <h1 style={pageTitle}>Decorations Manager</h1>
+          <p style={pageSubtitle}>
             Add, edit, delete decorations shown on the customer popular page.
           </p>
         </div>
@@ -244,10 +244,25 @@ export default function AdminDecorations() {
 const topRow = {
   display: "flex",
   justifyContent: "space-between",
-  gap: 12,
+  gap: 16,
   flexWrap: "wrap",
-  alignItems: "flex-end",
-  marginBottom: 14,
+  alignItems: "flex-start",
+  marginBottom: 28,
+};
+
+const pageTitle = {
+  margin: 0,
+  color: "#14233b",
+  fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
+  fontSize: "clamp(2rem, 3vw, 2.9rem)",
+  lineHeight: 1,
+};
+
+const pageSubtitle = {
+  marginTop: 10,
+  color: "#5d6576",
+  fontSize: 17,
+  lineHeight: 1.7,
 };
 
 const card = {

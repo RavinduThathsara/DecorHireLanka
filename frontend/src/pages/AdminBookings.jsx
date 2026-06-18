@@ -67,8 +67,8 @@ export default function AdminBookings() {
     <div style={{ maxWidth: 1200, margin: "0 auto", padding: "30px 20px" }}>
       <div style={topRow}>
         <div>
-          <h1 style={{ margin: 0, color: "#111827", fontSize: "2rem", fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif' }}>Bookings Management</h1>
-          <p style={{ marginTop: 8, color: "#4b5563", fontSize: "1.1rem" }}>
+          <h1 style={pageTitle}>Bookings Management</h1>
+          <p style={pageSubtitle}>
             Review customer booking requests, event details, and manage their status.
           </p>
         </div>
@@ -183,10 +183,25 @@ const topRow = {
   justifyContent: "space-between",
   gap: 16,
   flexWrap: "wrap",
-  alignItems: "center",
+  alignItems: "flex-start",
   marginBottom: 30,
   paddingBottom: 20,
   borderBottom: "1px solid #e5e7eb"
+};
+
+const pageTitle = {
+  margin: 0,
+  color: "#14233b",
+  fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
+  fontSize: "clamp(2rem, 3vw, 2.9rem)",
+  lineHeight: 1,
+};
+
+const pageSubtitle = {
+  marginTop: 10,
+  color: "#5d6576",
+  fontSize: 17,
+  lineHeight: 1.7,
 };
 
 const emptyState = {
