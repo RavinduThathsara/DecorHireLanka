@@ -288,15 +288,22 @@ const container = {
   alignItems: "center",
   justifyContent: "center",
   padding: "40px 20px",
+  background: "linear-gradient(rgba(253, 248, 240, 0.85), rgba(249, 242, 232, 0.9)), url('/gallery/gallery32.png')",
+  backgroundSize: "cover",
+  backgroundPosition: "center",
+  backgroundRepeat: "no-repeat",
+  backgroundAttachment: "fixed",
 };
 
 const card = {
   maxWidth: 480,
   width: "100%",
-  background: "white",
-  border: "1px solid #e5e7eb",
-  borderRadius: 16,
-  boxShadow: "0 4px 6px rgba(0, 0, 0, 0.05)",
+  background: "rgba(255, 255, 255, 0.75)",
+  backdropFilter: "blur(20px)",
+  WebkitBackdropFilter: "blur(20px)",
+  border: "1px solid rgba(155, 91, 52, 0.15)",
+  borderRadius: 20,
+  boxShadow: "0 20px 60px rgba(17, 24, 39, 0.15), 0 0 1px rgba(155, 91, 52, 0.2)",
   overflow: "hidden",
 };
 

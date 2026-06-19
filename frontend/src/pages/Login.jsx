@@ -127,16 +127,24 @@ const pageWrap = {
   alignItems: "center",
   justifyContent: "center",
   padding: "40px 20px",
+  background: "linear-gradient(rgba(253, 248, 240, 0.85), rgba(249, 242, 232, 0.9)), url('/gallery/gallery19.png')",
+  backgroundSize: "cover",
+  backgroundPosition: "center",
+  backgroundRepeat: "no-repeat",
+  backgroundAttachment: "fixed",
 };
 
 const card = {
   maxWidth: 520,
   width: "100%",
   margin: "0 auto",
-  padding: 22,
-  border: "1px solid #eee",
-  borderRadius: 20,
-  background: "white",
+  padding: 32,
+  border: "1px solid rgba(155, 91, 52, 0.15)",
+  borderRadius: 24,
+  background: "rgba(255, 255, 255, 0.75)",
+  backdropFilter: "blur(20px)",
+  WebkitBackdropFilter: "blur(20px)",
+  boxShadow: "0 20px 60px rgba(17, 24, 39, 0.15), 0 0 1px rgba(155, 91, 52, 0.2)",
 };
 
 const headerLogo = {
