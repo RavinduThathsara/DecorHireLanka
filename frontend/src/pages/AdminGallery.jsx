@@ -3,6 +3,7 @@ import React from "react";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { api, resolveAssetUrl } from "../services/api.js";
+import Swal from "sweetalert2";
 
 const getGalleryImageSrc = (imageUrl) => {
   if (!imageUrl) return "";
@@ -92,18 +93,58 @@ export default function AdminGallery() {
         { headers: authHeader }
       );
       fetchAll();
+      Swal.fire({
+        title: "Updated!",
+        text: `Image ${!img.isActive ? "shown" : "hidden"} successfully.`,
+        icon: "success",
+        confirmButtonColor: "#9b5b34",
+        timer: 1500,
+        showConfirmButton: false,
+      });
     } catch (err) {
       setError(err?.response?.data?.message || "Update failed.");
+      Swal.fire({
+        title: "Error!",
+        text: err?.response?.data?.message || "Update failed.",
+        icon: "error",
+        confirmButtonColor: "#9b5b34",
+      });
     }
   };
 
   const remove = async (id) => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#9b5b34",
+      cancelButtonColor: "#6b7280",
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+    });
+
+    if (!result.isConfirmed) return;
+
     setError("");
     try {
       await api.delete(`/api/gallery/admin/${id}`, { headers: authHeader });
       fetchAll();
+      Swal.fire({
+        title: "Deleted!",
+        text: "Gallery image has been deleted.",
+        icon: "success",
+        confirmButtonColor: "#9b5b34",
+        timer: 2000,
+      });
     } catch (err) {
       setError(err?.response?.data?.message || "Delete failed.");
+      Swal.fire({
+        title: "Error!",
+        text: err?.response?.data?.message || "Delete failed.",
+        icon: "error",
+        confirmButtonColor: "#9b5b34",
+      });
     }
   };
 

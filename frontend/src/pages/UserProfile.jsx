@@ -3,6 +3,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../services/api.js";
 import { useAuth } from "../context/AuthContext.jsx";
+import Swal from "sweetalert2";
 
 export default function UserProfile() {
     const navigate = useNavigate();
@@ -53,12 +54,36 @@ export default function UserProfile() {
     };
 
     const handleDeleteBooking = async (id) => {
-        if (!window.confirm("Are you sure you want to delete this booking?")) return;
+        const result = await Swal.fire({
+            title: "Delete Booking?",
+            text: "Are you sure you want to delete this booking? This action cannot be undone.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#ef4444",
+            cancelButtonColor: "#6b7280",
+            confirmButtonText: "Yes, delete it!",
+            cancelButtonText: "Cancel",
+        });
+
+        if (!result.isConfirmed) return;
+
         try {
             await api.delete(`/api/bookings/customer/${id}`);
             setBookings(bookings.filter(b => b._id !== id));
+            Swal.fire({
+                title: "Deleted!",
+                text: "Your booking has been deleted successfully.",
+                icon: "success",
+                confirmButtonColor: "#9b5b34",
+                timer: 2000,
+            });
         } catch (err) {
-            alert(err?.response?.data?.message || "Failed to delete booking.");
+            Swal.fire({
+                title: "Error!",
+                text: err?.response?.data?.message || "Failed to delete booking.",
+                icon: "error",
+                confirmButtonColor: "#9b5b34",
+            });
         }
     };
 
@@ -76,20 +101,56 @@ export default function UserProfile() {
             });
             setBookings(bookings.map(b => b._id === editBooking._id ? res.data.booking : b));
             setEditBooking(null);
+            Swal.fire({
+                title: "Updated!",
+                text: "Your booking has been updated successfully.",
+                icon: "success",
+                confirmButtonColor: "#9b5b34",
+                timer: 2000,
+            });
         } catch (err) {
-            alert(err?.response?.data?.message || "Failed to update booking.");
+            Swal.fire({
+                title: "Error!",
+                text: err?.response?.data?.message || "Failed to update booking.",
+                icon: "error",
+                confirmButtonColor: "#9b5b34",
+            });
         } finally {
             setUpdating(false);
         }
     };
 
     const handleDeleteMessage = async (id) => {
-        if (!window.confirm("Are you sure you want to delete this message?")) return;
+        const result = await Swal.fire({
+            title: "Delete Message?",
+            text: "Are you sure you want to delete this message? This action cannot be undone.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#ef4444",
+            cancelButtonColor: "#6b7280",
+            confirmButtonText: "Yes, delete it!",
+            cancelButtonText: "Cancel",
+        });
+
+        if (!result.isConfirmed) return;
+
         try {
             await api.delete(`/api/contact/customer/${id}`);
             setMessages(messages.filter(m => m._id !== id));
+            Swal.fire({
+                title: "Deleted!",
+                text: "Your message has been deleted successfully.",
+                icon: "success",
+                confirmButtonColor: "#9b5b34",
+                timer: 2000,
+            });
         } catch (err) {
-            alert(err?.response?.data?.message || "Failed to delete message.");
+            Swal.fire({
+                title: "Error!",
+                text: err?.response?.data?.message || "Failed to delete message.",
+                icon: "error",
+                confirmButtonColor: "#9b5b34",
+            });
         }
     };
 
@@ -106,8 +167,20 @@ export default function UserProfile() {
             });
             setMessages(messages.map(m => m._id === editMessage._id ? res.data.msg : m));
             setEditMessage(null);
+            Swal.fire({
+                title: "Updated!",
+                text: "Your message has been updated successfully.",
+                icon: "success",
+                confirmButtonColor: "#9b5b34",
+                timer: 2000,
+            });
         } catch (err) {
-            alert(err?.response?.data?.message || "Failed to update message.");
+            Swal.fire({
+                title: "Error!",
+                text: err?.response?.data?.message || "Failed to update message.",
+                icon: "error",
+                confirmButtonColor: "#9b5b34",
+            });
         } finally {
             setUpdating(false);
         }

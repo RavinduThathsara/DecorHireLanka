@@ -3,6 +3,7 @@ import React from "react";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { api } from "../services/api.js";
+import Swal from "sweetalert2";
 
 const statuses = ["NEW", "CONTACTED", "CONFIRMED", "CANCELLED"];
 
@@ -38,6 +39,19 @@ export default function AdminBookings() {
   };
 
   const updateStatus = async (id, status) => {
+    const result = await Swal.fire({
+      title: "Update Status?",
+      text: `Change status to ${status}?`,
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#9b5b34",
+      cancelButtonColor: "#6b7280",
+      confirmButtonText: "Yes, update it!",
+      cancelButtonText: "Cancel",
+    });
+
+    if (!result.isConfirmed) return;
+
     setError("");
     try {
       await api.put(
@@ -46,8 +60,21 @@ export default function AdminBookings() {
         { headers: authHeader }
       );
       fetchAll();
+      Swal.fire({
+        title: "Updated!",
+        text: `Status changed to ${status} successfully.`,
+        icon: "success",
+        confirmButtonColor: "#9b5b34",
+        timer: 2000,
+      });
     } catch (err) {
       setError(err?.response?.data?.message || "Status update failed.");
+      Swal.fire({
+        title: "Error!",
+        text: err?.response?.data?.message || "Status update failed.",
+        icon: "error",
+        confirmButtonColor: "#9b5b34",
+      });
     }
   };
 

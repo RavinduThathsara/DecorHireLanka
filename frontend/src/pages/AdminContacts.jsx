@@ -2,6 +2,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { api } from "../services/api.js";
+import Swal from "sweetalert2";
 
 export default function AdminContacts() {
   const navigate = useNavigate();
@@ -35,6 +36,19 @@ export default function AdminContacts() {
   };
 
   const markReplied = async (id) => {
+    const result = await Swal.fire({
+      title: "Mark as Replied?",
+      text: "This will update the message status to REPLIED.",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#9b5b34",
+      cancelButtonColor: "#6b7280",
+      confirmButtonText: "Yes, mark it!",
+      cancelButtonText: "Cancel",
+    });
+
+    if (!result.isConfirmed) return;
+
     setError("");
     try {
       await api.put(
@@ -43,8 +57,21 @@ export default function AdminContacts() {
         { headers: authHeader }
       );
       fetchAll();
+      Swal.fire({
+        title: "Updated!",
+        text: "Message marked as REPLIED successfully.",
+        icon: "success",
+        confirmButtonColor: "#9b5b34",
+        timer: 2000,
+      });
     } catch (err) {
       setError(err?.response?.data?.message || "Update failed.");
+      Swal.fire({
+        title: "Error!",
+        text: err?.response?.data?.message || "Update failed.",
+        icon: "error",
+        confirmButtonColor: "#9b5b34",
+      });
     }
   };
 

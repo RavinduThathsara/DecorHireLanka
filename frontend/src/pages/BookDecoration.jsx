@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { api } from "../services/api.js";
 import { useAuth } from "../context/AuthContext.jsx";
 import heroImage from "../assets/images/hero3.png";
+import Swal from "sweetalert2";
 
 function useQuery() {
   const { search } = useLocation();
@@ -65,9 +66,23 @@ export default function BookDecoration() {
         type: "BOOKING"
       });
 
+      Swal.fire({
+        title: "Booking Submitted!",
+        text: "Thank you for your booking. We'll review and contact you shortly!",
+        icon: "success",
+        confirmButtonColor: "#9b5b34",
+        timer: 3000,
+      });
+
       setTimeout(() => navigate("/profile"), 1000); // Navigate to profile to see the item
     } catch (err) {
       setError(err?.response?.data?.message || "Booking failed.");
+      Swal.fire({
+        title: "Booking Failed!",
+        text: err?.response?.data?.message || "Booking failed.",
+        icon: "error",
+        confirmButtonColor: "#9b5b34",
+      });
     } finally {
       setLoading(false);
     }

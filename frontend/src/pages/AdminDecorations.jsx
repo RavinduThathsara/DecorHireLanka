@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { api } from "../services/api.js";
+import Swal from "sweetalert2";
 
 export default function AdminDecorations() {
   const navigate = useNavigate();
@@ -87,24 +88,70 @@ export default function AdminDecorations() {
 
       if (editingId) {
         await api.put(`/api/decorations/admin/${editingId}`, form, { headers: authHeader });
+        Swal.fire({
+          title: "Updated!",
+          text: "Decoration has been updated successfully.",
+          icon: "success",
+          confirmButtonColor: "#9b5b34",
+          timer: 2000,
+        });
       } else {
         await api.post("/api/decorations/admin", form, { headers: authHeader });
+        Swal.fire({
+          title: "Created!",
+          text: "Decoration has been created successfully.",
+          icon: "success",
+          confirmButtonColor: "#9b5b34",
+          timer: 2000,
+        });
       }
 
       resetForm();
       fetchAll();
     } catch (err) {
       setError(err?.response?.data?.message || "Save failed.");
+      Swal.fire({
+        title: "Error!",
+        text: err?.response?.data?.message || "Save failed.",
+        icon: "error",
+        confirmButtonColor: "#9b5b34",
+      });
     }
   };
 
   const removeItem = async (id) => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "This decoration will be permanently deleted!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#9b5b34",
+      cancelButtonColor: "#6b7280",
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+    });
+
+    if (!result.isConfirmed) return;
+
     setError("");
     try {
       await api.delete(`/api/decorations/admin/${id}`, { headers: authHeader });
       fetchAll();
+      Swal.fire({
+        title: "Deleted!",
+        text: "Decoration has been deleted.",
+        icon: "success",
+        confirmButtonColor: "#9b5b34",
+        timer: 2000,
+      });
     } catch (err) {
       setError(err?.response?.data?.message || "Delete failed.");
+      Swal.fire({
+        title: "Error!",
+        text: err?.response?.data?.message || "Delete failed.",
+        icon: "error",
+        confirmButtonColor: "#9b5b34",
+      });
     }
   };
 

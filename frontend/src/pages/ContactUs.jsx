@@ -3,6 +3,7 @@ import React from "react";
 import { useState } from "react";
 import { api } from "../services/api.js";
 import { useAuth } from "../context/AuthContext.jsx";
+import Swal from "sweetalert2";
 
 export default function ContactUs() {
   const { addNotification } = useAuth();
@@ -82,8 +83,22 @@ export default function ContactUs() {
         eventDate: "",
         message: ""
       });
+
+      Swal.fire({
+        title: "Message Sent!",
+        text: "Thank you for contacting us. We'll get back to you soon!",
+        icon: "success",
+        confirmButtonColor: "#9b5b34",
+        timer: 3000,
+      });
     } catch (err) {
       setError(err?.response?.data?.message || "Failed to send message.");
+      Swal.fire({
+        title: "Error!",
+        text: err?.response?.data?.message || "Failed to send message.",
+        icon: "error",
+        confirmButtonColor: "#9b5b34",
+      });
     } finally {
       setLoading(false);
     }
