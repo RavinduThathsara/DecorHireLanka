@@ -79,8 +79,22 @@ export default function AdminGallery() {
       setUploadIsActive(true);
       setImageFile(null);
       fetchAll();
+
+      Swal.fire({
+        title: "Upload Successful!",
+        text: "Gallery image has been uploaded successfully.",
+        icon: "success",
+        confirmButtonColor: "#9b5b34",
+        timer: 2000,
+      });
     } catch (err) {
       setError(err?.response?.data?.message || "Upload failed.");
+      Swal.fire({
+        title: "Upload Failed!",
+        text: err?.response?.data?.message || "Upload failed.",
+        icon: "error",
+        confirmButtonColor: "#9b5b34",
+      });
     }
   };
 
@@ -561,8 +575,9 @@ const uploadForm = {
 
 const uploadFieldsGrid = {
   display: "grid",
-  gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-  gap: 20,
+  gridTemplateColumns: "1fr 1fr",
+  gap: 24,
+  alignItems: "start",
 };
 
 const uploadFooter = {
