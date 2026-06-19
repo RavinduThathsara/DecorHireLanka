@@ -129,6 +129,7 @@ img {
   text-transform: uppercase;
   white-space: nowrap;
   transition: background 160ms ease, color 160ms ease, transform 160ms ease;
+  font-family: "Poppins", -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 .site-nav__link:hover {
