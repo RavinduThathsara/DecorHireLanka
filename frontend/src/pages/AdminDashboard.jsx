@@ -107,16 +107,16 @@ export default function AdminDashboard() {
   const filteredBookings = bookings.filter((booking) =>
     normalizedSearch
       ? [booking.decorationTitle, booking.name, booking.phone, booking.status]
-          .filter(Boolean)
-          .some((value) => String(value).toLowerCase().includes(normalizedSearch))
+        .filter(Boolean)
+        .some((value) => String(value).toLowerCase().includes(normalizedSearch))
       : true
   );
 
   const filteredMessages = messages.filter((message) =>
     normalizedSearch
       ? [message.name, message.email, message.eventType, message.status]
-          .filter(Boolean)
-          .some((value) => String(value).toLowerCase().includes(normalizedSearch))
+        .filter(Boolean)
+        .some((value) => String(value).toLowerCase().includes(normalizedSearch))
       : true
   );
 
@@ -142,19 +142,34 @@ export default function AdminDashboard() {
     <div style={pageContainer}>
       <header style={pageHeader}>
         <div style={pageHeaderCopy}>
+          <div style={headerBadge}>📊</div>
           <h1 style={pageTitle}>Dashboard Overview</h1>
           <p style={pageLead}>Manage bookings, messages, gallery updates, and monthly activity.</p>
         </div>
-        <label style={searchWrap}>
-          <span style={searchIcon}>Q</span>
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Search actions, bookings, or messages..."
-            style={searchInput}
-          />
-        </label>
+        <div style={headerActions}>
+          <div style={notificationGroup}>
+            <Link to="/admin/bookings" style={notificationButton}>
+              <span style={notificationIcon}>🔔</span>
+              {newBookings > 0 && <span style={notificationBadge}>{newBookings}</span>}
+              <span style={notificationLabel}>Bookings</span>
+            </Link>
+            <Link to="/admin/contacts" style={notificationButton}>
+              <span style={notificationIcon}>✉️</span>
+              {newMessages > 0 && <span style={notificationBadge}>{newMessages}</span>}
+              <span style={notificationLabel}>Messages</span>
+            </Link>
+          </div>
+          <label style={searchWrap}>
+            <span style={searchIcon}>Q</span>
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search actions, bookings, or messages..."
+              style={searchInput}
+            />
+          </label>
+        </div>
       </header>
 
       {loading && <p style={mutedText}>Loading dashboard...</p>}
@@ -217,34 +232,36 @@ export default function AdminDashboard() {
 
           <section style={statsGrid}>
             <div style={statCard}>
-              <div style={statIcon}>BK</div>
+              <div style={statIconGradient}>📅</div>
               <div style={statContent}>
                 <div style={statValue}>{totalBookings}</div>
                 <div style={statLabel}>Total Bookings</div>
               </div>
             </div>
 
-            <div style={{ ...statCard, ...statCardSoft }}>
-              <div style={statIcon}>NW</div>
+            <div style={{ ...statCard, ...statCardHighlight }}>
+              <div style={statIconGradientAccent}>🔔</div>
               <div style={statContent}>
                 <div style={statValue}>{newBookings}</div>
                 <div style={statLabel}>New Bookings</div>
+                {newBookings > 0 && <div style={statPulse} />}
               </div>
             </div>
 
             <div style={statCard}>
-              <div style={statIcon}>MS</div>
+              <div style={statIconGradient}>💬</div>
               <div style={statContent}>
                 <div style={statValue}>{totalMessages}</div>
                 <div style={statLabel}>Total Messages</div>
               </div>
             </div>
 
-            <div style={{ ...statCard, ...statCardSoft }}>
-              <div style={statIcon}>NM</div>
+            <div style={{ ...statCard, ...statCardHighlight }}>
+              <div style={statIconGradientAccent}>✉️</div>
               <div style={statContent}>
                 <div style={statValue}>{newMessages}</div>
                 <div style={statLabel}>New Messages</div>
+                {newMessages > 0 && <div style={statPulse} />}
               </div>
             </div>
           </section>
@@ -377,16 +394,19 @@ const pageContainer = {
     "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif",
   maxWidth: 1200,
   margin: "0 auto",
-  padding: "24px",
+  padding: "32px 24px",
+  minHeight: "100vh",
+  background: "linear-gradient(to bottom, #fdf8f0 0%, #f9f2e8 100%)",
 };
 
 const pageHeader = {
-  marginBottom: 20,
+  marginBottom: 32,
   display: "flex",
   alignItems: "flex-start",
   justifyContent: "space-between",
-  gap: 20,
+  gap: 24,
   flexWrap: "wrap",
+  animation: "fadeInDown 0.5s ease-out",
 };
 
 const pageHeaderCopy = {
@@ -394,9 +414,22 @@ const pageHeaderCopy = {
   minWidth: 0,
 };
 
+const headerBadge = {
+  display: "inline-flex",
+  alignItems: "center",
+  justifyContent: "center",
+  width: 56,
+  height: 56,
+  borderRadius: 16,
+  background: "linear-gradient(135deg, #9b5b34 0%, #824b2b 100%)",
+  fontSize: 28,
+  marginBottom: 16,
+  boxShadow: "0 8px 24px rgba(155, 91, 52, 0.25)",
+};
+
 const pageTitle = {
   margin: 0,
-  fontSize: 30,
+  fontSize: 36,
   fontWeight: 800,
   letterSpacing: "-0.03em",
   color: "#1d2430",
@@ -404,10 +437,68 @@ const pageTitle = {
 };
 
 const pageLead = {
-  margin: "8px 0 0",
+  margin: "10px 0 0",
   color: "#776b60",
-  fontSize: 14,
+  fontSize: 15,
   lineHeight: 1.6,
+};
+
+const headerActions = {
+  display: "flex",
+  flexDirection: "column",
+  gap: 12,
+  alignItems: "flex-end",
+};
+
+const notificationGroup = {
+  display: "flex",
+  gap: 12,
+  alignItems: "center",
+};
+
+const notificationButton = {
+  position: "relative",
+  display: "flex",
+  alignItems: "center",
+  gap: 8,
+  padding: "12px 18px",
+  borderRadius: 12,
+  background: "#ffffff",
+  border: "2px solid #e7dfd2",
+  textDecoration: "none",
+  boxShadow: "0 4px 12px rgba(90, 68, 39, 0.08)",
+  transition: "all 0.3s ease",
+  cursor: "pointer",
+};
+
+const notificationIcon = {
+  fontSize: 20,
+  lineHeight: 1,
+};
+
+const notificationLabel = {
+  fontSize: 13,
+  fontWeight: 700,
+  color: "#1f2937",
+};
+
+const notificationBadge = {
+  position: "absolute",
+  top: -6,
+  right: -6,
+  minWidth: 22,
+  height: 22,
+  padding: "0 6px",
+  borderRadius: 999,
+  background: "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)",
+  color: "#ffffff",
+  fontSize: 11,
+  fontWeight: 800,
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  boxShadow: "0 4px 12px rgba(239, 68, 68, 0.4)",
+  animation: "pulse 2s ease-in-out infinite",
 };
 
 const searchWrap = {
@@ -472,12 +563,16 @@ const overviewGrid = {
 };
 
 const actionsCard = {
-  padding: "10px 0 0",
+  padding: "24px",
+  background: "#ffffff",
+  borderRadius: 16,
+  boxShadow: "0 8px 24px rgba(17, 24, 39, 0.06)",
+  border: "1px solid #e7dfd2",
 };
 
 const actionsTitle = {
-  margin: "0 0 12px",
-  fontSize: 22,
+  margin: "0 0 18px",
+  fontSize: 24,
   fontWeight: 800,
   color: "#1f2937",
   fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
@@ -492,22 +587,25 @@ const actionButton = {
   display: "flex",
   alignItems: "center",
   gap: 12,
-  minHeight: 46,
-  padding: "0 14px",
-  borderRadius: 8,
-  border: "1px solid #d6cfc4",
-  background: "#ffffff",
+  minHeight: 52,
+  padding: "0 16px",
+  borderRadius: 12,
+  border: "2px solid #e7dfd2",
+  background: "#fdfbf7",
   textDecoration: "none",
-  boxShadow: "0 1px 2px rgba(17, 24, 39, 0.04)",
+  boxShadow: "0 2px 8px rgba(17, 24, 39, 0.04)",
+  transition: "all 0.3s ease",
 };
 
 const actionButtonPrimary = {
-  background: "#b0814d",
-  borderColor: "#b0814d",
+  background: "linear-gradient(135deg, #9b5b34 0%, #824b2b 100%)",
+  borderColor: "transparent",
+  boxShadow: "0 4px 16px rgba(155, 91, 52, 0.25)",
 };
 
 const actionButtonActive = {
-  boxShadow: "0 0 0 2px rgba(176, 129, 77, 0.14)",
+  boxShadow: "0 0 0 3px rgba(155, 91, 52, 0.2)",
+  transform: "translateY(-2px)",
 };
 
 const actionIcon = {
@@ -536,11 +634,11 @@ const actionTextPrimary = {
 };
 
 const chartCard = {
-  padding: "18px 18px 14px",
-  borderRadius: 10,
+  padding: "24px",
+  borderRadius: 16,
   background: "#ffffff",
   border: "1px solid #e7dfd2",
-  boxShadow: "0 2px 6px rgba(90, 68, 39, 0.05)",
+  boxShadow: "0 8px 24px rgba(17, 24, 39, 0.06)",
 };
 
 const chartHead = {
@@ -548,11 +646,12 @@ const chartHead = {
   justifyContent: "space-between",
   alignItems: "flex-start",
   gap: 12,
+  marginBottom: 8,
 };
 
 const chartTitle = {
   margin: 0,
-  fontSize: 24,
+  fontSize: 26,
   fontWeight: 800,
   color: "#3a332d",
   fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
@@ -597,12 +696,14 @@ const chartBarItem = {
 const chartBar = {
   width: "100%",
   maxWidth: 44,
-  borderRadius: "2px 2px 0 0",
-  background: "#e9e2d7",
+  borderRadius: "6px 6px 0 0",
+  background: "linear-gradient(to top, #e9e2d7 0%, #f0ebe0 100%)",
+  transition: "all 0.3s ease",
 };
 
 const chartBarActive = {
-  background: "#b0814d",
+  background: "linear-gradient(to top, #9b5b34 0%, #b5754a 100%)",
+  boxShadow: "0 -4px 12px rgba(155, 91, 52, 0.3)",
 };
 
 const chartLabel = {
@@ -623,18 +724,60 @@ const statsGrid = {
 };
 
 const statCard = {
+  position: "relative",
   background: "#ffffff",
-  border: "1px solid #e7dfd2",
-  borderRadius: 14,
-  padding: "18px",
+  border: "2px solid #e7dfd2",
+  borderRadius: 18,
+  padding: "24px",
   display: "flex",
   alignItems: "center",
-  gap: 14,
-  boxShadow: "0 8px 24px rgba(17, 24, 39, 0.04)",
+  gap: 16,
+  boxShadow: "0 8px 24px rgba(17, 24, 39, 0.06)",
+  transition: "all 0.3s ease",
+  overflow: "hidden",
 };
 
-const statCardSoft = {
-  background: "#fbf6ef",
+const statCardHighlight = {
+  background: "linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%)",
+  borderColor: "#fed7aa",
+};
+
+const statIconGradient = {
+  width: 56,
+  height: 56,
+  borderRadius: 16,
+  display: "inline-flex",
+  alignItems: "center",
+  justifyContent: "center",
+  background: "linear-gradient(135deg, #f3e2cf 0%, #ead3b6 100%)",
+  fontSize: 24,
+  flexShrink: 0,
+  boxShadow: "0 4px 12px rgba(155, 106, 58, 0.15)",
+};
+
+const statIconGradientAccent = {
+  width: 56,
+  height: 56,
+  borderRadius: 16,
+  display: "inline-flex",
+  alignItems: "center",
+  justifyContent: "center",
+  background: "linear-gradient(135deg, #9b5b34 0%, #824b2b 100%)",
+  fontSize: 24,
+  flexShrink: 0,
+  boxShadow: "0 4px 12px rgba(155, 91, 52, 0.3)",
+};
+
+const statPulse = {
+  position: "absolute",
+  top: 24,
+  right: 24,
+  width: 12,
+  height: 12,
+  borderRadius: "50%",
+  background: "#ef4444",
+  animation: "pulse 2s ease-in-out infinite",
+  boxShadow: "0 0 12px rgba(239, 68, 68, 0.6)",
 };
 
 const statIcon = {
@@ -657,19 +800,20 @@ const statContent = {
 };
 
 const statValue = {
-  fontSize: 34,
-  fontWeight: 800,
+  fontSize: 42,
+  fontWeight: 900,
   color: "#111827",
   lineHeight: 1,
-  marginBottom: 4,
+  marginBottom: 6,
+  fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
 };
 
 const statLabel = {
-  fontSize: 12,
+  fontSize: 13,
   fontWeight: 700,
   color: "#7a6c5f",
   textTransform: "uppercase",
-  letterSpacing: "0.06em",
+  letterSpacing: "0.08em",
 };
 
 const panelsGrid = {
@@ -680,23 +824,24 @@ const panelsGrid = {
 
 const panel = {
   background: "#ffffff",
-  border: "1px solid #e5e7eb",
-  borderRadius: 14,
+  border: "2px solid #e7dfd2",
+  borderRadius: 18,
   overflow: "hidden",
-  boxShadow: "0 10px 24px rgba(17, 24, 39, 0.04)",
+  boxShadow: "0 10px 32px rgba(17, 24, 39, 0.08)",
 };
 
 const panelHeader = {
-  padding: "20px",
-  borderBottom: "1px solid #e5e7eb",
+  padding: "24px",
+  borderBottom: "2px solid #f3f4f6",
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
+  background: "linear-gradient(to right, #fdfbf7 0%, #ffffff 100%)",
 };
 
 const panelTitle = {
-  fontSize: 16,
-  fontWeight: 700,
+  fontSize: 20,
+  fontWeight: 800,
   color: "#111827",
   margin: 0,
   fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
@@ -704,9 +849,10 @@ const panelTitle = {
 
 const panelLink = {
   fontSize: 14,
-  fontWeight: 600,
-  color: "#3b82f6",
+  fontWeight: 700,
+  color: "#9b5b34",
   textDecoration: "none",
+  transition: "all 0.3s ease",
 };
 
 const panelContent = {
@@ -731,18 +877,19 @@ const panelRowIdentity = {
 };
 
 const panelAvatar = {
-  width: 42,
-  height: 42,
+  width: 48,
+  height: 48,
   borderRadius: 14,
   flexShrink: 0,
   display: "inline-flex",
   alignItems: "center",
   justifyContent: "center",
-  background: "linear-gradient(135deg, #f3e2cf 0%, #ead3b6 100%)",
-  color: "#9b6a3a",
-  fontSize: 12,
+  background: "linear-gradient(135deg, #9b5b34 0%, #824b2b 100%)",
+  color: "#ffffff",
+  fontSize: 14,
   fontWeight: 800,
   letterSpacing: "0.06em",
+  boxShadow: "0 4px 12px rgba(155, 91, 52, 0.2)",
 };
 
 const panelRowMain = {
@@ -844,17 +991,18 @@ const emptyStateCard = {
 };
 
 const emptyStateIcon = {
-  width: 52,
-  height: 52,
-  borderRadius: 16,
+  width: 64,
+  height: 64,
+  borderRadius: 20,
   display: "inline-flex",
   alignItems: "center",
   justifyContent: "center",
   background: "linear-gradient(135deg, #f3e2cf 0%, #ead3b6 100%)",
   color: "#9b6a3a",
-  fontSize: 14,
+  fontSize: 16,
   fontWeight: 800,
   letterSpacing: "0.08em",
+  boxShadow: "0 8px 24px rgba(155, 106, 58, 0.15)",
 };
 
 const emptyStateTitle = {
