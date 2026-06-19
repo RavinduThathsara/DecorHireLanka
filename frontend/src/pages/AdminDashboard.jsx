@@ -142,7 +142,6 @@ export default function AdminDashboard() {
     <div style={pageContainer}>
       <header style={pageHeader}>
         <div style={pageHeaderCopy}>
-          <div style={headerBadge}>📊</div>
           <h1 style={pageTitle}>Dashboard Overview</h1>
           <p style={pageLead}>Manage bookings, messages, gallery updates, and monthly activity.</p>
         </div>
@@ -391,26 +390,33 @@ export default function AdminDashboard() {
 
 const pageContainer = {
   fontFamily:
-    "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif",
-  maxWidth: 1200,
+    "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', sans-serif",
+  maxWidth: 1400,
   margin: "0 auto",
-  padding: "32px 24px",
+  padding: "40px 32px 60px",
   minHeight: "100vh",
-  background: "linear-gradient(to bottom, #fdf8f0 0%, #f9f2e8 100%)",
+  background: "linear-gradient(135deg, #fdf8f0 0%, #f9f2e8 50%, #f5ebe0 100%)",
+  position: "relative",
 };
 
 const pageHeader = {
-  marginBottom: 32,
+  marginBottom: 48,
   display: "flex",
   alignItems: "flex-start",
   justifyContent: "space-between",
-  gap: 24,
+  gap: 32,
   flexWrap: "wrap",
-  animation: "fadeInDown 0.5s ease-out",
+  background: "rgba(255, 255, 255, 0.7)",
+  backdropFilter: "blur(20px)",
+  WebkitBackdropFilter: "blur(20px)",
+  padding: "32px 36px",
+  borderRadius: 24,
+  border: "1px solid rgba(155, 91, 52, 0.12)",
+  boxShadow: "0 20px 60px rgba(17, 24, 39, 0.08), 0 0 1px rgba(155, 91, 52, 0.1)",
 };
 
 const pageHeaderCopy = {
-  flex: "1 1 420px",
+  flex: "1 1 460px",
   minWidth: 0,
 };
 
@@ -418,41 +424,50 @@ const headerBadge = {
   display: "inline-flex",
   alignItems: "center",
   justifyContent: "center",
-  width: 56,
-  height: 56,
-  borderRadius: 16,
-  background: "linear-gradient(135deg, #9b5b34 0%, #824b2b 100%)",
-  fontSize: 28,
-  marginBottom: 16,
-  boxShadow: "0 8px 24px rgba(155, 91, 52, 0.25)",
+  width: 72,
+  height: 72,
+  borderRadius: 20,
+  background: "linear-gradient(135deg, #9b5b34 0%, #b5754a 50%, #824b2b 100%)",
+  fontSize: 36,
+  marginBottom: 20,
+  boxShadow: "0 12px 36px rgba(155, 91, 52, 0.35), inset 0 -2px 8px rgba(0,0,0,0.1)",
+  position: "relative",
 };
 
 const pageTitle = {
   margin: 0,
-  fontSize: 36,
-  fontWeight: 800,
-  letterSpacing: "-0.03em",
-  color: "#1d2430",
+  fontSize: 44,
+  fontWeight: 900,
+  letterSpacing: "-0.04em",
+  color: "#0f1419",
   fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
+  lineHeight: 1.1,
+  background: "linear-gradient(135deg, #1d2430 0%, #3d291c 100%)",
+  WebkitBackgroundClip: "text",
+  WebkitTextFillColor: "transparent",
+  backgroundClip: "text",
 };
 
 const pageLead = {
-  margin: "10px 0 0",
-  color: "#776b60",
-  fontSize: 15,
-  lineHeight: 1.6,
+  margin: "14px 0 0",
+  color: "#65574d",
+  fontSize: 16,
+  lineHeight: 1.65,
+  fontWeight: 500,
+  maxWidth: 540,
 };
 
 const headerActions = {
   display: "flex",
   flexDirection: "column",
-  gap: 12,
+  gap: 16,
   alignItems: "flex-end",
+  flex: "0 0 auto",
 };
 
 const notificationGroup = {
   display: "flex",
-  gap: 12,
+  gap: 14,
   alignItems: "center",
 };
 
@@ -460,74 +475,76 @@ const notificationButton = {
   position: "relative",
   display: "flex",
   alignItems: "center",
-  gap: 8,
-  padding: "12px 18px",
-  borderRadius: 12,
-  background: "#ffffff",
-  border: "2px solid #e7dfd2",
+  gap: 10,
+  padding: "14px 22px",
+  borderRadius: 14,
+  background: "rgba(255, 255, 255, 0.95)",
+  border: "2px solid rgba(155, 91, 52, 0.15)",
   textDecoration: "none",
-  boxShadow: "0 4px 12px rgba(90, 68, 39, 0.08)",
-  transition: "all 0.3s ease",
+  boxShadow: "0 6px 20px rgba(90, 68, 39, 0.12), 0 1px 3px rgba(0, 0, 0, 0.05)",
+  transition: "all 0.25s cubic-bezier(0.4, 0, 0.2, 1)",
   cursor: "pointer",
 };
 
 const notificationIcon = {
-  fontSize: 20,
+  fontSize: 22,
   lineHeight: 1,
+  filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.1))",
 };
 
 const notificationLabel = {
-  fontSize: 13,
+  fontSize: 14,
   fontWeight: 700,
   color: "#1f2937",
+  letterSpacing: "0.01em",
 };
 
 const notificationBadge = {
   position: "absolute",
-  top: -6,
-  right: -6,
-  minWidth: 22,
-  height: 22,
-  padding: "0 6px",
+  top: -8,
+  right: -8,
+  minWidth: 24,
+  height: 24,
+  padding: "0 7px",
   borderRadius: 999,
   background: "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)",
   color: "#ffffff",
-  fontSize: 11,
-  fontWeight: 800,
+  fontSize: 12,
+  fontWeight: 900,
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  boxShadow: "0 4px 12px rgba(239, 68, 68, 0.4)",
-  animation: "pulse 2s ease-in-out infinite",
+  boxShadow: "0 6px 16px rgba(239, 68, 68, 0.5), 0 0 0 3px #ffffff",
+  border: "2px solid #ffffff",
 };
 
 const searchWrap = {
   display: "flex",
   alignItems: "center",
-  gap: 10,
+  gap: 12,
   width: "100%",
-  maxWidth: 420,
-  marginLeft: "auto",
-  flex: "0 0 420px",
-  padding: "12px 14px",
-  borderRadius: 10,
-  background: "#ffffff",
-  border: "1px solid #ddd4c8",
-  boxShadow: "0 2px 6px rgba(90, 68, 39, 0.05)",
+  maxWidth: 460,
+  padding: "14px 18px",
+  borderRadius: 14,
+  background: "rgba(255, 255, 255, 0.9)",
+  border: "2px solid rgba(155, 91, 52, 0.12)",
+  boxShadow: "0 4px 12px rgba(90, 68, 39, 0.08), inset 0 1px 3px rgba(255,255,255,0.8)",
+  transition: "all 0.3s ease",
 };
 
 const searchIcon = {
-  width: 20,
-  height: 20,
-  borderRadius: 999,
+  width: 24,
+  height: 24,
+  borderRadius: 8,
   display: "inline-flex",
   alignItems: "center",
   justifyContent: "center",
   flexShrink: 0,
-  background: "#f2e1cf",
+  background: "linear-gradient(135deg, #f3e2cf 0%, #ead3b6 100%)",
   color: "#9b6a3a",
-  fontSize: 11,
+  fontSize: 12,
   fontWeight: 900,
+  boxShadow: "0 2px 6px rgba(155, 106, 58, 0.15)",
 };
 
 const searchInput = {
@@ -556,62 +573,65 @@ const alertError = {
 
 const overviewGrid = {
   display: "grid",
-  gridTemplateColumns: "320px minmax(0, 1fr)",
-  gap: 18,
+  gridTemplateColumns: "360px minmax(0, 1fr)",
+  gap: 24,
   alignItems: "stretch",
-  marginBottom: 24,
+  marginBottom: 32,
 };
 
 const actionsCard = {
-  padding: "24px",
-  background: "#ffffff",
-  borderRadius: 16,
-  boxShadow: "0 8px 24px rgba(17, 24, 39, 0.06)",
-  border: "1px solid #e7dfd2",
+  padding: "32px",
+  background: "rgba(255, 255, 255, 0.85)",
+  backdropFilter: "blur(20px)",
+  WebkitBackdropFilter: "blur(20px)",
+  borderRadius: 22,
+  boxShadow: "0 12px 40px rgba(17, 24, 39, 0.08), 0 0 1px rgba(155, 91, 52, 0.1)",
+  border: "1px solid rgba(155, 91, 52, 0.1)",
 };
 
 const actionsTitle = {
-  margin: "0 0 18px",
-  fontSize: 24,
-  fontWeight: 800,
+  margin: "0 0 24px",
+  fontSize: 28,
+  fontWeight: 900,
   color: "#1f2937",
   fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
+  letterSpacing: "-0.02em",
 };
 
 const actionsList = {
   display: "grid",
-  gap: 10,
+  gap: 12,
 };
 
 const actionButton = {
   display: "flex",
   alignItems: "center",
-  gap: 12,
-  minHeight: 52,
-  padding: "0 16px",
-  borderRadius: 12,
-  border: "2px solid #e7dfd2",
-  background: "#fdfbf7",
+  gap: 14,
+  minHeight: 58,
+  padding: "0 20px",
+  borderRadius: 14,
+  border: "2px solid rgba(155, 91, 52, 0.15)",
+  background: "rgba(253, 251, 247, 0.9)",
   textDecoration: "none",
-  boxShadow: "0 2px 8px rgba(17, 24, 39, 0.04)",
-  transition: "all 0.3s ease",
+  boxShadow: "0 3px 12px rgba(17, 24, 39, 0.06)",
+  transition: "all 0.25s cubic-bezier(0.4, 0, 0.2, 1)",
 };
 
 const actionButtonPrimary = {
-  background: "linear-gradient(135deg, #9b5b34 0%, #824b2b 100%)",
+  background: "linear-gradient(135deg, #9b5b34 0%, #b5754a 50%, #824b2b 100%)",
   borderColor: "transparent",
-  boxShadow: "0 4px 16px rgba(155, 91, 52, 0.25)",
+  boxShadow: "0 8px 24px rgba(155, 91, 52, 0.35), inset 0 1px 2px rgba(255,255,255,0.2)",
 };
 
 const actionButtonActive = {
-  boxShadow: "0 0 0 3px rgba(155, 91, 52, 0.2)",
+  boxShadow: "0 0 0 4px rgba(155, 91, 52, 0.15), 0 8px 24px rgba(155, 91, 52, 0.35)",
   transform: "translateY(-2px)",
 };
 
 const actionIcon = {
-  width: 18,
-  color: "#b0814d",
-  fontSize: 12,
+  width: 20,
+  color: "#9b5b34",
+  fontSize: 14,
   fontWeight: 900,
   textAlign: "center",
   flexShrink: 0,
@@ -620,41 +640,47 @@ const actionIcon = {
 const actionIconPrimary = {
   ...actionIcon,
   color: "#fff7ed",
+  filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.2))",
 };
 
 const actionText = {
-  fontSize: 13,
+  fontSize: 14,
   fontWeight: 700,
-  color: "#9c6c40",
+  color: "#6b4e3d",
+  letterSpacing: "0.01em",
 };
 
 const actionTextPrimary = {
   ...actionText,
   color: "#ffffff",
+  textShadow: "0 1px 2px rgba(0,0,0,0.1)",
 };
 
 const chartCard = {
-  padding: "24px",
-  borderRadius: 16,
-  background: "#ffffff",
-  border: "1px solid #e7dfd2",
-  boxShadow: "0 8px 24px rgba(17, 24, 39, 0.06)",
+  padding: "32px",
+  borderRadius: 22,
+  background: "rgba(255, 255, 255, 0.85)",
+  backdropFilter: "blur(20px)",
+  WebkitBackdropFilter: "blur(20px)",
+  border: "1px solid rgba(155, 91, 52, 0.1)",
+  boxShadow: "0 12px 40px rgba(17, 24, 39, 0.08), 0 0 1px rgba(155, 91, 52, 0.1)",
 };
 
 const chartHead = {
   display: "flex",
   justifyContent: "space-between",
   alignItems: "flex-start",
-  gap: 12,
-  marginBottom: 8,
+  gap: 16,
+  marginBottom: 12,
 };
 
 const chartTitle = {
   margin: 0,
-  fontSize: 26,
-  fontWeight: 800,
+  fontSize: 30,
+  fontWeight: 900,
   color: "#3a332d",
   fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
+  letterSpacing: "-0.02em",
 };
 
 const chartSubhead = {
@@ -718,66 +744,68 @@ const chartLabelActive = {
 
 const statsGrid = {
   display: "grid",
-  gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-  gap: 16,
-  marginBottom: 24,
+  gridTemplateColumns: "repeat(4, 1fr)",
+  gap: 20,
+  marginBottom: 32,
 };
 
 const statCard = {
   position: "relative",
-  background: "#ffffff",
-  border: "2px solid #e7dfd2",
-  borderRadius: 18,
-  padding: "24px",
+  background: "rgba(255, 255, 255, 0.9)",
+  backdropFilter: "blur(20px)",
+  WebkitBackdropFilter: "blur(20px)",
+  border: "2px solid rgba(155, 91, 52, 0.12)",
+  borderRadius: 22,
+  padding: "28px",
   display: "flex",
   alignItems: "center",
-  gap: 16,
-  boxShadow: "0 8px 24px rgba(17, 24, 39, 0.06)",
-  transition: "all 0.3s ease",
+  gap: 20,
+  boxShadow: "0 12px 36px rgba(17, 24, 39, 0.08), 0 0 1px rgba(155, 91, 52, 0.1)",
+  transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
   overflow: "hidden",
 };
 
 const statCardHighlight = {
-  background: "linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%)",
-  borderColor: "#fed7aa",
+  background: "linear-gradient(135deg, rgba(255, 247, 237, 0.95) 0%, rgba(255, 237, 213, 0.95) 100%)",
+  borderColor: "rgba(254, 215, 170, 0.6)",
+  boxShadow: "0 16px 48px rgba(155, 91, 52, 0.15), 0 0 1px rgba(155, 91, 52, 0.2)",
 };
 
 const statIconGradient = {
-  width: 56,
-  height: 56,
-  borderRadius: 16,
+  width: 64,
+  height: 64,
+  borderRadius: 18,
   display: "inline-flex",
   alignItems: "center",
   justifyContent: "center",
   background: "linear-gradient(135deg, #f3e2cf 0%, #ead3b6 100%)",
-  fontSize: 24,
+  fontSize: 28,
   flexShrink: 0,
-  boxShadow: "0 4px 12px rgba(155, 106, 58, 0.15)",
+  boxShadow: "0 6px 20px rgba(155, 106, 58, 0.2), inset 0 -2px 6px rgba(0,0,0,0.05)",
 };
 
 const statIconGradientAccent = {
-  width: 56,
-  height: 56,
-  borderRadius: 16,
+  width: 64,
+  height: 64,
+  borderRadius: 18,
   display: "inline-flex",
   alignItems: "center",
   justifyContent: "center",
-  background: "linear-gradient(135deg, #9b5b34 0%, #824b2b 100%)",
-  fontSize: 24,
+  background: "linear-gradient(135deg, #9b5b34 0%, #b5754a 50%, #824b2b 100%)",
+  fontSize: 28,
   flexShrink: 0,
-  boxShadow: "0 4px 12px rgba(155, 91, 52, 0.3)",
+  boxShadow: "0 8px 28px rgba(155, 91, 52, 0.4), inset 0 1px 2px rgba(255,255,255,0.15)",
 };
 
 const statPulse = {
   position: "absolute",
-  top: 24,
-  right: 24,
-  width: 12,
-  height: 12,
+  top: 28,
+  right: 28,
+  width: 14,
+  height: 14,
   borderRadius: "50%",
-  background: "#ef4444",
-  animation: "pulse 2s ease-in-out infinite",
-  boxShadow: "0 0 12px rgba(239, 68, 68, 0.6)",
+  background: "linear-gradient(135deg, #ef4444 0%, #dc2626 100%)",
+  boxShadow: "0 0 16px rgba(239, 68, 68, 0.8), 0 0 0 4px rgba(239, 68, 68, 0.2)",
 };
 
 const statIcon = {
@@ -800,12 +828,13 @@ const statContent = {
 };
 
 const statValue = {
-  fontSize: 42,
+  fontSize: 48,
   fontWeight: 900,
   color: "#111827",
   lineHeight: 1,
-  marginBottom: 6,
+  marginBottom: 8,
   fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
+  letterSpacing: "-0.02em",
 };
 
 const statLabel = {
@@ -813,7 +842,7 @@ const statLabel = {
   fontWeight: 700,
   color: "#7a6c5f",
   textTransform: "uppercase",
-  letterSpacing: "0.08em",
+  letterSpacing: "0.1em",
 };
 
 const panelsGrid = {
@@ -860,12 +889,13 @@ const panelContent = {
 };
 
 const panelRow = {
-  padding: "18px 20px",
-  borderBottom: "1px solid #f3f4f6",
+  padding: "22px 32px",
+  borderBottom: "1px solid rgba(243, 244, 246, 0.6)",
   display: "flex",
   justifyContent: "space-between",
   alignItems: "flex-start",
-  gap: 16,
+  gap: 20,
+  transition: "all 0.2s ease",
 };
 
 const panelRowIdentity = {
@@ -877,19 +907,20 @@ const panelRowIdentity = {
 };
 
 const panelAvatar = {
-  width: 48,
-  height: 48,
-  borderRadius: 14,
+  width: 52,
+  height: 52,
+  borderRadius: 16,
   flexShrink: 0,
   display: "inline-flex",
   alignItems: "center",
   justifyContent: "center",
-  background: "linear-gradient(135deg, #9b5b34 0%, #824b2b 100%)",
+  background: "linear-gradient(135deg, #9b5b34 0%, #b5754a 50%, #824b2b 100%)",
   color: "#ffffff",
-  fontSize: 14,
-  fontWeight: 800,
-  letterSpacing: "0.06em",
-  boxShadow: "0 4px 12px rgba(155, 91, 52, 0.2)",
+  fontSize: 15,
+  fontWeight: 900,
+  letterSpacing: "0.04em",
+  boxShadow: "0 6px 20px rgba(155, 91, 52, 0.3), inset 0 1px 2px rgba(255,255,255,0.15)",
+  textShadow: "0 1px 2px rgba(0,0,0,0.15)",
 };
 
 const panelRowMain = {
@@ -901,17 +932,18 @@ const panelRowTop = {
   display: "flex",
   alignItems: "center",
   justifyContent: "space-between",
-  gap: 12,
+  gap: 14,
 };
 
 const panelRowTitle = {
-  fontSize: 14,
+  fontSize: 15,
   fontWeight: 700,
   color: "#111827",
-  marginBottom: 4,
+  marginBottom: 6,
   overflow: "hidden",
   textOverflow: "ellipsis",
   whiteSpace: "nowrap",
+  letterSpacing: "0.005em",
 };
 
 const panelRowDate = {
@@ -991,33 +1023,34 @@ const emptyStateCard = {
 };
 
 const emptyStateIcon = {
-  width: 64,
-  height: 64,
-  borderRadius: 20,
+  width: 72,
+  height: 72,
+  borderRadius: 22,
   display: "inline-flex",
   alignItems: "center",
   justifyContent: "center",
   background: "linear-gradient(135deg, #f3e2cf 0%, #ead3b6 100%)",
   color: "#9b6a3a",
-  fontSize: 16,
-  fontWeight: 800,
+  fontSize: 18,
+  fontWeight: 900,
   letterSpacing: "0.08em",
-  boxShadow: "0 8px 24px rgba(155, 106, 58, 0.15)",
+  boxShadow: "0 12px 32px rgba(155, 106, 58, 0.2), inset 0 -2px 6px rgba(0,0,0,0.05)",
 };
 
 const emptyStateTitle = {
-  margin: "16px 0 6px",
+  margin: "20px 0 8px",
   color: "#1f2937",
-  fontSize: 18,
+  fontSize: 19,
   fontWeight: 700,
+  letterSpacing: "-0.01em",
 };
 
 const emptyStateText = {
-  maxWidth: 320,
+  maxWidth: 360,
   margin: 0,
   color: "#9ca3af",
-  fontSize: 14,
-  lineHeight: 1.6,
+  fontSize: 15,
+  lineHeight: 1.65,
 };
 
 const emptyState = {
