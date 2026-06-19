@@ -155,8 +155,8 @@ export default function Home() {
               fontSize: "clamp(36px, 5.5vw, 72px)",
               lineHeight: "1.2",
               marginBottom: "24px",
-              fontWeight: "300",
-              fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
+              fontWeight: "700",
+              fontFamily: '"Poppins", -apple-system, BlinkMacSystemFont, sans-serif',
               maxWidth: "900px"
             }}
           >
@@ -164,8 +164,8 @@ export default function Home() {
               style={{
                 color: "#d4af7a",
                 fontStyle: "italic",
-                fontWeight: "400",
-                fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
+                fontWeight: "700",
+                fontFamily: '"Poppins", -apple-system, BlinkMacSystemFont, sans-serif',
                 whiteSpace: "nowrap"
               }}
             >that feel premium.</i>
@@ -259,7 +259,7 @@ export default function Home() {
         </div>
         <article className="home-editorial-copy">
           <p className="home-section-kicker">Article</p>
-          <h2 style={{ fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif' }}>
+          <h2 style={{ fontFamily: '"Poppins", -apple-system, BlinkMacSystemFont, sans-serif' }}>
             How the right decoration plan makes your event feel premium from the first minute
           </h2>
           <p>
@@ -296,7 +296,7 @@ export default function Home() {
                 </p>
                 <h2
                   className="home-services-copy__title"
-                  style={{ fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif' }}
+                  style={{ fontFamily: '"Poppins", -apple-system, BlinkMacSystemFont, sans-serif' }}
                 >
                   Wedding and homecoming packages planned for easy booking
                 </h2>
@@ -379,7 +379,7 @@ export default function Home() {
           <div className="home-section-heading home-story-heading">
             <div className="home-story-heading__content">
               <p className="home-section-kicker">Why Choose Us</p>
-              <h2 style={{ fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif' }}>
+              <h2 style={{ fontFamily: '"Poppins", -apple-system, BlinkMacSystemFont, sans-serif' }}>
                 Decoration details that make your event feel complete
               </h2>
               <p className="home-story-heading__lead">

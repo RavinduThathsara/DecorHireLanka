@@ -241,7 +241,7 @@ const heroTitle = {
     color: "#111827",
     lineHeight: 1.2,
     marginBottom: 16,
-    fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
+    fontFamily: '"Poppins", -apple-system, BlinkMacSystemFont, sans-serif',
 };
 
 const heroText = {
@@ -303,7 +303,7 @@ const sectionTitle = {
     fontWeight: 900,
     color: "#111827",
     marginBottom: 12,
-    fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
+    fontFamily: '"Poppins", -apple-system, BlinkMacSystemFont, sans-serif',
 };
 
 const sectionText = {
@@ -337,7 +337,7 @@ const serviceTitle = {
     fontWeight: 900,
     color: "#111827",
     marginBottom: 12,
-    fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
+    fontFamily: '"Poppins", -apple-system, BlinkMacSystemFont, sans-serif',
 };
 
 const serviceDesc = {

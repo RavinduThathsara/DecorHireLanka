@@ -116,7 +116,7 @@ export default function ContactUs() {
           <div style={{ textAlign: "center", padding: "40px 0 20px" }}>
             <h1 style={{
               margin: 0,
-              fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
+              fontFamily: '"Poppins", -apple-system, BlinkMacSystemFont, sans-serif',
               fontSize: "clamp(2.5rem, 4vw, 3.5rem)",
               fontWeight: "700",
               color: "#1a1a1a",
@@ -162,7 +162,7 @@ export default function ContactUs() {
               </div>
               <h3 style={{
                 margin: 0,
-                fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
+                fontFamily: '"Poppins", -apple-system, BlinkMacSystemFont, sans-serif',
                 fontSize: "1.75rem",
                 fontWeight: "700",
                 color: "#1a1a1a"
@@ -275,7 +275,7 @@ export default function ContactUs() {
               </div>
               <h3 style={{
                 margin: 0,
-                fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
+                fontFamily: '"Poppins", -apple-system, BlinkMacSystemFont, sans-serif',
                 fontSize: "1.75rem",
                 fontWeight: "700",
                 color: "#1a1a1a"

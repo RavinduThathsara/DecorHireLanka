@@ -331,7 +331,7 @@ const heroTitle = {
   fontSize: "clamp(2.8rem, 5vw, 4rem)",
   fontWeight: 800,
   letterSpacing: "-0.02em",
-  fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
+  fontFamily: '"Poppins", -apple-system, BlinkMacSystemFont, sans-serif',
   textShadow: "0 4px 12px rgba(0, 0, 0, 0.3)",
   marginBottom: "20px",
 };
@@ -368,7 +368,7 @@ const formTitle = {
   fontSize: "2.25rem",
   color: "#1a1a1a",
   fontWeight: 800,
-  fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
+  fontFamily: '"Poppins", -apple-system, BlinkMacSystemFont, sans-serif',
   marginBottom: "12px",
 };
 

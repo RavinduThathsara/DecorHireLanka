@@ -247,7 +247,7 @@ export default function Gallery() {
                 fontSize: "2rem",
                 fontWeight: "700",
                 color: "#1a1a1a",
-                fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
+                fontFamily: '"Poppins", -apple-system, BlinkMacSystemFont, sans-serif',
                 lineHeight: "1.2"
               }}>
                 {selectedImage.title || categoryLabel(selectedImage.category)}
@@ -284,7 +284,8 @@ export default function Gallery() {
                   fontSize: "1.1rem",
                   fontWeight: "700",
                   color: "#1a1a1a",
-                  marginBottom: "12px"
+                  marginBottom: "12px",
+                  fontFamily: '"Poppins", -apple-system, BlinkMacSystemFont, sans-serif'
                 }}>
                   About This Decoration
                 </h3>
@@ -303,7 +304,8 @@ export default function Gallery() {
                   fontSize: "1.1rem",
                   fontWeight: "700",
                   color: "#1a1a1a",
-                  marginBottom: "16px"
+                  marginBottom: "16px",
+                  fontFamily: '"Poppins", -apple-system, BlinkMacSystemFont, sans-serif'
                 }}>
                   Key Features
                 </h3>
@@ -344,7 +346,8 @@ export default function Gallery() {
                   marginBottom: "8px",
                   textTransform: "uppercase",
                   letterSpacing: "0.5px",
-                  fontSize: "13px"
+                  fontSize: "13px",
+                  fontFamily: '"Poppins", -apple-system, BlinkMacSystemFont, sans-serif'
                 }}>
                   Ideal For
                 </h3>
@@ -425,7 +428,7 @@ export default function Gallery() {
           <div style={{ flex: "1 1 400px" }}>
             <h1 style={{
               margin: 0,
-              fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
+              fontFamily: '"Poppins", -apple-system, BlinkMacSystemFont, sans-serif',
               fontSize: "clamp(2rem, 3vw, 2.5rem)",
               fontWeight: "700",
               color: "#1a1a1a",
@@ -773,7 +776,7 @@ export default function Gallery() {
                   fontSize: "1.1rem",
                   fontWeight: "700",
                   color: "#1a1a1a",
-                  fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
+                  fontFamily: '"Poppins", -apple-system, BlinkMacSystemFont, sans-serif',
                   lineHeight: "1.3"
                 }}>
                   {img.title || categoryLabel(img.category)}

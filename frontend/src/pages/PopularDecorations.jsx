@@ -136,7 +136,7 @@ export default function PopularDecorations() {
             Customer Favorite Packages
           </p>
           <h1 style={{
-            fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
+            fontFamily: '"Poppins", -apple-system, BlinkMacSystemFont, sans-serif',
             fontSize: "clamp(2.5rem, 5vw, 4rem)",
             fontWeight: "700",
             color: "#1a1a1a",
@@ -223,7 +223,7 @@ export default function PopularDecorations() {
             marginBottom: "20px",
             color: "#fff",
             lineHeight: "1.3",
-            fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif'
+            fontFamily: '"Poppins", -apple-system, BlinkMacSystemFont, sans-serif'
           }}>
             What customers want to see
           </h2>
@@ -303,7 +303,7 @@ export default function PopularDecorations() {
                 fontWeight: "700",
                 color: "#1a1a1a",
                 marginBottom: "16px",
-                fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
+                fontFamily: '"Poppins", -apple-system, BlinkMacSystemFont, sans-serif',
                 lineHeight: "1.3"
               }}>{reason.title}</h3>
               <p style={{
@@ -318,7 +318,15 @@ export default function PopularDecorations() {
 
         <div style={topBar}>
           <div>
-            <h2 style={{ margin: 0, fontSize: 34, fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif' }}>Popular Decoration Packages</h2>
+            <h2 style={{
+              margin: 0,
+              fontSize: 22,
+              fontFamily: '"Poppins", -apple-system, BlinkMacSystemFont, sans-serif',
+              lineHeight: 1.15,
+              fontWeight: 700
+            }}>
+              Popular Decoration<br />Packages
+            </h2>
             <p style={{ marginTop: 8, color: "#6f645a", lineHeight: 1.7 }}>
               Choose a package, or contact us to customize your own wedding theme.
             </p>
@@ -428,7 +436,7 @@ const title = {
   fontSize: 20,
   fontWeight: 900,
   color: "#1f1a17",
-  fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
+  fontFamily: '"Poppins", -apple-system, BlinkMacSystemFont, sans-serif',
 };
 
 const desc = {
