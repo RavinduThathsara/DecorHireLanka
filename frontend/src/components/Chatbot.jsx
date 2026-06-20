@@ -1,6 +1,6 @@
 // frontend/src/components/Chatbot.jsx
 import React, { useState, useRef, useEffect } from "react";
-import { api } from "../services/api.js";
+import { api, resolveAssetUrl } from "../services/api.js";
 import { useAuth } from "../context/AuthContext.jsx";
 
 // Add CSS animation for typing dots
@@ -71,6 +71,8 @@ export default function Chatbot() {
         try {
             const response = await api.get("/api/gallery/");
             if (response.data.images) {
+                console.log('Gallery images loaded:', response.data.images.length);
+                console.log('Sample image:', response.data.images[0]);
                 setGalleryImages(response.data.images);
             }
         } catch (error) {
@@ -131,9 +133,12 @@ export default function Chatbot() {
 
     // Get recommended images based on category
     const getRecommendedImages = (category) => {
-        return galleryImages
+        const filtered = galleryImages
             .filter(img => img.category === category && img.isActive)
             .slice(0, 4); // Show max 4 images
+
+        console.log(`Filtering images for category "${category}":`, filtered.length, 'images found');
+        return filtered;
     };
 
     // AI Response Logic
@@ -144,6 +149,7 @@ export default function Chatbot() {
         if (message.includes("wedding") || message.includes("marriage") ||
             message.includes("stage") || message.includes("poruwa")) {
             const weddingImages = getRecommendedImages("wedding");
+            console.log('Wedding query detected, returning:', weddingImages.length, 'images');
             return {
                 text: "We offer stunning wedding decoration packages! 💐 Our services include:\n• Traditional Poruwa decorations\n• Stage decorations\n• Aisle & venue decorations\n• Floral arrangements\n\nWould you like to see our wedding packages or book a consultation?",
                 images: weddingImages,
@@ -283,13 +289,29 @@ export default function Chatbot() {
         // Simulate AI thinking delay
         setTimeout(() => {
             const aiResponse = getAIResponse(inputValue);
-            const botResponse = {
-                type: "bot",
-                text: aiResponse.text || aiResponse,
-                images: aiResponse.images || [],
-                imageCategory: aiResponse.imageCategory || null,
-                timestamp: new Date(),
-            };
+
+            // Handle both object and string responses
+            let botResponse;
+            if (typeof aiResponse === 'string') {
+                // Old format - string only
+                botResponse = {
+                    type: "bot",
+                    text: aiResponse,
+                    images: [],
+                    imageCategory: null,
+                    timestamp: new Date(),
+                };
+            } else {
+                // New format - object with text, images, imageCategory
+                botResponse = {
+                    type: "bot",
+                    text: aiResponse.text,
+                    images: aiResponse.images || [],
+                    imageCategory: aiResponse.imageCategory || null,
+                    timestamp: new Date(),
+                };
+            }
+
             const finalMessages = [...updatedMessages, botResponse];
             setMessages(finalMessages);
             setIsTyping(false);
@@ -391,9 +413,13 @@ export default function Chatbot() {
                                             {msg.images.map((img, imgIndex) => (
                                                 <div key={imgIndex} style={imageCard}>
                                                     <img
-                                                        src={`http://localhost:5000${img.imageUrl}`}
+                                                        src={resolveAssetUrl(img.imageUrl)}
                                                         alt={img.title || `${msg.imageCategory} ${imgIndex + 1}`}
                                                         style={imageStyle}
+                                                        onError={(e) => {
+                                                            console.error('Image load error:', img.imageUrl);
+                                                            e.target.style.display = 'none';
+                                                        }}
                                                     />
                                                     {img.title && (
                                                         <div style={imageTitle}>{img.title}</div>
