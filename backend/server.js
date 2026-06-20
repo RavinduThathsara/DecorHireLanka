@@ -17,6 +17,7 @@ import decorationRoutes from "./src/routes/decorationRoutes.js";
 import galleryRoutes from "./src/routes/galleryRoutes.js";
 import bookingRoutes from "./src/routes/bookingRoutes.js";
 import adminRoutes from "./src/routes/adminRoutes.js";
+import chatRoutes from "./src/routes/chatRoutes.js";
 
 import { requireAuth, requireAdmin } from "./src/middleware/auth.js";
 
@@ -43,6 +44,7 @@ app.use("/api/decorations", decorationRoutes);
 app.use("/api/gallery", galleryRoutes);
 app.use("/api/bookings", bookingRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/chat", chatRoutes);
 
 // Root test
 app.get("/", (req, res) => {

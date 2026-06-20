@@ -326,24 +326,22 @@ const heroContent = {
 };
 
 const heroTitle = {
-  margin: 0,
+  margin: "0 0 20px",
   color: "#f6d46d",
   fontSize: "clamp(2.8rem, 5vw, 4rem)",
   fontWeight: 800,
   letterSpacing: "-0.02em",
   fontFamily: '"Poppins", -apple-system, BlinkMacSystemFont, sans-serif',
   textShadow: "0 4px 12px rgba(0, 0, 0, 0.3)",
-  marginBottom: "20px",
 };
 
 const heroLead = {
-  margin: "0",
+  margin: "0 auto",
   color: "rgba(255, 255, 255, 0.95)",
   fontSize: "1.15rem",
   lineHeight: 1.8,
   fontWeight: 400,
   maxWidth: "600px",
-  margin: "0 auto",
 };
 
 const card = {

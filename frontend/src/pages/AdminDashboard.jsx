@@ -434,13 +434,16 @@ const headerBadge = {
   position: "relative",
 };
 
+const headerFontFamily =
+  '"Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+
 const pageTitle = {
   margin: 0,
   fontSize: 44,
   fontWeight: 900,
   letterSpacing: "-0.04em",
   color: "#0f1419",
-  fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
+  fontFamily: headerFontFamily,
   lineHeight: 1.1,
   background: "linear-gradient(135deg, #1d2430 0%, #3d291c 100%)",
   WebkitBackgroundClip: "text",
@@ -594,7 +597,7 @@ const actionsTitle = {
   fontSize: 28,
   fontWeight: 900,
   color: "#1f2937",
-  fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
+  fontFamily: headerFontFamily,
   letterSpacing: "-0.02em",
 };
 
@@ -679,7 +682,7 @@ const chartTitle = {
   fontSize: 30,
   fontWeight: 900,
   color: "#3a332d",
-  fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
+  fontFamily: headerFontFamily,
   letterSpacing: "-0.02em",
 };
 
@@ -873,7 +876,7 @@ const panelTitle = {
   fontWeight: 800,
   color: "#111827",
   margin: 0,
-  fontFamily: '"Playfair Display", Georgia, "Times New Roman", serif',
+  fontFamily: headerFontFamily,
 };
 
 const panelLink = {

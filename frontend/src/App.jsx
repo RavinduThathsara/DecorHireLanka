@@ -22,39 +22,43 @@ import BookDecoration from "./pages/BookDecoration.jsx";
 import UserProfile from "./pages/UserProfile.jsx";
 import AdminProtected from "./components/AdminProtected.jsx";
 import Services from "./pages/Services.jsx";
+import Chatbot from "./components/Chatbot.jsx";
 
 export default function App() {
   return (
-    <Routes>
-      {/* Customer pages use MainLayout (Navbar + Footer) */}
-      <Route element={<MainLayout />}>
-        <Route path="/" element={<Home />} />
-        <Route path="/services" element={<Services />} />
-        <Route path="/popular" element={<PopularDecorations />} />
-        <Route path="/gallery" element={<Gallery />} />
-        <Route path="/contact" element={<ContactUs />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/book" element={<BookDecoration />} />
-        <Route path="/profile" element={<UserProfile />} />
-      </Route>
-
-      <Route path="/admin/login" element={<AdminLogin />} />
-
-      <Route path="/admin" element={<AdminProtected />}>
-        <Route element={<AdminLayout />}>
-          <Route index element={<Navigate to="dashboard" replace />} />
-          <Route path="dashboard" element={<AdminDashboard />} />
-          <Route path="bookings" element={<AdminBookings />} />
-          <Route path="contacts" element={<AdminContacts />} />
-          <Route path="gallery" element={<AdminGallery />} />
-          <Route path="view-gallery" element={<AdminGallery />} />
-          <Route path="manage-gallery" element={<AdminGallery />} />
-          <Route path="decorations" element={<AdminDecorations />} />
-          <Route path="decoration" element={<AdminDecorations />} />
-          <Route path="manage-decorations" element={<AdminDecorations />} />
+    <>
+      <Routes>
+        {/* Customer pages use MainLayout (Navbar + Footer) */}
+        <Route element={<MainLayout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/popular" element={<PopularDecorations />} />
+          <Route path="/gallery" element={<Gallery />} />
+          <Route path="/contact" element={<ContactUs />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/book" element={<BookDecoration />} />
+          <Route path="/profile" element={<UserProfile />} />
         </Route>
-      </Route>
-    </Routes>
+
+        <Route path="/admin/login" element={<AdminLogin />} />
+
+        <Route path="/admin" element={<AdminProtected />}>
+          <Route element={<AdminLayout />}>
+            <Route index element={<Navigate to="dashboard" replace />} />
+            <Route path="dashboard" element={<AdminDashboard />} />
+            <Route path="bookings" element={<AdminBookings />} />
+            <Route path="contacts" element={<AdminContacts />} />
+            <Route path="gallery" element={<AdminGallery />} />
+            <Route path="view-gallery" element={<AdminGallery />} />
+            <Route path="manage-gallery" element={<AdminGallery />} />
+            <Route path="decorations" element={<AdminDecorations />} />
+            <Route path="decoration" element={<AdminDecorations />} />
+            <Route path="manage-decorations" element={<AdminDecorations />} />
+          </Route>
+        </Route>
+      </Routes>
+      <Chatbot />
+    </>
   );
 }

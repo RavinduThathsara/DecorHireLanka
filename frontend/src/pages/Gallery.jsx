@@ -340,13 +340,12 @@ export default function Gallery() {
                 marginBottom: "32px"
               }}>
                 <h3 style={{
-                  fontSize: "1rem",
+                  fontSize: "13px",
                   fontWeight: "700",
                   color: "#9b5b34",
                   marginBottom: "8px",
                   textTransform: "uppercase",
                   letterSpacing: "0.5px",
-                  fontSize: "13px",
                   fontFamily: '"Poppins", -apple-system, BlinkMacSystemFont, sans-serif'
                 }}>
                   Ideal For
